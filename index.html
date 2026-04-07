@@ -2,7 +2,7 @@
 <html lang="it" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>NIS2 Command Center — Farmacie Gallotta S.r.l.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1619,8 +1619,46 @@ body.board-mode #footer { visibility: hidden; }
 .compare-winner { color: var(--green); font-weight: 700; }
 .compare-radar-title { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; }
 /* ========== RESPONSIVE MOBILE ========== */
+/* ========== HAMBURGER MENU BUTTON ========== */
+.hamburger-btn {
+  display: none;
+  width: 36px; height: 36px; border-radius: 6px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer;
+  align-items: center; justify-content: center;
+  transition: all 0.2s; flex-shrink: 0;
+}
+.hamburger-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+.hamburger-btn svg { width: 18px; height: 18px; }
+
+/* ========== MOBILE BOTTOM TAB BAR ========== */
+.mobile-tab-bar {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  z-index: 200;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  padding: 4px 0 calc(4px + env(safe-area-inset-bottom, 0px));
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+}
+.mobile-tab-bar::-webkit-scrollbar { display: none; }
+.mobile-tab-item {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; padding: 6px 8px; min-width: 56px;
+  font-family: var(--font-mono); font-size: 0.48rem; font-weight: 600;
+  letter-spacing: 0.06em; color: var(--muted);
+  cursor: pointer; border: none; background: none;
+  white-space: nowrap; scroll-snap-align: start;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s;
+}
+.mobile-tab-item.active { color: var(--cyan); }
+.mobile-tab-item svg { width: 18px; height: 18px; }
+
+/* ========== TABLET: 768px ========== */
 @media (max-width: 768px) {
-  .kpi-grid { grid-template-columns: 1fr !important; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr) !important; }
   .gauge-wrapper { flex-direction: column; align-items: center; }
   .exec-summary { width: 100%; }
   #radar-wrapper svg { width: 280px !important; height: 280px !important; }
@@ -1665,6 +1703,191 @@ body.board-mode #footer { visibility: hidden; }
   #main { padding: 12px; }
   .two-col { grid-template-columns: 1fr !important; }
   .incident-deadline-grid { grid-template-columns: 1fr; }
+  .detail-drawer { width: 340px; right: -360px; }
+  .notif-dropdown { width: 290px; }
+  .compare-table { font-size: 0.65rem; }
+  .heatmap-grid { grid-template-columns: repeat(5, 56px); grid-template-rows: repeat(5, 56px); }
+  .heatmap-x-labels { grid-template-columns: repeat(5, 56px); }
+  .heatmap-y-label { height: 56px; }
+  .heatmap-risk-dot { width: 18px; height: 18px; font-size: 0.38rem; }
+}
+
+/* ========== MOBILE: 640px ========== */
+@media (max-width: 640px) {
+  html { font-size: 13px; }
+
+  /* Header: show hamburger, hide non-essential */
+  .hamburger-btn { display: flex; }
+  .header-title p { display: none; }
+  .header-title h1 { font-size: 0.85rem; }
+  .header-logo svg { width: 32px !important; height: 32px !important; }
+  .header-left { gap: 8px; }
+  #header { padding: 8px 12px; }
+
+  /* Hide desktop header-right items, show only bell + hamburger */
+  .header-right .export-btn,
+  .header-right .board-mode-btn,
+  .header-right .quarter-badge,
+  .header-right .updated-badge,
+  .header-right .realtime-clock { display: none !important; }
+
+  /* Mobile menu overlay */
+  .mobile-menu {
+    position: fixed; top: 0; right: -280px; bottom: 0;
+    width: 260px; z-index: 10000;
+    background: var(--card); border-left: 1px solid var(--border);
+    padding: 20px 16px; overflow-y: auto;
+    transition: right 0.3s ease;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .mobile-menu.menu-open { right: 0; }
+  .mobile-menu-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.5);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .mobile-menu-overlay.menu-open { opacity: 1; pointer-events: all; }
+  .mobile-menu-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px; border-radius: 6px;
+    border: 1px solid var(--border); background: var(--bg);
+    color: var(--text); font-family: var(--font-mono);
+    font-size: 0.75rem; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .mobile-menu-item:hover, .mobile-menu-item:active {
+    border-color: var(--cyan); background: rgba(88,166,255,0.06);
+  }
+  .mobile-menu-item svg { width: 16px; height: 16px; color: var(--cyan); flex-shrink: 0; }
+  .mobile-menu-header {
+    font-family: var(--font-mono); font-size: 0.6rem;
+    color: var(--muted); letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 4px 0 8px;
+    border-bottom: 1px solid var(--border); margin-bottom: 4px;
+  }
+  .mobile-menu-close {
+    align-self: flex-end;
+    width: 32px; height: 32px; border-radius: 6px;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--muted); cursor: pointer; font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 8px;
+  }
+
+  /* Hide desktop nav, show mobile bottom tab bar */
+  #nav { display: none !important; }
+  .mobile-tab-bar { display: flex; }
+  #main { padding: 10px; padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)); }
+  #footer { padding: 8px 12px; margin-bottom: calc(52px + env(safe-area-inset-bottom, 0px)); }
+
+  /* KPI: single column */
+  .kpi-grid { grid-template-columns: 1fr !important; gap: 8px !important; }
+  .kpi-number { font-size: 2rem; }
+
+  /* Gauge smaller */
+  .gauge-container svg { width: 140px !important; height: 140px !important; }
+  .gauge-label { font-size: 0.55rem; }
+
+  /* Radar smaller */
+  #radar-wrapper svg { width: 240px !important; height: 240px !important; }
+
+  /* Heatmap: scale to fit screen */
+  .heatmap-grid { grid-template-columns: repeat(5, 48px) !important; grid-template-rows: repeat(5, 48px) !important; }
+  .heatmap-x-labels { grid-template-columns: repeat(5, 48px) !important; }
+  .heatmap-y-label { height: 48px !important; font-size: 0.5rem !important; }
+  .heatmap-x-label { font-size: 0.5rem !important; }
+  .heatmap-risk-dot { width: 16px; height: 16px; font-size: 0.35rem; }
+  .heatmap-y-axis-title { font-size: 0.5rem; }
+
+  /* Drawer: full screen on mobile */
+  .detail-drawer {
+    width: 100% !important; right: -105% !important;
+    border-left: none; border-radius: 0;
+  }
+  .detail-drawer.drawer-open { right: 0 !important; }
+
+  /* Modal: full screen on mobile */
+  .asset-modal {
+    width: 100% !important; max-width: 100% !important;
+    max-height: 100vh !important; height: 100vh;
+    border-radius: 0 !important;
+  }
+  .modal-grid-2 { grid-template-columns: 1fr !important; }
+
+  /* Notification dropdown: full width */
+  .notif-dropdown {
+    position: fixed !important;
+    top: auto !important; bottom: calc(52px + env(safe-area-inset-bottom, 0px)) !important;
+    left: 8px !important; right: 8px !important;
+    width: auto !important; max-height: 60vh;
+    border-radius: 10px !important;
+  }
+
+  /* Touch targets: minimum 44px */
+  .nav-tab, .filter-tab, .export-btn, .board-mode-btn,
+  .theme-toggle, .notif-bell-btn, .drawer-close, .modal-close {
+    min-height: 44px; min-width: 44px;
+  }
+  .filter-tab { padding: 8px 14px; font-size: 0.68rem; }
+  .filter-tabs { gap: 8px; }
+  .export-btn { padding: 8px 14px; }
+
+  /* Tables: card layout for all */
+  .compare-table { font-size: 0.6rem; }
+  .compare-table th, .compare-table td { padding: 6px 8px; }
+
+  /* Search bar full width */
+  .search-bar-wrap { width: 100% !important; }
+  .search-bar-wrap input { width: 100% !important; }
+
+  /* Score bars */
+  .score-label { width: 70px; font-size: 0.58rem; }
+
+  /* Progress bars */
+  .progress-label { width: 80px; font-size: 0.58rem; }
+
+  /* Section headers */
+  .section-header { font-size: 0.68rem; flex-wrap: wrap; }
+
+  /* Incident/deadline */
+  .incident-deadline-grid { grid-template-columns: 1fr !important; }
+
+  /* Login box: bigger on mobile */
+  .login-box { padding: 30px 24px; width: 92vw; max-width: 360px; }
+  .login-box input { font-size: 1.1rem; padding: 14px 16px; }
+  .login-box button { padding: 14px; font-size: 1rem; }
+
+  /* Glossary tooltips: wider on mobile */
+  .glossary-icon[data-tooltip]::after {
+    width: 200px !important; left: auto !important; right: -10px;
+    font-size: 0.62rem !important;
+  }
+
+  /* Card spacing */
+  .card { padding: 14px; }
+  .card-title { font-size: 0.62rem; }
+}
+
+/* ========== SMALL PHONE: 380px ========== */
+@media (max-width: 380px) {
+  html { font-size: 12px; }
+  .header-title h1 { font-size: 0.75rem; letter-spacing: 0.04em; }
+  .header-logo svg { width: 28px !important; height: 28px !important; }
+  #header { padding: 6px 8px; }
+  #main { padding: 6px; }
+  .kpi-number { font-size: 1.7rem; }
+  .gauge-container svg { width: 120px !important; height: 120px !important; }
+  #radar-wrapper svg { width: 200px !important; height: 200px !important; }
+  .heatmap-grid { grid-template-columns: repeat(5, 40px) !important; grid-template-rows: repeat(5, 40px) !important; }
+  .heatmap-x-labels { grid-template-columns: repeat(5, 40px) !important; }
+  .heatmap-y-label { height: 40px !important; }
+  .heatmap-risk-dot { width: 14px; height: 14px; font-size: 0.3rem; }
+  .mobile-tab-item { min-width: 48px; font-size: 0.42rem; padding: 5px 4px; }
+  .mobile-tab-item svg { width: 16px; height: 16px; }
+  .login-box { padding: 24px 16px; }
+  .card { padding: 10px; }
 }
 </style>
 </head>
@@ -1846,8 +2069,76 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
       <span class="status-dot"></span><span id="last-updated-display">Agg. —</span>
     </span>
     <span class="realtime-clock" id="realtime-clock">--:--:--</span>
+    <!-- Hamburger menu (mobile only) -->
+    <button class="hamburger-btn" id="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
   </div>
 </header>
+
+<!-- MOBILE MENU OVERLAY -->
+<div class="mobile-menu-overlay" id="mobile-menu-overlay" onclick="closeMobileMenu()"></div>
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-menu-close" onclick="closeMobileMenu()">&times;</button>
+  <div class="mobile-menu-header">Azioni</div>
+  <div class="mobile-menu-item" onclick="exportPdf(); closeMobileMenu();">
+    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 13h12v1H2v-1zm0-2h1V7h2v4h1V6H3V2h7l2 2v2h1V3.5L10.5 1H2v10zm8-10v2h2l-2-2zm-3 5h1v4H7V6zm2 1h1v1H9V7zm0 2h1v1H9V9z"/></svg>
+    Report PDF
+  </div>
+  <div class="mobile-menu-item" onclick="exportCsv(); closeMobileMenu();">
+    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M14 4.5V14a2 2 0 01-2 2H4a2 2 0 01-2-2V2a2 2 0 012-2h5.5L14 4.5zm-3 0A1.5 1.5 0 019.5 3V1H4a1 1 0 00-1 1v12a1 1 0 001 1h8a1 1 0 001-1V4.5h-2z"/></svg>
+    Esporta CSV
+  </div>
+  <div class="mobile-menu-item" onclick="enterBoardMode(); closeMobileMenu();">
+    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 1h13a.5.5 0 01.5.5v13a.5.5 0 01-.5.5h-13a.5.5 0 01-.5-.5v-13a.5.5 0 01.5-.5z"/></svg>
+    Presentazione
+  </div>
+  <div class="mobile-menu-item" onclick="toggleTheme(); closeMobileMenu();">
+    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6 .278a.768.768 0 01.08.858 7.208 7.208 0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 01.81.316.733.733 0 01-.031.893A8.349 8.349 0 018.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 016 .278z"/></svg>
+    Cambia Tema
+  </div>
+  <div class="mobile-menu-header" style="margin-top:8px;">Info</div>
+  <div class="mobile-menu-item" style="cursor:default; opacity:0.7;">
+    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M11 1v1H5V1H4v1H2a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1V3a1 1 0 00-1-1h-2V1h-1z"/></svg>
+    <span id="mobile-quarter">Q2 2026</span>
+  </div>
+  <div class="mobile-menu-item" style="cursor:default; opacity:0.7;">
+    <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="5" cy="8" r="4" fill="var(--green)" opacity="0.6"/></svg>
+    <span id="mobile-updated">Ultimo agg: —</span>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM TAB BAR -->
+<div class="mobile-tab-bar" id="mobile-tab-bar">
+  <button class="mobile-tab-item active" data-tab="overview" onclick="switchTab('overview')">
+    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 2h5v5H2V2zm7 0h5v5H9V2zM2 9h5v5H2V9zm7 0h5v5H9V9z"/></svg>
+    OVERVIEW
+  </button>
+  <button class="mobile-tab-item" data-tab="mis" onclick="switchTab('mis')">
+    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 2h14v2H1V2zm0 4h14v2H1V6zm0 4h14v2H1v-2z"/></svg>
+    MIS
+  </button>
+  <button class="mobile-tab-item" data-tab="risk" onclick="switchTab('risk')">
+    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1L1 14h14L8 1z"/></svg>
+    RISK
+  </button>
+  <button class="mobile-tab-item" data-tab="asset" onclick="switchTab('asset')">
+    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M14 4H2a1 1 0 00-1 1v7a1 1 0 001 1h12a1 1 0 001-1V5a1 1 0 00-1-1z"/></svg>
+    ASSET
+  </button>
+  <button class="mobile-tab-item" data-tab="scadenze" onclick="switchTab('scadenze')">
+    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M11 1v1H5V1H4v1H2a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1V3a1 1 0 00-1-1h-2V1h-1z"/></svg>
+    SCAD.
+  </button>
+  <button class="mobile-tab-item" data-tab="policy" onclick="switchTab('policy')">
+    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M5 1h8a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V2a1 1 0 011-1h2z"/></svg>
+    POLICY
+  </button>
+  <button class="mobile-tab-item" data-tab="storico" onclick="switchTab('storico')">
+    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1z"/></svg>
+    STORICO
+  </button>
+</div>
 
 <!-- NAV -->
 <nav id="nav" role="tablist" aria-label="Sezioni dashboard">
@@ -2580,6 +2871,10 @@ function switchTab(id) {
     t.setAttribute('tabindex', isActive ? '0' : '-1');
   });
   document.querySelectorAll('.tab-pane').forEach(function(p) { p.classList.toggle('active', p.id === 'tab-' + id); });
+  // Sync mobile bottom tab bar
+  document.querySelectorAll('.mobile-tab-item').forEach(function(t) {
+    t.classList.toggle('active', t.dataset.tab === id);
+  });
   var hash = TAB_TO_HASH[id];
   if (hash && window.location.hash !== hash) {
     history.pushState(null, '', hash);
@@ -4711,13 +5006,109 @@ document.addEventListener('click', function(e) {
 })();
 
 // ============================================================
-// ESC KEY (drawer + modal)
+// ESC KEY (drawer + modal + mobile menu)
 // ============================================================
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     var mo = document.getElementById('modal-overlay');
     if (mo && mo.classList.contains('modal-open')) { closeAssetModal(); return; }
-    if (_drawerOpen) { closeDrawer(); }
+    if (_drawerOpen) { closeDrawer(); return; }
+    closeMobileMenu();
+  }
+});
+
+// ============================================================
+// MOBILE MENU
+// ============================================================
+function toggleMobileMenu() {
+  var menu = document.getElementById('mobile-menu');
+  var overlay = document.getElementById('mobile-menu-overlay');
+  if (!menu || !overlay) return;
+  var isOpen = menu.classList.contains('menu-open');
+  menu.classList.toggle('menu-open', !isOpen);
+  overlay.classList.toggle('menu-open', !isOpen);
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+}
+function closeMobileMenu() {
+  var menu = document.getElementById('mobile-menu');
+  var overlay = document.getElementById('mobile-menu-overlay');
+  if (menu) menu.classList.remove('menu-open');
+  if (overlay) overlay.classList.remove('menu-open');
+  document.body.style.overflow = '';
+}
+
+// Sync mobile-updated display
+(function() {
+  var obs = new MutationObserver(function() {
+    var src = document.getElementById('last-updated-display');
+    var dst = document.getElementById('mobile-updated');
+    if (src && dst) dst.textContent = 'Ultimo ' + src.textContent;
+  });
+  var target = document.getElementById('last-updated-display');
+  if (target) obs.observe(target, { childList: true, characterData: true, subtree: true });
+})();
+
+// ============================================================
+// SWIPE GESTURE FOR TAB NAVIGATION
+// ============================================================
+(function() {
+  var startX = 0, startY = 0, tracking = false;
+  var mainEl = document.getElementById('main');
+  if (!mainEl) return;
+
+  mainEl.addEventListener('touchstart', function(e) {
+    if (e.touches.length !== 1) return;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    tracking = true;
+  }, { passive: true });
+
+  mainEl.addEventListener('touchend', function(e) {
+    if (!tracking) return;
+    tracking = false;
+    var endX = e.changedTouches[0].clientX;
+    var endY = e.changedTouches[0].clientY;
+    var dx = endX - startX;
+    var dy = endY - startY;
+
+    // Only trigger on horizontal swipe (>80px, not too vertical)
+    if (Math.abs(dx) < 80 || Math.abs(dy) > Math.abs(dx) * 0.6) return;
+
+    // Don't swipe if drawer or modal is open
+    if (_drawerOpen) return;
+    var mo = document.getElementById('modal-overlay');
+    if (mo && mo.classList.contains('modal-open')) return;
+
+    var currentIdx = VALID_TABS.indexOf(
+      Array.from(document.querySelectorAll('.tab-pane'))
+        .filter(function(p) { return p.classList.contains('active'); })
+        .map(function(p) { return p.id.replace('tab-', ''); })[0]
+    );
+    if (currentIdx === -1) return;
+
+    var nextIdx;
+    if (dx < 0) { // swipe left = next tab
+      nextIdx = currentIdx + 1;
+    } else { // swipe right = prev tab
+      nextIdx = currentIdx - 1;
+    }
+    if (nextIdx >= 0 && nextIdx < VALID_TABS.length) {
+      switchTab(VALID_TABS[nextIdx]);
+      // Scroll mobile tab bar to show active tab
+      var activeBtn = document.querySelector('.mobile-tab-item[data-tab="' + VALID_TABS[nextIdx] + '"]');
+      if (activeBtn) activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  }, { passive: true });
+})();
+
+// Close notification dropdown on outside click (mobile fix)
+document.addEventListener('click', function(e) {
+  var bellWrap = document.getElementById('notif-bell-wrap');
+  var dropdown = document.getElementById('notif-dropdown');
+  if (bellWrap && dropdown && dropdown.classList.contains('notif-open')) {
+    if (!bellWrap.contains(e.target)) {
+      dropdown.classList.remove('notif-open');
+    }
   }
 });
 
