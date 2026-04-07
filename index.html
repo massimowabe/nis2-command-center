@@ -1889,6 +1889,92 @@ body.board-mode #footer { visibility: hidden; }
   .login-box { padding: 24px 16px; }
   .card { padding: 10px; }
 }
+
+/* ========== LOGIN FIX: always centered, scrollable on short viewports ========== */
+#login-gate {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 20px;
+}
+.login-box {
+  margin: auto;
+  flex-shrink: 0;
+}
+
+/* ========== LANDSCAPE MODE ========== */
+@media (orientation: landscape) and (max-height: 500px) {
+  /* Login: compact for landscape */
+  #login-gate { align-items: flex-start; padding: 12px; }
+  .login-box {
+    padding: 16px 24px !important;
+    max-width: 480px;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+    gap: 8px 16px; text-align: center;
+  }
+  .login-box svg { width: 36px !important; height: 36px !important; margin-bottom: 0 !important; }
+  .login-box h2 { font-size: 0.95rem; margin-bottom: 0; width: auto; }
+  .login-box p { font-size: 0.7rem; margin-bottom: 4px; width: 100%; }
+  .login-box form { width: 100%; display: flex; gap: 8px; align-items: center; }
+  .login-box input { flex: 1; font-size: 0.9rem !important; padding: 10px 12px !important; }
+  .login-box button { width: auto !important; padding: 10px 20px !important; margin-top: 0 !important; white-space: nowrap; }
+
+  /* Dashboard: optimize for landscape mobile */
+  #header { padding: 4px 12px; }
+  .header-logo svg { width: 28px !important; height: 28px !important; }
+  .header-title h1 { font-size: 0.75rem; }
+
+  /* Bottom tab bar: horizontal compact in landscape */
+  .mobile-tab-bar { padding: 2px 0 calc(2px + env(safe-area-inset-bottom, 0px)); }
+  .mobile-tab-item { padding: 4px 6px; gap: 1px; }
+  .mobile-tab-item svg { width: 14px; height: 14px; }
+  .mobile-tab-item { font-size: 0.4rem; min-width: 44px; }
+
+  /* Content: less padding, more space */
+  #main { padding: 8px; padding-bottom: calc(44px + env(safe-area-inset-bottom, 0px)); }
+  #footer { margin-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
+
+  /* KPIs: 3 columns in landscape */
+  .kpi-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
+  .kpi-number { font-size: 1.6rem; }
+
+  /* Gauge + exec summary side by side */
+  .gauge-wrapper { flex-direction: row !important; align-items: flex-start !important; }
+  .gauge-container svg { width: 120px !important; height: 120px !important; }
+  .exec-summary { width: auto !important; flex: 1; }
+
+  /* Radar smaller */
+  #radar-wrapper svg { width: 200px !important; height: 200px !important; }
+
+  /* Heatmap: compact */
+  .heatmap-grid { grid-template-columns: repeat(5, 44px) !important; grid-template-rows: repeat(5, 44px) !important; }
+  .heatmap-x-labels { grid-template-columns: repeat(5, 44px) !important; }
+  .heatmap-y-label { height: 44px !important; }
+
+  /* Drawer: not full screen in landscape, side panel */
+  .detail-drawer { width: 55% !important; min-width: 300px; }
+
+  /* Modal: not full height in landscape */
+  .asset-modal {
+    height: auto !important; max-height: 90vh !important;
+    width: 85vw !important; max-width: 600px !important;
+    border-radius: 8px !important;
+  }
+
+  /* Cards: two columns where space allows */
+  .two-col { grid-template-columns: 1fr 1fr !important; }
+}
+
+/* ========== LANDSCAPE + VERY SMALL HEIGHT (phones rotated) ========== */
+@media (orientation: landscape) and (max-height: 380px) {
+  .header-title p { display: none; }
+  .kpi-grid { grid-template-columns: repeat(3, 1fr) !important; }
+  .gauge-container svg { width: 100px !important; height: 100px !important; }
+  .mobile-tab-bar { display: none; }
+  #nav { display: flex !important; padding: 0 8px; }
+  .nav-tab { padding: 6px 10px; font-size: 0.55rem; min-height: 32px; }
+  #main { padding-bottom: 8px; }
+  #footer { margin-bottom: 0; }
+}
 </style>
 </head>
 <body>
