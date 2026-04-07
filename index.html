@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231a3557'/><path d='M16 6l-8 4v8c0 5.2 3.4 10 8 11.2C20.6 28 24 23.2 24 18v-8l-8-4z' fill='%2358a6ff' opacity='0.9'/><text x='16' y='21' text-anchor='middle' fill='white' font-size='10' font-weight='bold' font-family='sans-serif'>N2</text></svg>">
 <style>
 /* ========== LOGIN GATE ========== */
 #login-gate {
@@ -56,6 +57,19 @@
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 }
+[data-theme="light"] {
+  --bg: #f5f6f8;
+  --card: #ffffff;
+  --border: #e1e4e8;
+  --text: #1f2328;
+  --muted: #656d76;
+  --cyan: #0969da;
+  --green: #1a7f37;
+  --yellow: #9a6700;
+  --red: #cf222e;
+  --orange: #bc4c00;
+  --purple: #8250df;
+}
 html { font-size: 14px; scroll-behavior: smooth; }
 body {
   background: var(--bg);
@@ -63,6 +77,10 @@ body {
   font-family: var(--font-body);
   min-height: 100vh;
   line-height: 1.5;
+  transition: background-color 0.3s, color 0.3s;
+}
+body *, #header, #nav, #footer, .card, .kpi-card, .badge, .nav-tab, .filter-tab {
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 /* ========== TYPOGRAPHY ========== */
 .mono { font-family: var(--font-mono); }
@@ -590,14 +608,141 @@ tbody tr:hover td { background: rgba(255,255,255,0.02); }
 .kpi-card-hint { font-family: var(--font-mono); font-size: 0.55rem; color: var(--cyan); opacity: 0; transition: opacity 0.2s; margin-top: 4px; letter-spacing: 0.06em; }
 .kpi-card-clickable:hover .kpi-card-hint { opacity: 1; }
 
+/* ========== EXPORT BUTTONS ========== */
+.export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(88,166,255,0.4);
+  background: transparent;
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.export-btn:hover {
+  background: rgba(88,166,255,0.1);
+  border-color: var(--cyan);
+}
+.export-btn svg { width: 11px; height: 11px; flex-shrink: 0; }
+
+/* ========== SEARCH BAR ========== */
+.search-bar-wrap {
+  position: relative;
+  margin-bottom: 12px;
+}
+.search-bar-wrap svg.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 13px;
+  height: 13px;
+  color: var(--muted);
+  pointer-events: none;
+}
+#asset-search {
+  width: 100%;
+  padding: 8px 32px 8px 30px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+#asset-search:focus { border-color: var(--cyan); }
+#asset-search::placeholder { color: var(--muted); }
+.search-clear-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0 2px;
+  display: none;
+  transition: color 0.15s;
+}
+.search-clear-btn:hover { color: var(--text); }
+
+/* ========== SORTABLE TABLE HEADERS ========== */
+th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+th.sortable:hover { color: var(--cyan); }
+th.sortable .sort-arrow {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 0.55rem;
+  opacity: 0.4;
+  vertical-align: middle;
+}
+th.sortable.sort-asc .sort-arrow,
+th.sortable.sort-desc .sort-arrow { opacity: 1; color: var(--cyan); }
+
 /* ========== PRINT ========== */
 @media print {
-  body { background: #fff; color: #000; }
-  #header, #nav { position: static; }
-  .tab-pane { display: block !important; page-break-before: always; }
-  .tab-pane:first-of-type { page-break-before: auto; }
-  .nav-tab { display: none; }
-  .kpi-card, .card { border: 1px solid #ccc; }
+  /* Force light colors for printing */
+  :root, [data-theme="dark"], [data-theme="light"] {
+    --bg: #fff !important;
+    --card: #fff !important;
+    --border: #ddd !important;
+    --text: #000 !important;
+    --muted: #666 !important;
+  }
+  body { background: white !important; color: black !important; }
+
+  /* Hide non-printable elements */
+  #login-gate, #nav, .theme-toggle, .export-btn, .realtime-clock,
+  .updated-badge, .filter-tabs, .search-bar-wrap, .board-mode-btn { display: none !important; }
+
+  /* Show all tab panes for full report */
+  .tab-pane { display: block !important; opacity: 1 !important; }
+
+  /* Page breaks between sections */
+  .tab-pane { page-break-before: always; }
+  .tab-pane:first-child { page-break-before: avoid; }
+
+  /* Ensure tables don't break mid-row */
+  tr { page-break-inside: avoid; }
+
+  /* Header on every page */
+  #header { position: static !important; }
+
+  /* Print header with company info */
+  #header::after {
+    content: "NIS2 Command Center \2014 Farmacie Gallotta S.r.l. \2014 Report stampato";
+    display: block; font-size: 10px; color: #666; margin-top: 4px;
+  }
+
+  /* Cards and kpi cards readable in print */
+  .kpi-card, .card { border: 1px solid #ccc !important; }
+
+  /* Make badges readable in print */
+  .badge { border: 1px solid #999 !important; }
+
+  /* SVG charts: ensure they print */
+  svg { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+
+  /* Footer on print */
+  #footer { position: static !important; margin-top: 20px; border-top: 1px solid #ddd; }
+
+  /* Board mode overlay hidden in print */
+  #board-overlay { display: none !important; }
 }
 
 /* ========== SCROLLBAR ========== */
@@ -605,6 +750,359 @@ tbody tr:hover td { background: rgba(255,255,255,0.02); }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ========== THEME TOGGLE ========== */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.theme-toggle:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: rgba(88,166,255,0.08);
+}
+.theme-toggle svg { width: 15px; height: 15px; }
+
+/* ========== BOARD MODE BUTTON ========== */
+.board-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(188,140,255,0.4);
+  background: transparent;
+  color: var(--purple);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.board-mode-btn:hover {
+  background: rgba(188,140,255,0.1);
+  border-color: var(--purple);
+}
+.board-mode-btn svg { width: 11px; height: 11px; flex-shrink: 0; }
+
+/* ========== BOARD PRESENTATION MODE ========== */
+#board-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  background: var(--bg);
+  overflow-y: auto;
+  padding: 40px 32px 60px;
+  flex-direction: column;
+  align-items: center;
+}
+body.board-mode #board-overlay { display: flex; }
+body.board-mode #header,
+body.board-mode #nav,
+body.board-mode #main,
+body.board-mode #footer { visibility: hidden; }
+
+.board-company {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  text-align: center;
+}
+.board-title {
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 0.08em;
+  text-align: center;
+  margin-bottom: 32px;
+}
+.board-gauge-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 36px;
+}
+.board-gauge-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  margin-top: 10px;
+  text-align: center;
+}
+.board-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 28px;
+}
+.board-kpi-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 18px 16px;
+  text-align: center;
+}
+.board-kpi-sede {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.board-kpi-number {
+  font-family: var(--font-mono);
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.board-kpi-bar {
+  height: 4px;
+  border-radius: 2px;
+  margin: 0 auto 10px;
+}
+.board-kpi-meta {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--muted);
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.board-exec-summary {
+  width: 100%;
+  max-width: 900px;
+  background: rgba(88,166,255,0.04);
+  border: 1px solid rgba(88,166,255,0.2);
+  border-left: 3px solid var(--cyan);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+}
+.board-exec-title {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: var(--cyan);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.board-exec-summary ul { list-style: none; padding: 0; }
+.board-exec-summary ul li {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.8;
+  padding-left: 16px;
+  position: relative;
+}
+.board-exec-summary ul li::before { content: "•"; position: absolute; left: 0; color: var(--cyan); }
+.board-exec-summary ul li strong { color: var(--text); }
+.board-exec-summary ul li .hl-red { color: var(--red); font-weight: 600; }
+.board-exec-summary ul li .hl-yellow { color: var(--yellow); font-weight: 600; }
+.board-exec-summary ul li .hl-green { color: var(--green); font-weight: 600; }
+
+.board-exit-hint {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-align: center;
+  margin-top: 8px;
+}
+.board-exit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 8px;
+}
+.board-exit-btn:hover { border-color: var(--red); color: var(--red); }
+
+/* ========== STYLED TOOLTIPS (data-tooltip) ========== */
+[data-tooltip] { position: relative; }
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1f2328;
+  color: #e6edf3;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-family: var(--font-body);
+  white-space: normal;
+  max-width: 250px;
+  word-wrap: break-word;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 1000;
+  border: 1px solid var(--border);
+  line-height: 1.4;
+}
+[data-tooltip]:hover::after { opacity: 1; }
+
+/* ========== SECTION TIMESTAMP ========== */
+.section-with-ts { position: relative; }
+.section-ts {
+  position: absolute;
+  top: -2px;
+  right: 0;
+  font-size: 0.65rem;
+  color: var(--muted);
+  font-style: italic;
+  font-family: var(--font-body);
+  opacity: 0.7;
+}
+
+/* ========== INCIDENT TIMER NIS2 ART.23 ========== */
+.incident-timer-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--red);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+.incident-timer-card.no-incident { border-left-color: var(--green); }
+.incident-timer-title {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--red);
+  margin-bottom: 14px;
+}
+.incident-timer-card.no-incident .incident-timer-title { color: var(--green); }
+.incident-deadline-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.incident-deadline {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+}
+.incident-deadline-label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.incident-deadline-desc { font-size: 0.72rem; color: var(--text); margin-bottom: 8px; line-height: 1.4; }
+.incident-countdown {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  transition: color 0.3s;
+}
+.incident-countdown.ic-green { color: var(--green); }
+.incident-countdown.ic-yellow { color: var(--yellow); }
+.incident-countdown.ic-red { color: var(--red); }
+.incident-countdown.ic-expired { color: var(--red); animation: blink-red 1s step-end infinite; }
+@keyframes blink-red { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+.incident-status-ok { display: flex; align-items: center; gap: 8px; color: var(--green); font-size: 0.8rem; margin-bottom: 12px; }
+.incident-status-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; }
+.incident-btn {
+  padding: 6px 14px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.06em;
+}
+.incident-btn.simula:hover { border-color: var(--red); color: var(--red); background: rgba(248,81,73,0.08); }
+.incident-btn.reset-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+/* ========== RESPONSIVE MOBILE ========== */
+@media (max-width: 768px) {
+  .kpi-grid { grid-template-columns: 1fr !important; }
+  .gauge-wrapper { flex-direction: column; align-items: center; }
+  .exec-summary { width: 100%; }
+  #radar-wrapper svg { width: 280px !important; height: 280px !important; }
+  #nav { overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
+  .nav-tab { scroll-snap-align: start; }
+  #tab-asset .card table thead { display: none; }
+  #tab-asset .card table,
+  #tab-asset .card table tbody,
+  #tab-asset .card table tr,
+  #tab-asset .card table td { display: block; width: 100%; }
+  #tab-asset .card table tr {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 10px;
+    padding: 10px 12px;
+  }
+  #tab-asset .card table td { padding: 3px 0; border: none; }
+  #tab-asset .card table td::before {
+    content: attr(data-label);
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 2px;
+  }
+  #tab-asset .card table td:first-child {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--cyan);
+    margin-bottom: 6px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  #tab-mis .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  #mis-table th:nth-child(n+6), #mis-table td:nth-child(n+6) { display: none; }
+  #risk-table th:nth-child(3), #risk-table td:nth-child(3),
+  #risk-table th:nth-child(5), #risk-table td:nth-child(5),
+  #risk-table th:nth-child(6), #risk-table td:nth-child(6) { display: none; }
+  #main { padding: 12px; }
+  .two-col { grid-template-columns: 1fr !important; }
+  .incident-deadline-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -718,6 +1216,22 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
     </div>
   </div>
   <div class="header-right">
+    <button class="export-btn" onclick="exportPdf()" data-tooltip="Stampa o esporta questo report in formato PDF">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 13h12v1H2v-1zm0-2h1V7h2v4h1V6H3V2h7l2 2v2h1V3.5L10.5 1H2v10zm8-10v2h2l-2-2zm-3 5h1v4H7V6zm2 1h1v1H9V7zm0 2h1v1H9V9z"/></svg>
+      Report PDF
+    </button>
+    <button class="export-btn" onclick="exportCsv()" data-tooltip="Esporta l'inventario asset in formato CSV">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M14 4.5V14a2 2 0 01-2 2H4a2 2 0 01-2-2V2a2 2 0 012-2h5.5L14 4.5zm-3 0A1.5 1.5 0 019.5 3V1H4a1 1 0 00-1 1v12a1 1 0 001 1h8a1 1 0 001-1V4.5h-2zM4.5 8h7v1h-7V8zm0 2h7v1h-7v-1zm0 2h4v1h-4v-1z"/></svg>
+      CSV
+    </button>
+    <button class="board-mode-btn" id="board-mode-btn" onclick="enterBoardMode()" data-tooltip="Modalita presentazione a schermo intero">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 1h13a.5.5 0 01.5.5v13a.5.5 0 01-.5.5h-13a.5.5 0 01-.5-.5v-13a.5.5 0 01.5-.5zM1 2v12h14V2H1zm3 2h2v2H4V4zm5 0h2v2H9V4zM4 9h2v2H4V9zm5 0h2v2H9V9z"/></svg>
+      Presentazione
+    </button>
+    <button class="theme-toggle" id="theme-toggle-btn" onclick="toggleTheme()" data-tooltip="Cambia tema chiaro/scuro" aria-label="Cambia tema">
+      <svg id="theme-icon-moon" viewBox="0 0 16 16" fill="currentColor" style="display:none"><path d="M6 .278a.768.768 0 01.08.858 7.208 7.208 0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 01.81.316.733.733 0 01-.031.893A8.349 8.349 0 018.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 016 .278z"/></svg>
+      <svg id="theme-icon-sun" viewBox="0 0 16 16" fill="currentColor"><path d="M8 11a3 3 0 110-6 3 3 0 010 6zm0 1a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5 0 01.5.5v2a.5.5 0 01-1 0v-2A.5.5 0 018 0zm0 13a.5.5 0 01.5.5v2a.5.5 0 01-1 0v-2A.5.5 0 018 13zm8-5a.5.5 0 01-.5.5h-2a.5.5 0 010-1h2a.5.5 0 01.5.5zM3 8a.5.5 0 01-.5.5h-2a.5.5 0 010-1h2A.5.5 0 013 8zm10.657-5.657a.5.5 0 010 .707l-1.414 1.415a.5.5 0 11-.707-.707l1.414-1.414a.5.5 0 01.707 0zm-9.193 9.193a.5.5 0 010 .707L3.05 13.657a.5.5 0 01-.707-.707l1.414-1.414a.5.5 0 01.707 0zm9.193 2.121a.5.5 0 01-.707 0l-1.414-1.414a.5.5 0 01.707-.707l1.414 1.414a.5.5 0 010 .707zM4.464 4.465a.5.5 0 01-.707 0L2.343 3.05a.5.5 0 11.707-.707l1.414 1.414a.5.5 0 010 .707z"/></svg>
+    </button>
     <span id="quarter-display" class="quarter-badge mono">Q2 2026</span>
     <span class="updated-badge">
       <span class="status-dot"></span><span id="last-updated-display">Agg. —</span>
@@ -727,39 +1241,39 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
 </header>
 
 <!-- NAV -->
-<nav id="nav">
-  <div class="nav-tab active" data-tab="overview" onclick="switchTab('overview')">
+<nav id="nav" role="tablist" aria-label="Sezioni dashboard">
+  <button class="nav-tab active" role="tab" aria-selected="true" aria-controls="tab-overview" id="navtab-overview" data-tab="overview" tabindex="0" onclick="switchTab('overview')">
     <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 2h5v5H2V2zm7 0h5v5H9V2zM2 9h5v5H2V9zm7 0h5v5H9V9z"/></svg>
     OVERVIEW
-  </div>
-  <div class="nav-tab" data-tab="mis" onclick="switchTab('mis')">
+  </button>
+  <button class="nav-tab" role="tab" aria-selected="false" aria-controls="tab-mis" id="navtab-mis" data-tab="mis" tabindex="-1" onclick="switchTab('mis')">
     <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 2h14v2H1V2zm0 4h14v2H1V6zm0 4h14v2H1v-2zm0 4h14v2H1v-2z"/></svg>
     MIS x SEDI
-  </div>
-  <div class="nav-tab" data-tab="risk" onclick="switchTab('risk')">
+  </button>
+  <button class="nav-tab" role="tab" aria-selected="false" aria-controls="tab-risk" id="navtab-risk" data-tab="risk" tabindex="-1" onclick="switchTab('risk')">
     <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.5 7h1v3h-1V7zm0 4h1v1h-1v-1z"/></svg>
     RISK MATRIX
-  </div>
-  <div class="nav-tab" data-tab="asset" onclick="switchTab('asset')">
+  </button>
+  <button class="nav-tab" role="tab" aria-selected="false" aria-controls="tab-asset" id="navtab-asset" data-tab="asset" tabindex="-1" onclick="switchTab('asset')">
     <svg viewBox="0 0 16 16" fill="currentColor"><path d="M14 4H2a1 1 0 00-1 1v7a1 1 0 001 1h12a1 1 0 001-1V5a1 1 0 00-1-1zM2 3h12a2 2 0 012 2v7a2 2 0 01-2 2H2a2 2 0 01-2-2V5a2 2 0 012-2z"/><rect x="3" y="6" width="10" height="1" rx="0.5"/><rect x="3" y="8" width="7" height="1" rx="0.5"/></svg>
     ASSET
-  </div>
-  <div class="nav-tab" data-tab="scadenze" onclick="switchTab('scadenze')">
+  </button>
+  <button class="nav-tab" role="tab" aria-selected="false" aria-controls="tab-scadenze" id="navtab-scadenze" data-tab="scadenze" tabindex="-1" onclick="switchTab('scadenze')">
     <svg viewBox="0 0 16 16" fill="currentColor"><path d="M11 1v1H5V1H4v1H2a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1V3a1 1 0 00-1-1h-2V1h-1zm2 4H3V3h1v1h1V3h6v1h1V3h1v2zM3 7h10v6H3V7z"/></svg>
     SCADENZE
-  </div>
-  <div class="nav-tab" data-tab="storico" onclick="switchTab('storico')">
+  </button>
+  <button class="nav-tab" role="tab" aria-selected="false" aria-controls="tab-storico" id="navtab-storico" data-tab="storico" tabindex="-1" onclick="switchTab('storico')">
     <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zM1 8a7 7 0 1114 0A7 7 0 011 8zm7-4v4.5l3 1.5-.5 1L7 9V4h1z"/></svg>
     STORICO
-  </div>
+  </button>
 </nav>
 
 <!-- MAIN CONTENT -->
 <main id="main">
 
   <!-- TAB 1: OVERVIEW -->
-  <div class="tab-pane active" id="tab-overview">
-    <div class="section-header">// PANORAMICA COMPLIANCE NIS2</div>
+  <div class="tab-pane active" id="tab-overview" role="tabpanel" aria-labelledby="navtab-overview" tabindex="0">
+    <div class="section-header section-with-ts">// PANORAMICA COMPLIANCE NIS2<span class="section-ts" id="ts-overview"></span></div>
     <div class="gauge-wrapper" id="gauge-wrapper">
       <div class="gauge-container" id="gauge-container"></div>
       <div class="exec-summary" id="exec-summary"></div>
@@ -794,8 +1308,8 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
   </div>
 
   <!-- TAB 2: MIS x SEDI -->
-  <div class="tab-pane" id="tab-mis">
-    <div class="section-header">// 10 MISURE MIS — STATO PER FARMACIA</div>
+  <div class="tab-pane" id="tab-mis" role="tabpanel" aria-labelledby="navtab-mis" tabindex="0">
+    <div class="section-header section-with-ts">// 10 MISURE MIS — STATO PER FARMACIA<span class="section-ts" id="ts-mis"></span></div>
     <div class="card">
       <div class="table-wrap">
         <table id="mis-table">
@@ -824,8 +1338,8 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
   </div>
 
   <!-- TAB 3: RISK MATRIX -->
-  <div class="tab-pane" id="tab-risk">
-    <div class="section-header">// RISK MATRIX — ISO/IEC 27005 &middot; NIST SP 800-30 &middot; ACN MIS</div>
+  <div class="tab-pane" id="tab-risk" role="tabpanel" aria-labelledby="navtab-risk" tabindex="0">
+    <div class="section-header section-with-ts">// RISK MATRIX — ISO/IEC 27005 &middot; NIST SP 800-30 &middot; ACN MIS<span class="section-ts" id="ts-risk"></span></div>
     <div class="heatmap-section">
       <div class="card">
         <div class="card-title">MAPPA DEL RISCHIO 5&times;5</div>
@@ -839,12 +1353,12 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
             <tr>
               <th>ID</th>
               <th>SCENARIO</th>
-              <th>LORDO</th>
-              <th>LIVELLO</th>
-              <th>RESIDUO</th>
-              <th>RIDUZIONE</th>
+              <th class="sortable" data-sort="lordo" onclick="sortRiskTable('lordo', this)">LORDO<span class="sort-arrow">&#x25B2;</span></th>
+              <th class="sortable" data-sort="livello" onclick="sortRiskTable('livello', this)">LIVELLO<span class="sort-arrow">&#x25B2;</span></th>
+              <th class="sortable" data-sort="residuo" onclick="sortRiskTable('residuo', this)">RESIDUO<span class="sort-arrow">&#x25B2;</span></th>
+              <th class="sortable" data-sort="riduzione_pct" onclick="sortRiskTable('riduzione_pct', this)">RIDUZIONE<span class="sort-arrow">&#x25B2;</span></th>
               <th>NOTIFICA ACN</th>
-              <th>PRIORITÀ</th>
+              <th class="sortable" data-sort="priorita" onclick="sortRiskTable('priorita', this)">PRIORITÀ<span class="sort-arrow">&#x25B2;</span></th>
             </tr>
           </thead>
           <tbody id="risk-tbody"></tbody>
@@ -860,21 +1374,26 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
   </div>
 
   <!-- TAB 4: ASSET -->
-  <div class="tab-pane" id="tab-asset">
-    <div class="section-header">// INVENTARIO ASSET IT</div>
+  <div class="tab-pane" id="tab-asset" role="tabpanel" aria-labelledby="navtab-asset" tabindex="0">
+    <div class="section-header section-with-ts">// INVENTARIO ASSET IT<span class="section-ts" id="ts-asset"></span></div>
     <div class="kpi-grid" id="kpi-global"></div>
     <div class="note-banner">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zM1 8a7 7 0 1114 0A7 7 0 011 8zm6.5-4h1v4.5l3 1.5-.5 1-3.5-1.75V4z" style="display:none"/><circle cx="8" cy="8" r="1" fill="currentColor"/><rect x="7.25" y="3" width="1.5" height="4" rx="0.75"/><rect x="7.25" y="9" width="1.5" height="4" rx="0.75"/><rect x="3" y="7.25" width="4" height="1.5" rx="0.75"/><rect x="9" y="7.25" width="4" height="1.5" rx="0.75"/></svg>
       Dati raccolti tramite Scheda PC NIS2 Gallotta. Alcuni asset presentano informazioni parziali in attesa di completamento inventario. I conti critici includono il Firewall Zyxel USG60 (compliance: 9%) e la rete Nuovo Salario (5%).
     </div>
-    <div class="filter-tabs" id="filter-tabs">
-      <button class="filter-tab active" onclick="filterAssets('Tutte', this)">Tutte</button>
-      <button class="filter-tab" onclick="filterAssets('Ateneo', this)">Ateneo</button>
-      <button class="filter-tab" onclick="filterAssets('Nuovo Salario', this)">Nuovo Salario</button>
-      <button class="filter-tab" onclick="filterAssets('Corso Francia', this)">Corso Francia</button>
-      <button class="filter-tab" onclick="filterAssets('Fracassini', this)">Fracassini</button>
-      <button class="filter-tab" onclick="filterAssets('Pannini', this)">Pannini</button>
-      <button class="filter-tab" onclick="filterAssets('Amministrazione', this)">Amministrazione</button>
+    <div class="search-bar-wrap">
+      <svg class="search-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 10-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 001.415-1.414l-3.85-3.85a1.007 1.007 0 00-.115-.099zm-5.242 1.156a5.5 5.5 0 110-11 5.5 5.5 0 010 11z"/></svg>
+      <input type="text" id="asset-search" placeholder="Cerca asset per nome, modello, OS..." oninput="onAssetSearch(this.value)">
+      <button class="search-clear-btn" id="search-clear-btn" onclick="clearAssetSearch()" title="Cancella ricerca">&#x2715;</button>
+    </div>
+    <div class="filter-tabs" id="filter-tabs" role="group" aria-label="Filtra per sede">
+      <button class="filter-tab active" aria-pressed="true" onclick="filterAssets('Tutte', this)">Tutte</button>
+      <button class="filter-tab" aria-pressed="false" onclick="filterAssets('Ateneo', this)">Ateneo</button>
+      <button class="filter-tab" aria-pressed="false" onclick="filterAssets('Nuovo Salario', this)">Nuovo Salario</button>
+      <button class="filter-tab" aria-pressed="false" onclick="filterAssets('Corso Francia', this)">Corso Francia</button>
+      <button class="filter-tab" aria-pressed="false" onclick="filterAssets('Fracassini', this)">Fracassini</button>
+      <button class="filter-tab" aria-pressed="false" onclick="filterAssets('Pannini', this)">Pannini</button>
+      <button class="filter-tab" aria-pressed="false" onclick="filterAssets('Amministrazione', this)">Amministrazione</button>
     </div>
     <div class="card">
       <div class="table-wrap">
@@ -882,15 +1401,16 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
           <thead>
             <tr>
               <th>ID</th>
-              <th>SEDE</th>
-              <th>TIPO</th>
+              <th class="sortable" data-sort="sede" onclick="sortAssetTable('sede', this)">SEDE<span class="sort-arrow">&#x25B2;</span></th>
+              <th class="sortable" data-sort="tipo" onclick="sortAssetTable('tipo', this)">TIPO<span class="sort-arrow">&#x25B2;</span></th>
               <th>MODELLO</th>
-              <th>OS</th>
+              <th class="sortable" data-sort="os" onclick="sortAssetTable('os', this)">OS<span class="sort-arrow">&#x25B2;</span></th>
               <th>EDR</th>
               <th>BACKUP</th>
               <th>MFA</th>
-              <th>CRITICITA</th>
-              <th>AVVISI</th>
+              <th class="sortable" data-sort="criticita" onclick="sortAssetTable('criticita', this)">CRITICA<span class="sort-arrow">&#x25B2;</span></th>
+              <th class="sortable" data-sort="compliance_pct" onclick="sortAssetTable('compliance_pct', this)">COMP%<span class="sort-arrow">&#x25B2;</span></th>
+              <th class="sortable" data-sort="avvisi" onclick="sortAssetTable('avvisi', this)">AVVISI<span class="sort-arrow">&#x25B2;</span></th>
             </tr>
           </thead>
           <tbody id="asset-tbody"></tbody>
@@ -900,8 +1420,41 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
   </div>
 
   <!-- TAB 5: SCADENZE -->
-  <div class="tab-pane" id="tab-scadenze">
+  <div class="tab-pane" id="tab-scadenze" role="tabpanel" aria-labelledby="navtab-scadenze" tabindex="0">
     <div class="section-header">// PIANO SCADENZE NIS2</div>
+
+    <!-- INCIDENT TIMER NIS2 ART. 23 -->
+    <div class="incident-timer-card no-incident" id="incident-timer-card">
+      <div class="incident-timer-title">// TIMER NOTIFICA INCIDENTI NIS2 &mdash; ART. 23 DIR. (UE) 2022/2555</div>
+      <div id="incident-status-block">
+        <div class="incident-status-ok">
+          <span class="incident-status-dot"></span>
+          Nessun incidente attivo &mdash; Timer non attivato
+        </div>
+      </div>
+      <div class="incident-deadline-grid" id="incident-deadline-grid" style="display:none">
+        <div class="incident-deadline">
+          <div class="incident-deadline-label">FASE 1 &mdash; PREALLARME</div>
+          <div class="incident-deadline-desc">Entro 24 ore dalla rilevazione</div>
+          <div class="incident-countdown ic-green" id="ic-countdown-24">--:--</div>
+        </div>
+        <div class="incident-deadline">
+          <div class="incident-deadline-label">FASE 2 &mdash; NOTIFICA COMPLETA</div>
+          <div class="incident-deadline-desc">Entro 72 ore dalla rilevazione</div>
+          <div class="incident-countdown ic-green" id="ic-countdown-72">--:--</div>
+        </div>
+        <div class="incident-deadline">
+          <div class="incident-deadline-label">FASE 3 &mdash; RELAZIONE FINALE</div>
+          <div class="incident-deadline-desc">Entro 30 giorni dalla rilevazione</div>
+          <div class="incident-countdown ic-green" id="ic-countdown-30d">--:--</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:4px;">
+        <button class="incident-btn simula" id="incident-btn-simula" onclick="simulaIncidente()">Simula incidente</button>
+        <button class="incident-btn reset-btn" id="incident-btn-reset" onclick="resetIncidente()" style="display:none">Azzera timer</button>
+      </div>
+    </div>
+
     <div class="two-col">
       <div class="card">
         <div class="card-title">MILESTONE &amp; STATO</div>
@@ -930,7 +1483,7 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
   </div>
 
   <!-- TAB 6: STORICO -->
-  <div class="tab-pane" id="tab-storico">
+  <div class="tab-pane" id="tab-storico" role="tabpanel" aria-labelledby="navtab-storico" tabindex="0">
     <div class="section-header">// STORICO ATTIVITÀ</div>
     <div class="card">
       <div class="card-title">LOG CRONOLOGICO INVERSO</div>
@@ -948,6 +1501,26 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
   </div>
 
 </main>
+
+<!-- BOARD PRESENTATION MODE OVERLAY -->
+<div id="board-overlay">
+  <div class="board-company">Farmacie Gallotta S.r.l.</div>
+  <div class="board-title">NIS2 COMMAND CENTER</div>
+  <div class="board-gauge-area" id="board-gauge-area">
+    <!-- Gauge injected by JS -->
+  </div>
+  <div class="board-kpi-grid" id="board-kpi-grid">
+    <!-- KPI cards injected by JS -->
+  </div>
+  <div class="board-exec-summary" id="board-exec-summary">
+    <!-- Executive summary injected by JS -->
+  </div>
+  <button class="board-exit-btn" onclick="exitBoardMode()">
+    <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2h12v12H2V2zM1 1v14h14V1H1zm4 4l6 6M5 11l6-6" stroke="currentColor" stroke-width="1.5"/></svg>
+    Esci dalla presentazione
+  </button>
+  <div class="board-exit-hint">Premi ESC per uscire</div>
+</div>
 
 <!-- FOOTER -->
 <footer id="footer">
@@ -1192,12 +1765,58 @@ function residuoColor(r) {
 })();
 
 // ============================================================
-// TAB SWITCHING
+// TAB SWITCHING + DEEP-LINK HASH
 // ============================================================
+var VALID_TABS = ['overview', 'mis', 'risk', 'asset', 'scadenze', 'storico'];
+var HASH_MAP = {
+  '#overview': 'overview',
+  '#mis-sedi': 'mis',
+  '#risk-matrix': 'risk',
+  '#asset': 'asset',
+  '#scadenze': 'scadenze',
+  '#storico': 'storico'
+};
+var TAB_TO_HASH = {
+  'overview': '#overview',
+  'mis': '#mis-sedi',
+  'risk': '#risk-matrix',
+  'asset': '#asset',
+  'scadenze': '#scadenze',
+  'storico': '#storico'
+};
+
 function switchTab(id) {
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === id));
-  document.querySelectorAll('.tab-pane').forEach(p => p.classList.toggle('active', p.id === 'tab-' + id));
+  if (VALID_TABS.indexOf(id) === -1) return;
+  document.querySelectorAll('.nav-tab').forEach(function(t) {
+    var isActive = t.dataset.tab === id;
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    t.setAttribute('tabindex', isActive ? '0' : '-1');
+  });
+  document.querySelectorAll('.tab-pane').forEach(function(p) { p.classList.toggle('active', p.id === 'tab-' + id); });
+  var hash = TAB_TO_HASH[id];
+  if (hash && window.location.hash !== hash) {
+    history.pushState(null, '', hash);
+  }
+  // Trigger animations on first view
+  if (id === 'overview') { setTimeout(runOverviewAnimations, 50); }
+  if (id === 'asset') { setTimeout(runAssetAnimations, 50); }
 }
+
+function activateHashTab() {
+  var hash = window.location.hash;
+  var tabId = HASH_MAP[hash];
+  if (tabId) {
+    switchTab(tabId);
+  }
+}
+
+window.addEventListener('hashchange', activateHashTab);
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.location.hash && HASH_MAP[window.location.hash]) {
+    activateHashTab();
+  }
+});
 
 // ============================================================
 // SPARKLINE GENERATOR
@@ -1468,7 +2087,7 @@ function drillDownSede(sedeName) {
         const r = DATA.risk_matrix.find(x => x.id === id);
         const label = r ? r.id.replace('R-', '') : id;
         const title = r ? r.scenario : id;
-        return `<div class="heatmap-risk-dot" title="${title}">${label}</div>`;
+        return `<div class="heatmap-risk-dot" data-tooltip="${title}">${label}</div>`;
       }).join('');
       cellParts.push(`<div class="heatmap-cell" style="background:${bg}">${dotHtml}</div>`);
     }
@@ -1590,7 +2209,9 @@ function drillDownSede(sedeName) {
     let statusCells = '';
     sedOrder.forEach(s => {
       const st = sedi[s] ? sedi[s].mis_status[mis] : 'ko';
-      statusCells += `<td style="text-align:center; font-family:var(--font-mono); font-size:0.85rem"><span class="${misStatusClass(st)}"></span></td>`;
+      const stLabel = st === 'ok' ? 'Conforme' : st === 'partial' ? 'Parzialmente conforme' : 'Non conforme';
+      const tooltip = `${s}: ${stLabel}`;
+      statusCells += `<td style="text-align:center; font-family:var(--font-mono); font-size:0.85rem"><span class="${misStatusClass(st)}" data-tooltip="${tooltip}"></span></td>`;
     });
 
     html += `
@@ -1612,32 +2233,81 @@ function drillDownSede(sedeName) {
 })();
 
 // ============================================================
-// TAB 3: RISK MATRIX TABLE
+// TAB 3: RISK MATRIX TABLE — sortable
 // ============================================================
-(function renderRiskTable() {
-  const tbody = document.getElementById('risk-tbody');
-  let html = '';
-  DATA.risk_matrix.forEach(r => {
-    const acn = r.notifica_acn
-      ? `<span class="badge badge-green">SI</span>`
-      : `<span class="badge badge-gray">No</span>`;
-    html += `
-      <tr>
-        <td class="td-code">${r.id}</td>
-        <td style="color:var(--text); min-width:200px;">${r.scenario}</td>
-        <td style="font-family:var(--font-mono); font-size:0.75rem; color:var(--muted); white-space:nowrap;">${r.lordo} <span style="color:var(--border)">/25</span></td>
-        <td>${levelBadge(r.livello)}</td>
-        <td style="font-family:var(--font-mono); font-size:0.85rem; font-weight:700; color:${residuoColor(r.residuo)}">${r.residuo}</td>
-        <td style="white-space:nowrap;">
-          <div class="risk-bar-track"><div class="risk-bar-fill" style="width:${r.riduzione_pct}%"></div></div>
-          <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--green)">${r.riduzione_pct}%</span>
-        </td>
-        <td style="text-align:center">${acn}</td>
-        <td>${prioritaBadge(r.priorita)}</td>
-      </tr>`;
+var riskSortCol = null;
+var riskSortDir = 0;
+var LIVELLO_ORDER = { 'Critico': 4, 'Alto': 3, 'Medio': 2, 'Basso': 1 };
+var PRIORITA_ORDER = { 'Critica': 3, 'Alta': 2, 'Media': 1, 'Bassa': 0 };
+
+function renderRiskTableData(data) {
+  var tbody = document.getElementById('risk-tbody');
+  var parts = [];
+  data.forEach(function(r) {
+    var acn = r.notifica_acn
+      ? '<span class="badge badge-green">SI</span>'
+      : '<span class="badge badge-gray">No</span>';
+    parts.push(
+      '<tr>'
+      + '<td class="td-code">' + r.id + '</td>'
+      + '<td style="color:var(--text); min-width:200px;">' + r.scenario + '</td>'
+      + '<td style="font-family:var(--font-mono); font-size:0.75rem; color:var(--muted); white-space:nowrap;">' + r.lordo + ' <span style="color:var(--border)">/25</span></td>'
+      + '<td>' + levelBadge(r.livello) + '</td>'
+      + '<td style="font-family:var(--font-mono); font-size:0.85rem; font-weight:700; color:' + residuoColor(r.residuo) + '">' + r.residuo + '</td>'
+      + '<td style="white-space:nowrap;"><div class="risk-bar-track"><div class="risk-bar-fill" style="width:' + r.riduzione_pct + '%"></div></div><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--green)">' + r.riduzione_pct + '%</span></td>'
+      + '<td style="text-align:center">' + acn + '</td>'
+      + '<td>' + prioritaBadge(r.priorita) + '</td>'
+      + '</tr>'
+    );
   });
-  tbody.innerHTML = html;
+  tbody.innerHTML = parts.join('');
+}
+
+(function renderRiskTable() {
+  renderRiskTableData(DATA.risk_matrix);
 })();
+
+function sortRiskTable(col, thEl) {
+  var allTh = document.querySelectorAll('#risk-table thead th.sortable');
+  if (riskSortCol === col) {
+    if (riskSortDir === 1) { riskSortDir = -1; }
+    else if (riskSortDir === -1) { riskSortCol = null; riskSortDir = 0; }
+    else { riskSortDir = 1; }
+  } else {
+    riskSortCol = col;
+    riskSortDir = 1;
+  }
+  allTh.forEach(function(th) {
+    th.classList.remove('sort-asc', 'sort-desc');
+    var arr = th.querySelector('.sort-arrow');
+    if (arr) { arr.innerHTML = '&#x25B2;'; }
+  });
+  var sorted;
+  if (riskSortCol && riskSortDir !== 0) {
+    thEl.classList.add(riskSortDir === 1 ? 'sort-asc' : 'sort-desc');
+    var arr = thEl.querySelector('.sort-arrow');
+    if (arr) { arr.innerHTML = riskSortDir === 1 ? '&#x25B2;' : '&#x25BC;'; }
+    sorted = DATA.risk_matrix.slice().sort(function(a, b) {
+      var va, vb;
+      if (riskSortCol === 'livello') {
+        va = LIVELLO_ORDER[a.livello] || 0;
+        vb = LIVELLO_ORDER[b.livello] || 0;
+      } else if (riskSortCol === 'priorita') {
+        va = PRIORITA_ORDER[a.priorita] || 0;
+        vb = PRIORITA_ORDER[b.priorita] || 0;
+      } else {
+        va = a[riskSortCol] || 0;
+        vb = b[riskSortCol] || 0;
+      }
+      if (va < vb) return -1 * riskSortDir;
+      if (va > vb) return 1 * riskSortDir;
+      return 0;
+    });
+  } else {
+    sorted = DATA.risk_matrix;
+  }
+  renderRiskTableData(sorted);
+}
 
 // ============================================================
 // TAB 4: ASSET — GLOBAL KPIs
@@ -1677,41 +2347,128 @@ function drillDownSede(sedeName) {
 })();
 
 // ============================================================
-// TAB 4: ASSET TABLE
+// TAB 4: ASSET TABLE — search, sort, filter
 // ============================================================
-let currentFilter = 'Tutte';
-function renderAssetTable(filter) {
-  const tbody = document.getElementById('asset-tbody');
-  const list = filter === 'Tutte' ? DATA.assets : DATA.assets.filter(a => a.sede === filter);
-  let html = '';
-  list.forEach(a => {
-    const avvisiCount = a.avvisi ? a.avvisi.length : 0;
-    const avvisiCell = avvisiCount > 0
-      ? `<span style="color:var(--orange); display:inline-flex; align-items:center; gap:4px; font-family:var(--font-mono); font-size:0.65rem"><svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.5 7h1v3h-1V7zm0 4h1v1h-1v-1z"/></svg>${avvisiCount}</span>`
-      : `<span style="color:var(--green); font-family:var(--font-mono); font-size:0.65rem">✓ OK</span>`;
-    html += `
-      <tr>
-        <td class="td-code" style="font-size:0.62rem; max-width:100px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${a.nome}">${a.nome}</td>
-        <td style="font-family:var(--font-mono); font-size:0.65rem; color:var(--muted); white-space:nowrap">${a.sede}</td>
-        <td>${tipoBadge(a.tipo)}</td>
-        <td style="font-size:0.72rem; color:var(--muted); max-width:110px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">${a.modello || '—'}</td>
-        <td style="font-size:0.7rem; color:var(--muted); white-space:nowrap">${a.os}</td>
-        <td>${edrBadge(a.edr)}</td>
-        <td>${yesnaBadge(a.backup)}</td>
-        <td>${yesnaBadge(a.mfa)}</td>
-        <td>${criticitaBadge(a.criticita)}</td>
-        <td>${avvisiCell}</td>
-      </tr>`;
-  });
-  tbody.innerHTML = html;
+var currentFilter = 'Tutte';
+var currentSearch = '';
+var assetSortCol = null;
+var assetSortDir = 0;
+var CRITICITA_ORDER = { 'Critico': 4, 'Alta': 3, 'Media': 2, 'Bassa': 1 };
+
+function getFilteredAssets() {
+  var list = currentFilter === 'Tutte' ? DATA.assets : DATA.assets.filter(function(a) { return a.sede === currentFilter; });
+  if (currentSearch) {
+    var q = currentSearch.toLowerCase();
+    list = list.filter(function(a) {
+      return (a.nome || '').toLowerCase().indexOf(q) !== -1
+        || (a.modello || '').toLowerCase().indexOf(q) !== -1
+        || (a.os || '').toLowerCase().indexOf(q) !== -1
+        || (a.sede || '').toLowerCase().indexOf(q) !== -1
+        || (a.tipo || '').toLowerCase().indexOf(q) !== -1;
+    });
+  }
+  if (assetSortCol && assetSortDir !== 0) {
+    list = list.slice().sort(function(a, b) {
+      var va, vb;
+      if (assetSortCol === 'criticita') {
+        va = CRITICITA_ORDER[a.criticita] || 0;
+        vb = CRITICITA_ORDER[b.criticita] || 0;
+      } else if (assetSortCol === 'avvisi') {
+        va = a.avvisi ? a.avvisi.length : 0;
+        vb = b.avvisi ? b.avvisi.length : 0;
+      } else if (assetSortCol === 'compliance_pct') {
+        va = a.compliance_pct || 0;
+        vb = b.compliance_pct || 0;
+      } else {
+        va = (a[assetSortCol] || '').toString().toLowerCase();
+        vb = (b[assetSortCol] || '').toString().toLowerCase();
+      }
+      if (va < vb) return -1 * assetSortDir;
+      if (va > vb) return 1 * assetSortDir;
+      return 0;
+    });
+  }
+  return list;
 }
-renderAssetTable('Tutte');
+
+function renderAssetTable() {
+  var tbody = document.getElementById('asset-tbody');
+  var list = getFilteredAssets();
+  var parts = [];
+  list.forEach(function(a) {
+    var avvisiCount = a.avvisi ? a.avvisi.length : 0;
+    var avvisiCell = avvisiCount > 0
+      ? '<span style="color:var(--orange); display:inline-flex; align-items:center; gap:4px; font-family:var(--font-mono); font-size:0.65rem"><svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1L1 14h14L8 1zm0 2.5l5.5 9.5H2.5L8 3.5zM7.5 7h1v3h-1V7zm0 4h1v1h-1v-1z"/></svg>' + avvisiCount + '</span>'
+      : '<span style="color:var(--green); font-family:var(--font-mono); font-size:0.65rem">&#x2713; OK</span>';
+    var compColor = complianceColor(a.compliance_pct || 0);
+    parts.push(
+      '<tr>'
+      + '<td class="td-code" data-label="Asset" style="font-size:0.62rem; max-width:100px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="' + (a.nome || '') + '">' + (a.nome || '') + '</td>'
+      + '<td data-label="Sede" style="font-family:var(--font-mono); font-size:0.65rem; color:var(--muted); white-space:nowrap">' + (a.sede || '') + '</td>'
+      + '<td data-label="Tipo">' + tipoBadge(a.tipo) + '</td>'
+      + '<td data-label="Modello" style="font-size:0.72rem; color:var(--muted); max-width:110px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">' + (a.modello || '&#x2014;') + '</td>'
+      + '<td data-label="OS" style="font-size:0.7rem; color:var(--muted); white-space:nowrap">' + (a.os || '') + '</td>'
+      + '<td data-label="EDR">' + edrBadge(a.edr) + '</td>'
+      + '<td data-label="Backup">' + yesnaBadge(a.backup) + '</td>'
+      + '<td data-label="MFA">' + yesnaBadge(a.mfa) + '</td>'
+      + '<td data-label="Criticita">' + criticitaBadge(a.criticita) + '</td>'
+      + '<td data-label="Compliance" style="font-family:var(--font-mono); font-size:0.7rem; color:' + compColor + '; white-space:nowrap; font-weight:600;">' + (a.compliance_pct || 0) + '%</td>'
+      + '<td data-label="Avvisi">' + avvisiCell + '</td>'
+      + '</tr>'
+    );
+  });
+  tbody.innerHTML = parts.join('');
+}
+renderAssetTable();
 
 function filterAssets(sede, btn) {
   currentFilter = sede;
-  document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.filter-tab').forEach(function(b) {
+    b.classList.remove('active');
+    b.setAttribute('aria-pressed', 'false');
+  });
   btn.classList.add('active');
-  renderAssetTable(sede);
+  btn.setAttribute('aria-pressed', 'true');
+  renderAssetTable();
+}
+
+function onAssetSearch(val) {
+  currentSearch = val.trim();
+  var clearBtn = document.getElementById('search-clear-btn');
+  if (clearBtn) { clearBtn.style.display = currentSearch ? 'block' : 'none'; }
+  renderAssetTable();
+}
+
+function clearAssetSearch() {
+  currentSearch = '';
+  var input = document.getElementById('asset-search');
+  if (input) { input.value = ''; }
+  var clearBtn = document.getElementById('search-clear-btn');
+  if (clearBtn) { clearBtn.style.display = 'none'; }
+  renderAssetTable();
+}
+
+function sortAssetTable(col, thEl) {
+  var allTh = document.querySelectorAll('#tab-asset thead th.sortable');
+  if (assetSortCol === col) {
+    if (assetSortDir === 1) { assetSortDir = -1; }
+    else if (assetSortDir === -1) { assetSortCol = null; assetSortDir = 0; }
+    else { assetSortDir = 1; }
+  } else {
+    assetSortCol = col;
+    assetSortDir = 1;
+  }
+  allTh.forEach(function(th) {
+    th.classList.remove('sort-asc', 'sort-desc');
+    var arr = th.querySelector('.sort-arrow');
+    if (arr) { arr.innerHTML = '&#x25B2;'; }
+  });
+  if (assetSortCol && assetSortDir !== 0) {
+    thEl.classList.add(assetSortDir === 1 ? 'sort-asc' : 'sort-desc');
+    var arr = thEl.querySelector('.sort-arrow');
+    if (arr) { arr.innerHTML = assetSortDir === 1 ? '&#x25B2;' : '&#x25BC;'; }
+  }
+  renderAssetTable();
 }
 
 // ============================================================
@@ -1850,6 +2607,442 @@ function filterAssets(sede, btn) {
   });
   container.innerHTML = html;
 })();
+
+// ============================================================
+// THEME TOGGLE — light / dark mode
+// ============================================================
+(function initTheme() {
+  const html = document.documentElement;
+  const stored = localStorage.getItem('nis2_theme');
+  let theme;
+  if (stored) {
+    theme = stored;
+  } else {
+    theme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  }
+  html.setAttribute('data-theme', theme);
+  updateThemeIcon(theme);
+})();
+
+function updateThemeIcon(theme) {
+  const moon = document.getElementById('theme-icon-moon');
+  const sun = document.getElementById('theme-icon-sun');
+  if (!moon || !sun) return;
+  if (theme === 'light') {
+    moon.style.display = 'block'; // show moon (to switch to dark)
+    sun.style.display = 'none';
+  } else {
+    moon.style.display = 'none';
+    sun.style.display = 'block'; // show sun (to switch to light)
+  }
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme') || 'dark';
+  const next = current === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('nis2_theme', next);
+  updateThemeIcon(next);
+}
+
+// ============================================================
+// BOARD PRESENTATION MODE
+// ============================================================
+function buildBoardGauge() {
+  const sedi = DATA.sedi;
+  const pcts = Object.values(sedi).map(function(s) { return s.compliance_pct; });
+  const avg = Math.round(pcts.reduce(function(a, b) { return a + b; }, 0) / pcts.length);
+  const color = complianceColor(avg);
+  const cx = 150; const cy = 150; const r = 115;
+  const circum = 2 * Math.PI * r;
+  const dashLen = (avg / 100) * circum;
+  const dashOff = circum - dashLen;
+  return `<svg width="300" height="300" viewBox="0 0 300 300" style="filter:drop-shadow(0 0 12px ${color})">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--border)" stroke-width="14"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="14"
+      stroke-dasharray="${dashLen} ${dashOff}"
+      stroke-dashoffset="${circum * 0.25}"
+      stroke-linecap="round"/>
+    <text x="${cx}" y="${cy - 10}" text-anchor="middle" font-family="var(--font-mono)" font-size="52" font-weight="700" fill="${color}">${avg}%</text>
+    <text x="${cx}" y="${cy + 22}" text-anchor="middle" font-family="var(--font-mono)" font-size="12" letter-spacing="2" fill="var(--muted)">COMPLIANCE MEDIA</text>
+  </svg>`;
+}
+
+function buildBoardKpi() {
+  const sedi = DATA.sedi;
+  const order = ['Ateneo', 'Nuovo Salario', 'Corso Francia', 'Fracassini', 'Pannini', 'Amministrazione'];
+  return order.map(function(name) {
+    const s = sedi[name];
+    if (!s) return '';
+    const pct = s.compliance_pct;
+    const color = complianceColor(pct);
+    return `<div class="board-kpi-card">
+      <div class="board-kpi-sede">${name.toUpperCase()}</div>
+      <div class="board-kpi-number" style="color:${color}">${pct}<sup style="font-size:1.5rem;vertical-align:top;margin-top:10px;display:inline-block">%</sup></div>
+      <div class="board-kpi-bar" style="background:${color}; width:${pct}%; max-width:100%"></div>
+      <div class="board-kpi-meta">
+        <span>${s.asset_count} ASSET</span>
+        <span style="color:var(--red)">${s.critici + s.alti} CRITICI</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function buildBoardExecSummary() {
+  const el = document.getElementById('exec-summary');
+  if (!el) return '';
+  return `<div class="board-exec-title">SINTESI ESECUTIVA</div>${el.innerHTML.replace('exec-summary-title', 'board-exec-summary-title')}`;
+}
+
+function enterBoardMode() {
+  const overlay = document.getElementById('board-overlay');
+
+  // Inject gauge
+  const gaugeArea = document.getElementById('board-gauge-area');
+  gaugeArea.innerHTML = buildBoardGauge() + '<div class="board-gauge-label">COMPLIANCE COMPLESSIVA — FARMACIE GALLOTTA S.R.L.</div>';
+
+  // Inject KPI cards
+  document.getElementById('board-kpi-grid').innerHTML = buildBoardKpi();
+
+  // Inject executive summary
+  const execEl = document.getElementById('exec-summary');
+  const boardExec = document.getElementById('board-exec-summary');
+  if (execEl && boardExec) {
+    boardExec.innerHTML = '<div class="board-exec-title">SINTESI ESECUTIVA</div>' + execEl.querySelector('ul').outerHTML;
+  }
+
+  document.body.classList.add('board-mode');
+
+  // Request fullscreen
+  if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen().catch(function() {});
+  } else if (document.documentElement.webkitRequestFullscreen) {
+    document.documentElement.webkitRequestFullscreen();
+  }
+}
+
+function exitBoardMode() {
+  document.body.classList.remove('board-mode');
+  if (document.fullscreenElement) {
+    document.exitFullscreen().catch(function() {});
+  } else if (document.webkitFullscreenElement) {
+    document.webkitExitFullscreen();
+  }
+}
+
+// Exit board mode when user presses ESC natively via fullscreen API
+document.addEventListener('fullscreenchange', function() {
+  if (!document.fullscreenElement) {
+    document.body.classList.remove('board-mode');
+  }
+});
+document.addEventListener('webkitfullscreenchange', function() {
+  if (!document.webkitFullscreenElement) {
+    document.body.classList.remove('board-mode');
+  }
+});
+
+// ESC key listener for when not in native fullscreen
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && document.body.classList.contains('board-mode')) {
+    exitBoardMode();
+  }
+});
+
+// ============================================================
+// EXPORT: PDF (print)
+// ============================================================
+function exportPdf() {
+  window.print();
+}
+
+// ============================================================
+// EXPORT: CSV
+// ============================================================
+function exportCsv() {
+  var headers = ['ID', 'Sede', 'Nome', 'Tipo', 'Modello', 'OS', 'Criticita', 'Compliance%', 'EDR', 'Backup', 'MFA', 'Rischi Critici', 'Rischi Alti', 'Avvisi'];
+  var rows = [headers];
+  DATA.assets.forEach(function(a) {
+    var edrVal = a.edr === 'N/A' ? 'N/A' : (a.edr ? 'Si' : 'No');
+    var backupVal = (a.backup === null || a.backup === undefined || a.backup === 'N/A') ? 'N/A' : (a.backup ? 'Si' : 'No');
+    var mfaVal = (a.mfa === null || a.mfa === undefined || a.mfa === 'N/A') ? 'N/A' : (a.mfa ? 'Si' : 'No');
+    var avvisiCount = a.avvisi ? a.avvisi.length : 0;
+    var row = [
+      a.id || '',
+      a.sede || '',
+      a.nome || '',
+      a.tipo || '',
+      a.modello || '',
+      a.os || '',
+      a.criticita || '',
+      a.compliance_pct || 0,
+      edrVal,
+      backupVal,
+      mfaVal,
+      a.rischi_critici || 0,
+      a.rischi_alti || 0,
+      avvisiCount
+    ];
+    rows.push(row.map(function(v) {
+      var s = String(v).replace(/"/g, '""');
+      return '"' + s + '"';
+    }));
+  });
+  var csvContent = rows.map(function(r) { return r.join(','); }).join('\n');
+  var bom = '\uFEFF';
+  var blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var now = new Date();
+  var yyyy = now.getFullYear();
+  var mm = String(now.getMonth() + 1).padStart(2, '0');
+  var dd = String(now.getDate()).padStart(2, '0');
+  var filename = 'NIS2_Asset_Report_' + yyyy + mm + dd + '.csv';
+  var link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+// ============================================================
+// SECTION TIMESTAMPS — populate "Aggiornato" labels
+// ============================================================
+(function populateTimestamps() {
+  const d = DATA && DATA.generated ? new Date(DATA.generated) : new Date();
+  const dd = String(d.getDate()).padStart(2, '0');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const yyyy = d.getFullYear();
+  const label = 'Aggiornato: ' + dd + '/' + mm + '/' + yyyy;
+  ['ts-overview', 'ts-mis', 'ts-risk', 'ts-asset'].forEach(function(id) {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = label; }
+  });
+})();
+
+// ============================================================
+// COUNTER ANIMATIONS — animate numbers from 0 on first view
+// ============================================================
+var _animatedTabs = {};
+
+function animateCounter(element, target, duration) {
+  duration = duration || 1000;
+  var start = performance.now();
+  function update(now) {
+    var elapsed = now - start;
+    var progress = Math.min(elapsed / duration, 1);
+    var eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+    element.textContent = Math.round(target * eased);
+    if (progress < 1) { requestAnimationFrame(update); }
+  }
+  requestAnimationFrame(update);
+}
+
+function animateBars(container, duration) {
+  duration = duration || 800;
+  var fills = container.querySelectorAll('.progress-fill, .risk-bar-fill, .score-fill, .kpi-bar');
+  fills.forEach(function(fill) {
+    var targetWidth = fill.style.width;
+    if (!targetWidth || targetWidth === '100%') { return; }
+    fill.style.width = '0%';
+    var start = performance.now();
+    var target = parseFloat(targetWidth);
+    function update(now) {
+      var elapsed = now - start;
+      var progress = Math.min(elapsed / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      fill.style.width = (target * eased) + '%';
+      if (progress < 1) { requestAnimationFrame(update); }
+    }
+    requestAnimationFrame(update);
+  });
+}
+
+function runOverviewAnimations() {
+  if (_animatedTabs['overview']) { return; }
+  _animatedTabs['overview'] = true;
+
+  // Animate KPI numbers (compliance percentages)
+  var kpiNumbers = document.querySelectorAll('#kpi-sedi .kpi-number');
+  kpiNumbers.forEach(function(el) {
+    var text = el.textContent || el.innerText;
+    var match = text.match(/\d+/);
+    if (match) {
+      var target = parseInt(match[0], 10);
+      var sup = el.querySelector('sup');
+      el.textContent = '0';
+      if (sup) { el.appendChild(sup); }
+      animateCounter(el.childNodes[0] || el, target, 1000);
+    }
+  });
+
+  // Animate gauge percentage text in SVG
+  var gaugePctEl = document.querySelector('#gauge-container text[font-size="32"]');
+  if (gaugePctEl) {
+    var rawText = gaugePctEl.textContent;
+    var gaugePct = parseInt(rawText, 10);
+    if (!isNaN(gaugePct)) {
+      var start = performance.now();
+      (function animateGauge(now) {
+        var elapsed = now - start;
+        var progress = Math.min(elapsed / 1000, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        gaugePctEl.textContent = Math.round(gaugePct * eased) + '%';
+        if (progress < 1) { requestAnimationFrame(animateGauge); } else { gaugePctEl.textContent = gaugePct + '%'; }
+      })(performance.now());
+    }
+  }
+
+  // Animate compliance bars
+  var overviewPane = document.getElementById('tab-overview');
+  if (overviewPane) { animateBars(overviewPane, 800); }
+}
+
+function runAssetAnimations() {
+  if (_animatedTabs['asset']) { return; }
+  _animatedTabs['asset'] = true;
+  var kpiNumbers = document.querySelectorAll('#kpi-global .kpi-number');
+  kpiNumbers.forEach(function(el) {
+    var text = el.textContent || el.innerText;
+    var match = text.match(/\d+/);
+    if (match) {
+      var target = parseInt(match[0], 10);
+      var pctSuffix = text.indexOf('%') !== -1;
+      el.textContent = pctSuffix ? '0%' : '0';
+      animateCounter(el, target, 1000);
+      if (pctSuffix) {
+        var origUpdate = el.textContent;
+        var s2 = performance.now();
+        (function fixPct(now2) {
+          var prog = Math.min((now2 - s2) / 1000, 1);
+          var eased2 = 1 - Math.pow(1 - prog, 3);
+          el.textContent = Math.round(target * eased2) + '%';
+          if (prog < 1) { requestAnimationFrame(fixPct); }
+        })(performance.now());
+      }
+    }
+  });
+}
+
+// Run overview animations on initial load
+setTimeout(runOverviewAnimations, 300);
+
+// ============================================================
+// ARIA KEYBOARD NAVIGATION — arrow keys for tablist
+// ============================================================
+(function initAriaKeyboard() {
+  var nav = document.getElementById('nav');
+  if (!nav) { return; }
+  nav.addEventListener('keydown', function(e) {
+    var tabs = Array.from(nav.querySelectorAll('[role="tab"]'));
+    var current = document.activeElement;
+    var idx = tabs.indexOf(current);
+    if (idx === -1) { return; }
+    var next = -1;
+    if (e.key === 'ArrowRight') { next = (idx + 1) % tabs.length; }
+    else if (e.key === 'ArrowLeft') { next = (idx - 1 + tabs.length) % tabs.length; }
+    else if (e.key === 'Home') { next = 0; }
+    else if (e.key === 'End') { next = tabs.length - 1; }
+    if (next !== -1) {
+      e.preventDefault();
+      tabs[next].focus();
+      tabs[next].click();
+    }
+  });
+})();
+
+// ============================================================
+// INCIDENT TIMER NIS2 ART. 23
+// ============================================================
+var _incidentStart = null;
+var _incidentInterval = null;
+
+function simulaIncidente() {
+  _incidentStart = Date.now();
+  var card = document.getElementById('incident-timer-card');
+  var grid = document.getElementById('incident-deadline-grid');
+  var statusBlock = document.getElementById('incident-status-block');
+  var btnSimula = document.getElementById('incident-btn-simula');
+  var btnReset = document.getElementById('incident-btn-reset');
+
+  card.classList.remove('no-incident');
+  grid.style.display = '';
+  btnSimula.style.display = 'none';
+  btnReset.style.display = '';
+
+  var parts = [
+    '<div class="incident-status-ok" style="color:var(--red)">',
+    '<span class="incident-status-dot" style="background:var(--red);animation:blink-red 1s step-end infinite"></span>',
+    'Incidente simulato attivo &mdash; Timer in esecuzione',
+    '</div>'
+  ];
+  statusBlock.innerHTML = parts.join('');
+
+  updateIncidentCountdowns();
+  _incidentInterval = setInterval(updateIncidentCountdowns, 1000);
+}
+
+function resetIncidente() {
+  if (_incidentInterval) { clearInterval(_incidentInterval); _incidentInterval = null; }
+  _incidentStart = null;
+  var card = document.getElementById('incident-timer-card');
+  var grid = document.getElementById('incident-deadline-grid');
+  var statusBlock = document.getElementById('incident-status-block');
+  var btnSimula = document.getElementById('incident-btn-simula');
+  var btnReset = document.getElementById('incident-btn-reset');
+
+  card.classList.add('no-incident');
+  grid.style.display = 'none';
+  btnSimula.style.display = '';
+  btnReset.style.display = 'none';
+
+  var parts = [
+    '<div class="incident-status-ok">',
+    '<span class="incident-status-dot"></span>',
+    'Nessun incidente attivo &mdash; Timer non attivato',
+    '</div>'
+  ];
+  statusBlock.innerHTML = parts.join('');
+}
+
+function formatCountdown(ms) {
+  if (ms <= 0) { return 'SCADUTO'; }
+  var totalSec = Math.floor(ms / 1000);
+  var hours = Math.floor(totalSec / 3600);
+  var mins = Math.floor((totalSec % 3600) / 60);
+  var secs = totalSec % 60;
+  return String(hours).padStart(2, '0') + ':' + String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+}
+
+function getCountdownClass(ms, totalMs) {
+  if (ms <= 0) { return 'ic-expired'; }
+  var ratio = ms / totalMs;
+  if (ratio > 0.5) { return 'ic-green'; }
+  if (ratio > 0.25) { return 'ic-yellow'; }
+  return 'ic-red';
+}
+
+function updateIncidentCountdowns() {
+  if (!_incidentStart) { return; }
+  var now = Date.now();
+  var elapsed = now - _incidentStart;
+
+  var deadlines = [
+    { id: 'ic-countdown-24', total: 24 * 3600 * 1000 },
+    { id: 'ic-countdown-72', total: 72 * 3600 * 1000 },
+    { id: 'ic-countdown-30d', total: 30 * 24 * 3600 * 1000 }
+  ];
+
+  deadlines.forEach(function(d) {
+    var el = document.getElementById(d.id);
+    if (!el) { return; }
+    var remaining = d.total - elapsed;
+    el.textContent = formatCountdown(remaining);
+    el.className = 'incident-countdown ' + getCountdownClass(remaining, d.total);
+  });
+}
 </script>
 </body>
 </html>
