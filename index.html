@@ -2873,18 +2873,19 @@ const DATA = {
     { "milestone": "Nomina Responsabile NIS2 (Massimo Vitale)", "scadenza": "31 Dic 2025", "stato": "COMPLETATO" },
     { "milestone": "Nomina Referente CSIRT", "scadenza": "31 Dic 2025", "stato": "COMPLETATO" },
     { "milestone": "Incident Response Plan v1.0", "scadenza": "31 Dic 2025", "stato": "COMPLETATO" },
-    { "milestone": "Asset Inventory completo", "scadenza": "Gen 2026", "stato": "IN RITARDO" },
-    { "milestone": "Risk Assessment NIS2", "scadenza": "Feb 2026", "stato": "IN RITARDO" },
-    { "milestone": "Security Policies (30 policy)", "scadenza": "Mar 2026", "stato": "IN CORSO" },
-    { "milestone": "BCP & Disaster Recovery Plan", "scadenza": "Apr-Mag 2026", "stato": "PIANIFICATO" },
+    { "milestone": "Asset Inventory completo", "scadenza": "Gen 2026", "stato": "COMPLETATO" },
+    { "milestone": "Risk Assessment NIS2", "scadenza": "Feb 2026", "stato": "COMPLETATO" },
+    { "milestone": "Security Policies (30 policy)", "scadenza": "Mar 2026", "stato": "IN RITARDO" },
+    { "milestone": "BCP & Disaster Recovery Plan", "scadenza": "Apr-Mag 2026", "stato": "IN CORSO" },
     { "milestone": "Audit Interno & Report Annuale ACN", "scadenza": "30 Giu 2026", "stato": "PIANIFICATO" }
   ],
   "storico": [
-    { "data": "01/04/2026", "descrizione": "Checklist MFA PC - Fracassini banco 1 completata (KO: account condiviso, password debole, OS obsoleto)", "autore": "Davide Vozzi" },
-    { "data": "08/01/2026", "descrizione": "Checklist MFA PC - Nuovo Salario Spunta completata", "autore": "Davide Vozzi" },
-    { "data": "01/03/2026", "descrizione": "Excel v2 aggiornato - Risk Matrix (20 scenari ISO/27005) + Mappa Rischio 5x5", "autore": "Sistema" },
-    { "data": "28/02/2026", "descrizione": "Excel v1 creato - 5 fogli: Asset Master, Audit Sede, GAP Analysis, Policy Tracker 30, Dashboard", "autore": "Sistema" },
-    { "data": "10/12/2025", "descrizione": "Manuale Ufficiale Policy MIS/NIS2 v1.0 approvato - 18 policy + 5 schede operative per sede", "autore": "Direzione" },
+    { "data": "05/04/2026", "descrizione": "Risk Assessment NIS2 e Accettazione Rischio completati — 12 scenari ISO/27005, documento firmato", "autore": "Massimo Vitale" },
+    { "data": "04/04/2026", "descrizione": "Roadmap NIS2 (cliente + tecnica) generata con piano remediation", "autore": "Sistema" },
+    { "data": "01/04/2026", "descrizione": "Inventario asset completo — 46 asset censiti su 6 sedi, checklist compilate", "autore": "Davide Vozzi" },
+    { "data": "01/03/2026", "descrizione": "Excel v2 aggiornato — Risk Matrix (12 scenari ISO/27005) + Mappa Rischio 5x5", "autore": "Sistema" },
+    { "data": "28/02/2026", "descrizione": "Excel v1 creato — 5 fogli: Asset Master, Audit Sede, GAP Analysis, Policy Tracker, Dashboard", "autore": "Sistema" },
+    { "data": "10/12/2025", "descrizione": "Manuale Ufficiale Policy MIS/NIS2 v1.0 approvato — 30 policy per 10 misure MIS + 5 schede operative per sede", "autore": "Direzione" },
     { "data": "09/12/2025", "descrizione": "Incident Response Plan v1.0 firmato da Massimo Vitale", "autore": "Contratti" },
     { "data": "09/12/2025", "descrizione": "Contratto NIS2 (Responsabile) e Contratto CSIRT firmati", "autore": "Contratti" }
   ]
@@ -3649,8 +3650,8 @@ function sortRiskTable(col, thEl) {
   const mediaPct = Math.round(allPcts.reduce((a, b) => a + b, 0) / allPcts.length);
   const rischiCritici = assets.reduce((s, a) => s + (a.rischi_critici || 0), 0);
   const notifAcn = DATA.risk_matrix.filter(r => r.notifica_acn).length;
-  const policyCount = (DATA.policy_count !== undefined) ? DATA.policy_count : 18;
-  const incidentiAperti = (DATA.incidenti_aperti !== undefined) ? DATA.incidenti_aperti : 3;
+  const policyCount = (DATA.policy_count !== undefined) ? DATA.policy_count : 30;
+  const incidentiAperti = (DATA.incidenti_aperti !== undefined) ? DATA.incidenti_aperti : 0;
 
   const kpiData = [
     { label: 'COMPLIANCE MEDIA', val: mediaPct + '%', color: complianceColor(mediaPct) },
