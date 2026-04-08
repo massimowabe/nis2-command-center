@@ -2901,32 +2901,32 @@ const DATA = {
   "sedi": {
     "Amministrazione": {
       "asset_count": 7, "total_ok": 74, "total_ko": 157, "total_na": 0,
-      "compliance_pct": 32, "critici": 0, "alti": 0, "medi": 7, "bassi": 0, "policy_count": 0,
+      "compliance_pct": 32, "critici": 0, "alti": 0, "medi": 7, "bassi": 0, "policy_count": 30,
       "mis_status": { "MIS-01": "ok", "MIS-02": "partial", "MIS-03": "ok", "MIS-04": "partial", "MIS-05": "partial", "MIS-06": "partial", "MIS-07": "ko", "MIS-08": "partial", "MIS-09": "partial", "MIS-10": "partial" }
     },
     "Ateneo": {
       "asset_count": 9, "total_ok": 99, "total_ko": 198, "total_na": 0,
-      "compliance_pct": 33, "critici": 0, "alti": 6, "medi": 2, "bassi": 1, "policy_count": 0,
+      "compliance_pct": 33, "critici": 0, "alti": 6, "medi": 2, "bassi": 1, "policy_count": 30,
       "mis_status": { "MIS-01": "ok", "MIS-02": "partial", "MIS-03": "ok", "MIS-04": "partial", "MIS-05": "partial", "MIS-06": "partial", "MIS-07": "ko", "MIS-08": "partial", "MIS-09": "partial", "MIS-10": "partial" }
     },
     "Corso Francia": {
       "asset_count": 9, "total_ok": 89, "total_ko": 208, "total_na": 0,
-      "compliance_pct": 30, "critici": 0, "alti": 7, "medi": 0, "bassi": 2, "policy_count": 0,
+      "compliance_pct": 30, "critici": 0, "alti": 7, "medi": 0, "bassi": 2, "policy_count": 30,
       "mis_status": { "MIS-01": "partial", "MIS-02": "partial", "MIS-03": "partial", "MIS-04": "partial", "MIS-05": "partial", "MIS-06": "partial", "MIS-07": "ko", "MIS-08": "partial", "MIS-09": "partial", "MIS-10": "partial" }
     },
     "Fracassini": {
       "asset_count": 7, "total_ok": 69, "total_ko": 162, "total_na": 0,
-      "compliance_pct": 30, "critici": 0, "alti": 5, "medi": 2, "bassi": 0, "policy_count": 0,
+      "compliance_pct": 30, "critici": 0, "alti": 5, "medi": 2, "bassi": 0, "policy_count": 30,
       "mis_status": { "MIS-01": "partial", "MIS-02": "partial", "MIS-03": "partial", "MIS-04": "partial", "MIS-05": "partial", "MIS-06": "partial", "MIS-07": "ko", "MIS-08": "partial", "MIS-09": "partial", "MIS-10": "partial" }
     },
     "Nuovo Salario": {
       "asset_count": 8, "total_ok": 71, "total_ko": 199, "total_na": 4,
-      "compliance_pct": 26, "critici": 0, "alti": 6, "medi": 1, "bassi": 0, "policy_count": 0,
+      "compliance_pct": 26, "critici": 0, "alti": 6, "medi": 1, "bassi": 0, "policy_count": 30,
       "mis_status": { "MIS-01": "partial", "MIS-02": "partial", "MIS-03": "partial", "MIS-04": "partial", "MIS-05": "partial", "MIS-06": "partial", "MIS-07": "partial", "MIS-08": "partial", "MIS-09": "partial", "MIS-10": "partial" }
     },
     "Pannini": {
       "asset_count": 6, "total_ok": 66, "total_ko": 132, "total_na": 0,
-      "compliance_pct": 33, "critici": 0, "alti": 5, "medi": 1, "bassi": 0, "policy_count": 0,
+      "compliance_pct": 33, "critici": 0, "alti": 5, "medi": 1, "bassi": 0, "policy_count": 30,
       "mis_status": { "MIS-01": "partial", "MIS-02": "partial", "MIS-03": "ok", "MIS-04": "partial", "MIS-05": "partial", "MIS-06": "partial", "MIS-07": "ko", "MIS-08": "partial", "MIS-09": "partial", "MIS-10": "partial" }
     }
   },
@@ -3243,8 +3243,8 @@ function buildSparkline(pct, color) {
         ${sparkline}
         <div class="kpi-meta" style="margin-top:4px;">
           <span><span class="kpi-meta-dot" style="background:var(--cyan)"></span>${s.asset_count} ASSET</span>
-          <span><span class="kpi-meta-dot" style="background:var(--purple)"></span>${s.policy_count} POLICY</span>
-          <span><span class="kpi-meta-dot" style="background:var(--red)"></span>${s.critici + s.alti} CRITICI</span>
+          <span><span class="kpi-meta-dot" style="background:var(--green)"></span>${s.total_ok} OK</span>
+          <span><span class="kpi-meta-dot" style="background:var(--red)"></span>${s.total_ko} KO</span>
         </div>
         <div class="kpi-card-hint">clicca per dettaglio &rarr;</div>
       </div>`);
