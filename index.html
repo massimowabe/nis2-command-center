@@ -1529,6 +1529,31 @@ body.board-mode #footer { visibility: hidden; }
 .priority-sedi-chips { display: flex; gap: 4px; flex-wrap: wrap; }
 .priority-sedi-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 1px 6px; font-size: 0.6rem; font-family: var(--font-mono); color: var(--muted); }
 
+/* Policy overview in Overview tab */
+.policy-ov-progress { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.policy-ov-bar-wrap { flex: 1; height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
+.policy-ov-bar-fill { height: 100%; border-radius: 5px; transition: width 0.6s ease; }
+.policy-ov-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); white-space: nowrap; }
+.policy-ov-stats { display: flex; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+.policy-ov-stat { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; font-family: var(--font-mono); }
+.policy-ov-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.policy-ov-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.policy-ov-cat { margin-bottom: 4px; }
+.policy-ov-cat-title { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; color: var(--cyan); margin-bottom: 8px; text-transform: uppercase; }
+.policy-ov-item { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 4px; border-left: 3px solid transparent; margin-bottom: 4px; background: var(--bg); transition: background 0.15s; }
+.policy-ov-item:hover { background: var(--border); }
+.policy-ov-item-approvata { border-left-color: var(--green); }
+.policy-ov-item-revisione { border-left-color: var(--yellow); }
+.policy-ov-item-bozza { border-left-color: var(--orange); }
+.policy-ov-item-dacreare { border-left-color: var(--red); }
+.policy-ov-code { font-family: var(--font-mono); font-size: 0.6rem; color: var(--muted); min-width: 42px; }
+.policy-ov-name { font-size: 0.72rem; color: var(--text); flex: 1; }
+.policy-ov-badge { font-family: var(--font-mono); font-size: 0.55rem; padding: 2px 6px; border-radius: 3px; font-weight: 600; letter-spacing: 0.05em; white-space: nowrap; }
+.policy-ov-badge-approvata { background: var(--green); color: #000; }
+.policy-ov-badge-revisione { background: var(--yellow); color: #000; }
+.policy-ov-badge-bozza { background: var(--orange); color: #000; }
+.policy-ov-badge-dacreare { background: var(--red); color: #fff; }
+
 /* Data freshness */
 .freshness-ok { color: var(--green); }
 .freshness-warn { color: var(--yellow); }
@@ -2529,6 +2554,18 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
       </div>
     </div>
 
+    <!-- POLICY FRAMEWORK OVERVIEW -->
+    <div class="scroll-animate" style="margin-top:28px;">
+      <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>// POLICY FRAMEWORK NIS2</span>
+        <button class="export-btn" onclick="switchTab('policy')" style="margin-left:auto;" data-tooltip="Vai al Policy Tracker completo">
+          <svg viewBox="0 0 16 16" fill="currentColor" width="12" height="12"><path d="M4 1v2H2v10h12V3h-2V1h-2v2H6V1H4zm0 5h8v6H4V6z"/></svg>
+          Dettaglio Policy
+        </button>
+      </div>
+      <div class="card" id="policy-overview-section" style="padding:20px;"></div>
+    </div>
+
     <!-- TOP PRIORITÀ DI INTERVENTO -->
     <div class="scroll-animate" style="margin-top:28px;">
       <div class="section-header">// TOP PRIORITÀ DI INTERVENTO</div>
@@ -3413,6 +3450,102 @@ function buildSparkline(pct, color, ok, ko) {
       + '</tr>';
   });
   html += '</tbody></table>';
+  container.innerHTML = html;
+})();
+
+// ============================================================
+// TAB 1: OVERVIEW — POLICY FRAMEWORK OVERVIEW
+// ============================================================
+(function renderPolicyOverview() {
+  var POLICIES = [
+    { cat: 'Gestione Accessi', codice: 'POL-01', nome: 'Access Control Policy (ACP)', stato: 'Approvata' },
+    { cat: 'Gestione Accessi', codice: 'POL-02', nome: 'Privileged Access Management (PAM)', stato: 'Approvata' },
+    { cat: 'Gestione Accessi', codice: 'POL-03', nome: 'Password Management Policy (PWM)', stato: 'Approvata' },
+    { cat: 'Gestione Accessi', codice: 'POL-04', nome: 'Remote Working & Mobile (RWMP)', stato: 'Approvata' },
+    { cat: 'Protezione Sistemi', codice: 'POL-05', nome: 'Secure Configuration & Hardening (SCHP)', stato: 'Approvata' },
+    { cat: 'Protezione Sistemi', codice: 'POL-06', nome: 'Endpoint Detection & Response (EDRP)', stato: 'Approvata' },
+    { cat: 'Protezione Sistemi', codice: 'POL-07', nome: 'Cryptography & Key Management (CKMP)', stato: 'Approvata' },
+    { cat: 'Protezione Sistemi', codice: 'POL-08', nome: 'Secure Printing & Documents (SPDP)', stato: 'Approvata' },
+    { cat: 'Gestione Dati', codice: 'POL-09', nome: 'Backup, Restore & Recovery (BRP)', stato: 'Approvata' },
+    { cat: 'Gestione Dati', codice: 'POL-10', nome: 'Data Classification & Handling (DCHP)', stato: 'In revisione' },
+    { cat: 'Gestione Dati', codice: 'POL-11', nome: 'Acceptable Use Policy (AUP)', stato: 'Approvata' },
+    { cat: 'Incident & Continuita', codice: 'POL-12', nome: 'Incident Response Policy (IRP)', stato: 'Approvata' },
+    { cat: 'Incident & Continuita', codice: 'POL-13', nome: 'Business Continuity & DR (BCDR)', stato: 'Bozza' },
+    { cat: 'Incident & Continuita', codice: 'POL-14', nome: 'Crisis Communication (CCP)', stato: 'Bozza' },
+    { cat: 'Governance', codice: 'POL-15', nome: 'Information Security Policy (ISP)', stato: 'Approvata' },
+    { cat: 'Governance', codice: 'POL-16', nome: 'Change Management Policy (CMP)', stato: 'Approvata' },
+    { cat: 'Governance', codice: 'POL-17', nome: 'Secure Software Development (SSDP)', stato: 'Bozza' },
+    { cat: 'Governance', codice: 'POL-18', nome: 'Email & Phishing Protection (ECP)', stato: 'Approvata' }
+  ];
+
+  var container = document.getElementById('policy-overview-section');
+  if (!container) return;
+
+  var counts = { approvate: 0, revisione: 0, bozze: 0, dacreare: 0 };
+  POLICIES.forEach(function(p) {
+    if (p.stato === 'Approvata') counts.approvate++;
+    else if (p.stato === 'In revisione') counts.revisione++;
+    else if (p.stato === 'Bozza') counts.bozze++;
+    else counts.dacreare++;
+  });
+  var total = POLICIES.length;
+  var pctApp = Math.round(counts.approvate / total * 100);
+
+  // Progress bar
+  var html = '<div class="policy-ov-progress">'
+    + '<div class="policy-ov-bar-wrap">'
+    + '<div class="policy-ov-bar-fill" style="width:' + pctApp + '%; background: linear-gradient(90deg, var(--green), var(--cyan));"></div>'
+    + '</div>'
+    + '<div class="policy-ov-label">' + counts.approvate + '/' + total + ' approvate (' + pctApp + '%)</div>'
+    + '</div>';
+
+  // Stats row
+  html += '<div class="policy-ov-stats">'
+    + '<div class="policy-ov-stat"><div class="policy-ov-dot" style="background:var(--green)"></div>' + counts.approvate + ' Approvate</div>'
+    + '<div class="policy-ov-stat"><div class="policy-ov-dot" style="background:var(--yellow)"></div>' + counts.revisione + ' In revisione</div>'
+    + '<div class="policy-ov-stat"><div class="policy-ov-dot" style="background:var(--orange)"></div>' + counts.bozze + ' Bozze</div>'
+    + '<div class="policy-ov-stat"><div class="policy-ov-dot" style="background:var(--red)"></div>' + counts.dacreare + ' Da creare</div>'
+    + '</div>';
+
+  // Grouped policy cards
+  var cats = [];
+  var seen = {};
+  POLICIES.forEach(function(p) { if (!seen[p.cat]) { cats.push(p.cat); seen[p.cat] = true; } });
+
+  function badgeCls(s) {
+    if (s === 'Approvata') return 'policy-ov-badge-approvata';
+    if (s === 'In revisione') return 'policy-ov-badge-revisione';
+    if (s === 'Bozza') return 'policy-ov-badge-bozza';
+    return 'policy-ov-badge-dacreare';
+  }
+  function itemCls(s) {
+    if (s === 'Approvata') return 'policy-ov-item-approvata';
+    if (s === 'In revisione') return 'policy-ov-item-revisione';
+    if (s === 'Bozza') return 'policy-ov-item-bozza';
+    return 'policy-ov-item-dacreare';
+  }
+  function badgeLabel(s) {
+    if (s === 'Approvata') return 'OK';
+    if (s === 'In revisione') return 'REV';
+    if (s === 'Bozza') return 'BOZZA';
+    return 'TODO';
+  }
+
+  html += '<div class="policy-ov-grid">';
+  cats.forEach(function(cat) {
+    html += '<div class="policy-ov-cat">';
+    html += '<div class="policy-ov-cat-title">' + cat + '</div>';
+    POLICIES.filter(function(p) { return p.cat === cat; }).forEach(function(p) {
+      html += '<div class="policy-ov-item ' + itemCls(p.stato) + '">'
+        + '<span class="policy-ov-code">' + p.codice + '</span>'
+        + '<span class="policy-ov-name">' + p.nome + '</span>'
+        + '<span class="policy-ov-badge ' + badgeCls(p.stato) + '">' + badgeLabel(p.stato) + '</span>'
+        + '</div>';
+    });
+    html += '</div>';
+  });
+  html += '</div>';
+
   container.innerHTML = html;
 })();
 
