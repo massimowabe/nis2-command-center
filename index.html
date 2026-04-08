@@ -1519,6 +1519,22 @@ body.board-mode #footer { visibility: hidden; }
 }
 .kpi-card-interactive:hover::after { opacity: 1; }
 
+/* Priority table */
+.priority-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+.priority-table th { text-align: left; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted); padding: 8px 10px; border-bottom: 1px solid var(--border); }
+.priority-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
+.priority-table tr:last-child td { border-bottom: none; }
+.priority-rank { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; font-weight: 700; font-size: 0.65rem; font-family: var(--font-mono); }
+.priority-impact { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 0.62rem; font-weight: 600; font-family: var(--font-mono); letter-spacing: 0.05em; }
+.priority-sedi-chips { display: flex; gap: 4px; flex-wrap: wrap; }
+.priority-sedi-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 1px 6px; font-size: 0.6rem; font-family: var(--font-mono); color: var(--muted); }
+
+/* Data freshness */
+.freshness-ok { color: var(--green); }
+.freshness-warn { color: var(--yellow); }
+.freshness-stale { color: var(--red); }
+.freshness-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+
 @media (max-width: 640px) {
   .kpi-drilldown { border-radius: 0; max-height: 100vh; }
   .kpi-dd-stats { grid-template-columns: 1fr 1fr; }
@@ -1825,6 +1841,7 @@ body.board-mode #footer { visibility: hidden; }
 /* ========== TABLET: 768px ========== */
 @media (max-width: 768px) {
   .kpi-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  #kpi-overview-global { grid-template-columns: repeat(3, 1fr) !important; }
   .gauge-wrapper { flex-direction: column; align-items: center; }
   .exec-summary { width: 100%; }
   #radar-wrapper svg { width: 280px !important; height: 280px !important; }
@@ -1946,6 +1963,12 @@ body.board-mode #footer { visibility: hidden; }
     width: auto !important; max-height: 60vh;
     border-radius: 10px !important;
   }
+
+  /* Priority table: stack on mobile */
+  .priority-table th:nth-child(5), .priority-table td:nth-child(5) { display: none; }
+  .priority-table { font-size: 0.65rem; }
+  .priority-table td { padding: 6px 6px; }
+  #kpi-overview-global { grid-template-columns: repeat(2, 1fr) !important; }
 
   /* Touch targets: minimum 44px */
   .nav-tab, .filter-tab, .export-btn, .board-mode-btn,
@@ -2459,6 +2482,8 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
       <div class="gauge-container" id="gauge-container"></div>
       <div class="exec-summary" id="exec-summary"></div>
     </div>
+    <div class="section-header">// INDICATORI CHIAVE</div>
+    <div class="kpi-grid scroll-animate" id="kpi-overview-global" style="grid-template-columns:repeat(6,1fr);margin-bottom:28px;"></div>
     <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;">
       <span>// STATO COMPLIANCE PER FARMACIA</span>
       <button class="export-btn" onclick="openCompareModal()" style="margin-left:auto;" data-tooltip="Confronta due sedi affiancate">
@@ -2503,6 +2528,16 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
         </div>
       </div>
     </div>
+
+    <!-- TOP PRIORITÀ DI INTERVENTO -->
+    <div class="scroll-animate" style="margin-top:28px;">
+      <div class="section-header">// TOP PRIORITÀ DI INTERVENTO</div>
+      <div class="card" id="priority-section"></div>
+    </div>
+
+    <!-- DATA FRESHNESS -->
+    <div id="data-freshness" style="margin-top:18px; text-align:center; font-size:0.7rem; color:var(--muted); font-family:var(--font-mono); letter-spacing:0.04em;"></div>
+
   </div>
 
   <!-- TAB 2: MIS x SEDI -->
@@ -3194,28 +3229,22 @@ document.addEventListener('DOMContentLoaded', function() {
 // ============================================================
 // SPARKLINE GENERATOR
 // ============================================================
-function buildSparkline(pct, color) {
-  const pts = 6;
-  const startPct = Math.max(0, pct - (Math.floor(Math.random() * 11) + 5));
-  const values = [];
-  for (let i = 0; i < pts; i++) {
-    const progress = i / (pts - 1);
-    const base = startPct + (pct - startPct) * progress;
-    const noise = (Math.random() - 0.5) * 4;
-    values.push(Math.max(0, Math.min(100, base + noise)));
-  }
-  values[values.length - 1] = pct;
-  const w = 80; const h = 25;
-  const points = values.map((v, i) => {
-    const x = (i / (pts - 1)) * (w - 4) + 2;
-    const y = h - 2 - ((v / 100) * (h - 4));
-    return x + ',' + y;
-  }).join(' ');
-  const trend = values[values.length - 1] >= values[0] ? 1 : -1;
-  const trendChar = trend >= 0 ? '&#x2191;' : '&#x2193;';
-  const trendColor = trend >= 0 ? 'var(--green)' : 'var(--red)';
-  const sparkSvg = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="overflow:visible"><polyline points="${points}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/></svg>`;
-  return `<div class="sparkline-wrap">${sparkSvg}<span class="sparkline-trend" style="color:${trendColor}">${trendChar}</span></div>`;
+function buildSparkline(pct, color, ok, ko) {
+  // Real stacked bar: OK vs KO ratio (no fake trend data)
+  var total = (ok || 0) + (ko || 0);
+  if (total === 0) return '';
+  var okPct = Math.round(ok / total * 100);
+  var koPct = 100 - okPct;
+  var gap = pct >= 60 ? 'var(--green)' : (pct >= 40 ? 'var(--yellow)' : 'var(--red)');
+  var distFromTarget = Math.abs(60 - pct);
+  var gapLabel = pct >= 60 ? '+' + (pct - 60) : '-' + (60 - pct);
+  return '<div class="sparkline-wrap" style="gap:4px">'
+    + '<div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;display:flex;">'
+    + '<div style="width:' + okPct + '%;background:var(--green);border-radius:4px 0 0 4px;"></div>'
+    + '<div style="width:' + koPct + '%;background:var(--red);border-radius:0 4px 4px 0;"></div>'
+    + '</div>'
+    + '<span class="sparkline-trend" style="color:' + gap + ';font-size:0.55rem;">' + gapLabel + ' vs 60%</span>'
+    + '</div>';
 }
 
 // ============================================================
@@ -3231,7 +3260,7 @@ function buildSparkline(pct, color) {
     if (!s) return;
     const pct = s.compliance_pct;
     const color = complianceColor(pct);
-    const sparkline = buildSparkline(pct, color);
+    const sparkline = buildSparkline(pct, color, s.total_ok, s.total_ko);
     parts.push(`
       <div class="kpi-card kpi-card-clickable" onclick="drillDownSede('${name}')">
         <div class="kpi-sede">${name.toUpperCase()}</div>
@@ -3250,6 +3279,187 @@ function buildSparkline(pct, color) {
       </div>`);
   });
   container.innerHTML = parts.join('');
+})();
+
+// ============================================================
+// TAB 1: OVERVIEW — GLOBAL KPI CARDS (clickable, with drill-down)
+// ============================================================
+(function renderOverviewGlobalKpi() {
+  var assets = DATA.assets;
+  var totalAssets = assets.length;
+  var allPcts = assets.map(function(a) { return a.compliance_pct; });
+  var mediaPct = Math.round(allPcts.reduce(function(a, b) { return a + b; }, 0) / allPcts.length);
+  var rischiCritici = assets.reduce(function(s, a) { return s + (a.rischi_critici || 0); }, 0);
+  var notifAcn = DATA.risk_matrix.filter(function(r) { return r.notifica_acn; }).length;
+  var policyCount = (DATA.policy_count !== undefined) ? DATA.policy_count : 30;
+  var incidentiAperti = (DATA.incidenti_aperti !== undefined) ? DATA.incidenti_aperti : 0;
+
+  var kpiData = [
+    { label: 'COMPLIANCE MEDIA', val: mediaPct + '%', color: complianceColor(mediaPct), dd: 'compliance', icon: '◉' },
+    { label: 'RISCHI CRITICI', val: rischiCritici, color: 'var(--red)', dd: 'rischi_critici', icon: '⚠' },
+    { label: 'RISCHI NOTIFICABILI ACN', val: notifAcn, color: 'var(--orange)', dd: 'notif_acn', icon: '🔔' },
+    { label: 'ASSET CENSITI', val: totalAssets, color: 'var(--cyan)', dd: 'asset_censiti', icon: '▣' },
+    { label: 'POLICY ADOTTATE', val: policyCount, color: 'var(--purple)', dd: 'policy', icon: '📋' },
+    { label: 'INCIDENTI APERTI', val: incidentiAperti, color: 'var(--yellow)', dd: 'incidenti', icon: '⊘' }
+  ];
+
+  var container = document.getElementById('kpi-overview-global');
+  if (!container) return;
+  var html = '';
+  kpiData.forEach(function(k) {
+    html += '<div class="kpi-card kpi-card-interactive" onclick="openKpiDrilldown(\'' + k.dd + '\')">'
+      + '<div class="kpi-sede">' + k.label + '</div>'
+      + '<div class="kpi-number" style="color:' + k.color + '">' + k.val + '</div>'
+      + '<div class="kpi-bar" style="background:' + k.color + '33; width:100%"></div>'
+      + '<div class="kpi-meta" style="height:14px"></div>'
+      + '</div>';
+  });
+  container.innerHTML = html;
+})();
+
+// ============================================================
+// TAB 1: OVERVIEW — TOP PRIORITÀ DI INTERVENTO
+// ============================================================
+(function renderPriorities() {
+  var assets = DATA.assets;
+  var sedi = DATA.sedi;
+
+  // Analyze MIS failures across sedi to find top priorities
+  var misFailures = {};
+  var MIS_LABELS = {
+    'MIS-01': 'Policy Sicurezza', 'MIS-02': 'Gestione Rischi', 'MIS-03': 'Gestione Incidenti',
+    'MIS-04': 'Business Continuity', 'MIS-05': 'Supply Chain', 'MIS-06': 'Sviluppo Sicuro',
+    'MIS-07': 'Logging & Monitoraggio', 'MIS-08': 'Crittografia', 'MIS-09': 'Controllo Accessi',
+    'MIS-10': 'Asset Management'
+  };
+
+  // Count KO per MIS across all assets
+  assets.forEach(function(a) {
+    if (!a.mis_scores) return;
+    Object.keys(a.mis_scores).forEach(function(mis) {
+      if (!misFailures[mis]) misFailures[mis] = { ko: 0, total: 0, sedi: {} };
+      misFailures[mis].total++;
+      if (a.mis_scores[mis] === 'KO') {
+        misFailures[mis].ko++;
+        misFailures[mis].sedi[a.sede] = true;
+      }
+    });
+  });
+
+  // Also check asset-level issues
+  var mfaAssets = assets.filter(function(a) { return !a.mfa || a.mfa === 'No'; });
+  var noBackupAssets = assets.filter(function(a) { return a.backup === 'No' || a.backup === 'Assente'; });
+  var noAvAssets = assets.filter(function(a) { return !a.antivirus || a.antivirus === 'No' || a.antivirus === 'Assente'; });
+
+  // Build priority list
+  var priorities = [];
+
+  // Sort MIS failures by KO count
+  var misSorted = Object.keys(misFailures).sort(function(a, b) { return misFailures[b].ko - misFailures[a].ko; });
+  misSorted.forEach(function(mis) {
+    var f = misFailures[mis];
+    if (f.ko === 0) return;
+    var sediList = Object.keys(f.sedi);
+    var pctKo = Math.round(f.ko / f.total * 100);
+    priorities.push({
+      area: mis + ' — ' + (MIS_LABELS[mis] || mis),
+      issue: f.ko + '/' + f.total + ' controlli KO (' + pctKo + '%)',
+      impact: pctKo >= 70 ? 'CRITICO' : (pctKo >= 40 ? 'ALTO' : 'MEDIO'),
+      sedi: sediList
+    });
+  });
+
+  // Add MFA if relevant
+  if (mfaAssets.length > 0) {
+    var mfaSedi = {};
+    mfaAssets.forEach(function(a) { mfaSedi[a.sede] = true; });
+    priorities.push({
+      area: 'MFA — Autenticazione Multi-Fattore',
+      issue: mfaAssets.length + '/' + assets.length + ' asset senza MFA',
+      impact: 'CRITICO',
+      sedi: Object.keys(mfaSedi)
+    });
+  }
+
+  // Sort by impact
+  var impactOrder = { 'CRITICO': 3, 'ALTO': 2, 'MEDIO': 1 };
+  priorities.sort(function(a, b) { return (impactOrder[b.impact] || 0) - (impactOrder[a.impact] || 0); });
+
+  // Take top 5
+  priorities = priorities.slice(0, 5);
+
+  var container = document.getElementById('priority-section');
+  if (!container || priorities.length === 0) return;
+
+  var impactColors = { 'CRITICO': 'var(--red)', 'ALTO': 'var(--orange)', 'MEDIO': 'var(--yellow)' };
+  var impactBg = { 'CRITICO': 'var(--red)', 'ALTO': 'var(--orange)', 'MEDIO': 'var(--yellow)' };
+
+  var html = '<table class="priority-table"><thead><tr>'
+    + '<th>#</th><th>AREA</th><th>PROBLEMA</th><th>IMPATTO</th><th>SEDI COINVOLTE</th>'
+    + '</tr></thead><tbody>';
+
+  priorities.forEach(function(p, i) {
+    var rankColor = i === 0 ? 'var(--red)' : (i < 3 ? 'var(--orange)' : 'var(--yellow)');
+    var chips = '';
+    p.sedi.forEach(function(s) {
+      chips += '<span class="priority-sedi-chip">' + s + '</span>';
+    });
+    html += '<tr>'
+      + '<td><span class="priority-rank" style="background:' + rankColor + '22; color:' + rankColor + '">' + (i + 1) + '</span></td>'
+      + '<td style="font-weight:600; min-width:180px;">' + p.area + '</td>'
+      + '<td style="color:var(--muted); font-size:0.7rem;">' + p.issue + '</td>'
+      + '<td><span class="priority-impact" style="background:' + (impactBg[p.impact] || 'var(--muted)') + '22; color:' + (impactColors[p.impact] || 'var(--muted)') + '">' + p.impact + '</span></td>'
+      + '<td><div class="priority-sedi-chips">' + chips + '</div></td>'
+      + '</tr>';
+  });
+  html += '</tbody></table>';
+  container.innerHTML = html;
+})();
+
+// ============================================================
+// DATA FRESHNESS INDICATOR
+// ============================================================
+(function renderDataFreshness() {
+  var container = document.getElementById('data-freshness');
+  if (!container) return;
+
+  // Use storico to find latest entry date
+  var storico = DATA.storico || [];
+  var latestDate = null;
+  storico.forEach(function(s) {
+    if (s.data) {
+      var parts = s.data.split('/');
+      if (parts.length === 3) {
+        var d = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+        if (!latestDate || d > latestDate) latestDate = d;
+      }
+    }
+  });
+
+  if (!latestDate) {
+    container.innerHTML = '<span class="freshness-dot" style="background:var(--muted)"></span>Data di estrazione non disponibile';
+    return;
+  }
+
+  var now = new Date();
+  var diffDays = Math.floor((now - latestDate) / (1000 * 60 * 60 * 24));
+  var dateStr = latestDate.toLocaleDateString('it-IT', { day: '2-digit', month: 'long', year: 'numeric' });
+
+  var cls, label;
+  if (diffDays <= 7) {
+    cls = 'freshness-ok';
+    label = 'Dati aggiornati';
+  } else if (diffDays <= 30) {
+    cls = 'freshness-warn';
+    label = 'Dati da aggiornare (' + diffDays + ' giorni fa)';
+  } else {
+    cls = 'freshness-stale';
+    label = '⚠ Dati obsoleti (' + diffDays + ' giorni fa) — si consiglia nuova estrazione';
+  }
+
+  container.innerHTML = '<span class="freshness-dot ' + cls + '" style="background:currentColor"></span>'
+    + '<span class="' + cls + '">' + label + '</span>'
+    + ' — Ultimo aggiornamento: ' + dateStr;
 })();
 
 // ============================================================
