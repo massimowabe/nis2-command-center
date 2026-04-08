@@ -1558,6 +1558,68 @@ body.board-mode #footer { visibility: hidden; }
 .freshness-ok { color: var(--green); }
 .freshness-warn { color: var(--yellow); }
 .freshness-stale { color: var(--red); }
+
+/* Policy detail modal */
+.policy-modal-overlay { position: fixed; inset: 0; z-index: 10001; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.policy-modal-overlay.pol-modal-open { opacity: 1; pointer-events: all; }
+.policy-modal { background: var(--card); border: 1px solid var(--border); border-radius: 10px; width: 560px; max-width: 92vw; max-height: 85vh; overflow-y: auto; padding: 0; box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+.policy-modal-head { display: flex; align-items: flex-start; justify-content: space-between; padding: 20px 24px 14px; border-bottom: 1px solid var(--border); }
+.policy-modal-code { font-family: var(--font-mono); font-size: 0.65rem; color: var(--cyan); letter-spacing: 0.1em; margin-bottom: 4px; }
+.policy-modal-title { font-size: 1rem; font-weight: 700; color: var(--text); }
+.policy-modal-close { background: none; border: 1px solid var(--border); border-radius: 6px; color: var(--muted); width: 28px; height: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: all 0.15s; flex-shrink: 0; margin-left: 12px; }
+.policy-modal-close:hover { background: var(--red); color: #fff; border-color: var(--red); }
+.policy-modal-body { padding: 18px 24px 24px; }
+.policy-modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+.policy-modal-field { }
+.policy-modal-field-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 2px; text-transform: uppercase; }
+.policy-modal-field-value { font-size: 0.8rem; color: var(--text); }
+.policy-modal-mis { margin-top: 14px; padding: 12px; background: var(--bg); border-radius: 6px; border: 1px solid var(--border); }
+.policy-modal-mis-title { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.1em; color: var(--cyan); margin-bottom: 8px; }
+.policy-modal-mis-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.policy-modal-mis-chip { padding: 3px 8px; border-radius: 4px; font-size: 0.62rem; font-family: var(--font-mono); background: var(--card); border: 1px solid var(--border); color: var(--text); }
+.policy-modal-doc-btn { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; padding: 10px 18px; background: var(--cyan); color: #0d1117; border: none; border-radius: 6px; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all 0.15s; text-decoration: none; font-family: var(--font-mono); letter-spacing: 0.03em; }
+.policy-modal-doc-btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
+.policy-modal-doc-btn svg { width: 14px; height: 14px; }
+.policy-modal-path { margin-top: 10px; font-size: 0.6rem; color: var(--muted); font-family: var(--font-mono); word-break: break-all; }
+
+/* Policy status filter */
+.policy-ov-stat-clickable { cursor: pointer; padding: 4px 10px; border-radius: 4px; border: 1px solid transparent; transition: all 0.15s; }
+.policy-ov-stat-clickable:hover { border-color: var(--border); background: var(--bg); }
+.policy-ov-stat-clickable.pol-filter-active { border-color: var(--cyan); background: rgba(88,166,255,0.08); }
+.policy-ov-item.pol-hidden { display: none; }
+
+/* Actionable notifications */
+.notif-item-clickable { cursor: pointer; transition: background 0.15s; }
+.notif-item-clickable:hover { background: rgba(88,166,255,0.08); }
+
+/* Deadline countdown widget */
+.deadline-widget { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.deadline-card { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); transition: border-color 0.15s; cursor: pointer; }
+.deadline-card:hover { border-color: var(--cyan); }
+.deadline-countdown { font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700; min-width: 48px; text-align: center; }
+.deadline-info { flex: 1; min-width: 0; }
+.deadline-name { font-size: 0.72rem; color: var(--text); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.deadline-date { font-size: 0.6rem; color: var(--muted); font-family: var(--font-mono); }
+.deadline-badge { font-size: 0.55rem; font-family: var(--font-mono); padding: 2px 6px; border-radius: 3px; font-weight: 600; letter-spacing: 0.05em; white-space: nowrap; }
+
+/* Global search (Ctrl+K) */
+.gsearch-overlay { position: fixed; inset: 0; z-index: 10002; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: flex; align-items: flex-start; justify-content: center; padding-top: 15vh; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.gsearch-overlay.gsearch-open { opacity: 1; pointer-events: all; }
+.gsearch-box { background: var(--card); border: 1px solid var(--cyan); border-radius: 10px; width: 520px; max-width: 92vw; box-shadow: 0 12px 40px rgba(0,0,0,0.4); overflow: hidden; }
+.gsearch-input-wrap { display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); gap: 10px; }
+.gsearch-input-wrap svg { width: 16px; height: 16px; color: var(--muted); flex-shrink: 0; }
+.gsearch-input { flex: 1; background: none; border: none; outline: none; color: var(--text); font-size: 0.9rem; font-family: inherit; }
+.gsearch-input::placeholder { color: var(--muted); }
+.gsearch-kbd { font-family: var(--font-mono); font-size: 0.55rem; padding: 2px 6px; border-radius: 3px; border: 1px solid var(--border); color: var(--muted); background: var(--bg); }
+.gsearch-results { max-height: 340px; overflow-y: auto; }
+.gsearch-result { display: flex; align-items: center; gap: 10px; padding: 10px 16px; cursor: pointer; transition: background 0.1s; }
+.gsearch-result:hover, .gsearch-result.gsearch-active { background: rgba(88,166,255,0.08); }
+.gsearch-result-icon { font-size: 0.9rem; width: 24px; text-align: center; flex-shrink: 0; }
+.gsearch-result-text { flex: 1; min-width: 0; }
+.gsearch-result-title { font-size: 0.78rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gsearch-result-meta { font-size: 0.6rem; color: var(--muted); font-family: var(--font-mono); }
+.gsearch-empty { padding: 24px 16px; text-align: center; color: var(--muted); font-size: 0.78rem; }
+.gsearch-footer { padding: 8px 16px; border-top: 1px solid var(--border); font-size: 0.6rem; color: var(--muted); font-family: var(--font-mono); display: flex; gap: 12px; }
 .freshness-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
 
 @media (max-width: 640px) {
@@ -2363,6 +2425,10 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
   </div>
   <div class="header-right">
     <!-- NOTIFICATION BELL -->
+    <button class="export-btn" onclick="openGlobalSearch()" data-tooltip="Ricerca globale (Ctrl+K)" style="gap:4px;">
+      <svg viewBox="0 0 16 16" fill="currentColor" width="13" height="13"><path d="M11.742 10.344a6.5 6.5 0 10-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 001.415-1.414l-3.85-3.85a1.007 1.007 0 00-.115-.099zm-5.242 1.156a5.5 5.5 0 110-11 5.5 5.5 0 010 11z"/></svg>
+      <span class="gsearch-kbd" style="margin-left:2px;">Ctrl+K</span>
+    </button>
     <div class="notif-bell-wrap" id="notif-bell-wrap">
       <button class="notif-bell-btn" id="notif-bell-btn" onclick="toggleNotifDropdown(event)" aria-label="Notifiche" aria-haspopup="true" aria-expanded="false">
         <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 16a2 2 0 001.985-1.75c.017-.137-.097-.25-.235-.25h-3.5c-.138 0-.252.113-.235.25A2 2 0 008 16zm.5-14.5A5.5 5.5 0 012.5 7v1.5a1.5 1.5 0 01-1.5 1.5H1v1h14v-1h-1a1.5 1.5 0 01-1.5-1.5V7A5.5 5.5 0 008.5 1.5V1a.5.5 0 00-1 0v.5z"/></svg>
@@ -2552,6 +2618,18 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
           <p>Nessuna sede ha raggiunto la soglia minima di compliance NIS2 (70%). Il valore medio di conformità è <strong style="color:var(--yellow)">31%</strong>. MIS-07 (Logging &amp; Monitoraggio) risulta <strong style="color:var(--red)">KO</strong> in 5 sedi su 6. Tutte le sedi presentano MFA assente su tutti gli asset. Si richiede intervento prioritario entro Q2 2026.</p>
         </div>
       </div>
+    </div>
+
+    <!-- PROSSIME SCADENZE -->
+    <div class="scroll-animate" style="margin-top:28px;">
+      <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>// PROSSIME SCADENZE</span>
+        <button class="export-btn" onclick="switchTab('scadenze')" style="margin-left:auto;" data-tooltip="Vai al Piano Scadenze completo">
+          <svg viewBox="0 0 16 16" fill="currentColor" width="12" height="12"><path d="M4 0a.5.5 0 01.5.5V1h7V.5a.5.5 0 011 0V1h1a2 2 0 012 2v10a2 2 0 01-2 2H2a2 2 0 01-2-2V3a2 2 0 012-2h1V.5A.5.5 0 014 0zM2 4v9h12V4H2z"/></svg>
+          Tutte le Scadenze
+        </button>
+      </div>
+      <div class="deadline-widget" id="deadline-widget"></div>
     </div>
 
     <!-- POLICY FRAMEWORK OVERVIEW -->
@@ -2819,6 +2897,28 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
   </div>
 
 </main>
+
+<!-- POLICY DETAIL MODAL -->
+<div class="policy-modal-overlay" id="policy-modal-overlay" onclick="if(event.target===this)closePolicyModal()">
+  <div class="policy-modal" id="policy-modal"></div>
+</div>
+
+<!-- GLOBAL SEARCH (Ctrl+K) -->
+<div class="gsearch-overlay" id="gsearch-overlay" onclick="if(event.target===this)closeGlobalSearch()">
+  <div class="gsearch-box">
+    <div class="gsearch-input-wrap">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 10-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 001.415-1.414l-3.85-3.85a1.007 1.007 0 00-.115-.099zm-5.242 1.156a5.5 5.5 0 110-11 5.5 5.5 0 010 11z"/></svg>
+      <input class="gsearch-input" id="gsearch-input" type="text" placeholder="Cerca asset, policy, rischi, sedi..." oninput="onGlobalSearch(this.value)">
+      <span class="gsearch-kbd">ESC</span>
+    </div>
+    <div class="gsearch-results" id="gsearch-results"></div>
+    <div class="gsearch-footer">
+      <span>&#8593;&#8595; naviga</span>
+      <span>&#9166; apri</span>
+      <span>esc chiudi</span>
+    </div>
+  </div>
+</div>
 
 <!-- SEDE COMPARISON MODAL -->
 <div id="compare-modal" role="dialog" aria-modal="true" aria-label="Confronto Sedi" onclick="if(event.target===this)closeCompareModal()">
@@ -3499,12 +3599,13 @@ function buildSparkline(pct, color, ok, ko) {
     + '<div class="policy-ov-label">' + counts.approvate + '/' + total + ' approvate (' + pctApp + '%)</div>'
     + '</div>';
 
-  // Stats row
+  // Stats row (clickable filters)
   html += '<div class="policy-ov-stats">'
-    + '<div class="policy-ov-stat"><div class="policy-ov-dot" style="background:var(--green)"></div>' + counts.approvate + ' Approvate</div>'
-    + '<div class="policy-ov-stat"><div class="policy-ov-dot" style="background:var(--yellow)"></div>' + counts.revisione + ' In revisione</div>'
-    + '<div class="policy-ov-stat"><div class="policy-ov-dot" style="background:var(--orange)"></div>' + counts.bozze + ' Bozze</div>'
-    + '<div class="policy-ov-stat"><div class="policy-ov-dot" style="background:var(--red)"></div>' + counts.dacreare + ' Da creare</div>'
+    + '<div class="policy-ov-stat policy-ov-stat-clickable" onclick="filterPolicyOverview(\'all\', this)" data-filter="all"><div class="policy-ov-dot" style="background:var(--cyan)"></div>' + total + ' Totali</div>'
+    + '<div class="policy-ov-stat policy-ov-stat-clickable" onclick="filterPolicyOverview(\'Approvata\', this)" data-filter="Approvata"><div class="policy-ov-dot" style="background:var(--green)"></div>' + counts.approvate + ' Approvate</div>'
+    + '<div class="policy-ov-stat policy-ov-stat-clickable" onclick="filterPolicyOverview(\'In revisione\', this)" data-filter="In revisione"><div class="policy-ov-dot" style="background:var(--yellow)"></div>' + counts.revisione + ' In revisione</div>'
+    + '<div class="policy-ov-stat policy-ov-stat-clickable" onclick="filterPolicyOverview(\'Bozza\', this)" data-filter="Bozza"><div class="policy-ov-dot" style="background:var(--orange)"></div>' + counts.bozze + ' Bozze</div>'
+    + '<div class="policy-ov-stat policy-ov-stat-clickable" onclick="filterPolicyOverview(\'Da creare\', this)" data-filter="Da creare"><div class="policy-ov-dot" style="background:var(--red)"></div>' + counts.dacreare + ' Da creare</div>'
     + '</div>';
 
   // Grouped policy cards
@@ -3536,7 +3637,7 @@ function buildSparkline(pct, color, ok, ko) {
     html += '<div class="policy-ov-cat">';
     html += '<div class="policy-ov-cat-title">' + cat + '</div>';
     POLICIES.filter(function(p) { return p.cat === cat; }).forEach(function(p) {
-      html += '<div class="policy-ov-item ' + itemCls(p.stato) + '">'
+      html += '<div class="policy-ov-item ' + itemCls(p.stato) + '" data-stato="' + p.stato + '" onclick="openPolicyModal(\'' + p.codice + '\')" style="cursor:pointer;">'
         + '<span class="policy-ov-code">' + p.codice + '</span>'
         + '<span class="policy-ov-name">' + p.nome + '</span>'
         + '<span class="policy-ov-badge ' + badgeCls(p.stato) + '">' + badgeLabel(p.stato) + '</span>'
@@ -3594,6 +3695,360 @@ function buildSparkline(pct, color, ok, ko) {
     + '<span class="' + cls + '">' + label + '</span>'
     + ' — Ultimo aggiornamento: ' + dateStr;
 })();
+
+// ============================================================
+// TAB 1: OVERVIEW — DEADLINE COUNTDOWN WIDGET
+// ============================================================
+(function renderDeadlineWidget() {
+  var container = document.getElementById('deadline-widget');
+  if (!container) return;
+  var scadenze = DATA.scadenze || [];
+  var now = new Date();
+
+  // Parse dates and filter non-completed
+  var items = [];
+  scadenze.forEach(function(s) {
+    if (s.stato === 'COMPLETATO') return;
+    // Parse scadenza date
+    var dateStr = s.scadenza;
+    var parsed = null;
+    // Try "30 Giu 2026" format
+    var months = { 'Gen':0,'Feb':1,'Mar':2,'Apr':3,'Mag':4,'Giu':5,'Lug':6,'Ago':7,'Set':8,'Ott':9,'Nov':10,'Dic':11 };
+    var m1 = dateStr.match(/(\d{1,2})\s+(\w{3})\s+(\d{4})/);
+    if (m1) {
+      parsed = new Date(parseInt(m1[3]), months[m1[2]] || 0, parseInt(m1[1]));
+    } else {
+      // "Apr-Mag 2026" → take end month
+      var m2 = dateStr.match(/(\w{3})[-–](\w{3})\s+(\d{4})/);
+      if (m2) {
+        parsed = new Date(parseInt(m2[3]), (months[m2[2]] || 0) + 1, 0); // last day of end month
+      } else {
+        // "Mar 2026"
+        var m3 = dateStr.match(/(\w{3})\s+(\d{4})/);
+        if (m3) {
+          parsed = new Date(parseInt(m3[2]), (months[m3[1]] || 0) + 1, 0);
+        }
+      }
+    }
+    if (!parsed) return;
+
+    var diffMs = parsed - now;
+    var diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+    var color, badgeBg;
+    if (s.stato === 'IN RITARDO') { color = 'var(--red)'; badgeBg = 'var(--red)'; }
+    else if (diffDays <= 14) { color = 'var(--orange)'; badgeBg = 'var(--orange)'; }
+    else if (diffDays <= 45) { color = 'var(--yellow)'; badgeBg = 'var(--yellow)'; }
+    else { color = 'var(--green)'; badgeBg = 'var(--green)'; }
+
+    items.push({
+      name: s.milestone,
+      date: s.scadenza,
+      stato: s.stato,
+      days: diffDays,
+      color: color,
+      badgeBg: badgeBg,
+      parsed: parsed
+    });
+  });
+
+  items.sort(function(a, b) { return a.parsed - b.parsed; });
+
+  var html = '';
+  items.forEach(function(item) {
+    var countdownText;
+    if (item.stato === 'IN RITARDO') {
+      countdownText = Math.abs(item.days) + 'g';
+    } else {
+      countdownText = item.days + 'g';
+    }
+    var badgeText = item.stato;
+    var badgeColor = item.stato === 'IN RITARDO' ? '#fff' : '#000';
+
+    html += '<div class="deadline-card" onclick="switchTab(\'scadenze\')">'
+      + '<div class="deadline-countdown" style="color:' + item.color + '">' + countdownText + '</div>'
+      + '<div class="deadline-info">'
+      + '<div class="deadline-name">' + item.name + '</div>'
+      + '<div class="deadline-date">' + item.date + '</div>'
+      + '</div>'
+      + '<span class="deadline-badge" style="background:' + item.badgeBg + '22; color:' + item.color + '">' + badgeText + '</span>'
+      + '</div>';
+  });
+
+  container.innerHTML = html || '<div style="padding:14px;color:var(--muted);font-size:0.78rem;">Tutte le scadenze sono state completate!</div>';
+})();
+
+// ============================================================
+// POLICY DETAIL MODAL
+// ============================================================
+var POLICY_DETAIL_DATA = [
+  { codice: 'POL-01', nome: 'Access Control Policy (ACP)', cat: 'Gestione Accessi', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'ACP',
+    mis: ['MIS-09'], desc: 'Definisce le regole per il controllo degli accessi logici a sistemi, applicazioni e dati aziendali.',
+    docPath: 'POLICY/Fondamentali/ACCESS CONTROL POLICY (ACP)' },
+  { codice: 'POL-02', nome: 'Privileged Access Management (PAM) Policy', cat: 'Gestione Accessi', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'PAM',
+    mis: ['MIS-09'], desc: 'Disciplina la gestione degli account con privilegi elevati e accesso amministrativo.',
+    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/PRIVILEGED ACCESS MANAGEMENT POLICY (PAM POLICY)' },
+  { codice: 'POL-03', nome: 'Password Management Policy (PWM)', cat: 'Gestione Accessi', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'PAP',
+    mis: ['MIS-09','MIS-08'], desc: 'Stabilisce requisiti di complessità, rotazione e gestione delle credenziali di autenticazione.',
+    docPath: 'POLICY/Fondamentali/PASSWORD & AUTHENTICATION POLICY (PAP)' },
+  { codice: 'POL-04', nome: 'Remote Working & Mobile Operations (RWMP)', cat: 'Gestione Accessi', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'RWMP',
+    mis: ['MIS-09','MIS-05'], desc: 'Regola le condizioni di sicurezza per lavoro remoto e dispositivi mobili.',
+    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/REMOTE WORKING & MOBILE OPERATIONS SECURITY POLICY (RWMP)' },
+  { codice: 'POL-05', nome: 'Secure Configuration & Hardening Policy (SCHP)', cat: 'Protezione Sistemi', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'SCHP',
+    mis: ['MIS-06','MIS-10'], desc: 'Definisce le baseline di configurazione sicura per tutti i sistemi informatici.',
+    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/SECURE CONFIGURATION & HARDENING POLICY (SCHP)' },
+  { codice: 'POL-06', nome: 'Endpoint Detection & Response Policy (EDRP)', cat: 'Protezione Sistemi', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'ESP',
+    mis: ['MIS-07','MIS-03'], desc: 'Disciplina protezione endpoint: antivirus, EDR, threat detection.',
+    docPath: 'POLICY/Fondamentali/ENDPOINT SECURITY POLICY (ESP)' },
+  { codice: 'POL-07', nome: 'Cryptography & Key Management Policy (CKMP)', cat: 'Protezione Sistemi', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'CKMP',
+    mis: ['MIS-08'], desc: 'Regola uso della crittografia e gestione del ciclo di vita delle chiavi.',
+    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/CRYPTOGRAPHY & KEY MANAGEMENT POLICY (CKMP)' },
+  { codice: 'POL-08', nome: 'Secure Printing & Document Handling (SPDP)', cat: 'Protezione Sistemi', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'SPDP',
+    mis: ['MIS-10'], desc: 'Procedure per stampa sicura e gestione documentale cartacea/digitale.',
+    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/SECURE PRINTING & DOCUMENT HANDLING POLICY (SPDP)' },
+  { codice: 'POL-09', nome: 'Backup, Restore & Data Recovery Policy (BRP)', cat: 'Gestione Dati', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'BRP',
+    mis: ['MIS-04','MIS-10'], desc: 'Definisce strategie e frequenze di backup, procedure di restore e test di recovery.',
+    docPath: 'POLICY/Fondamentali/BACKUP & RESTORE POLICY (BRP)' },
+  { codice: 'POL-10', nome: 'Data Classification & Handling Policy (DCHP)', cat: 'Gestione Dati', stato: 'In revisione', data: '—', versione: '0.9', acronimo: 'AMDP',
+    mis: ['MIS-10','MIS-02'], desc: 'Classificazione dei dati per livello di sensibilità e regole di trattamento.',
+    docPath: 'POLICY/Fondamentali/ASSET MANAGEMENT & DATA CLASSIFICATION POLICY (AMDP)' },
+  { codice: 'POL-11', nome: 'Acceptable Use Policy (AUP)', cat: 'Gestione Dati', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'AUP',
+    mis: ['MIS-01','MIS-09'], desc: 'Regole di utilizzo accettabile di risorse informatiche aziendali.',
+    docPath: 'POLICY/Fondamentali/ACCEPTABLE USE POLICY (AUP)' },
+  { codice: 'POL-12', nome: 'Incident Response Policy (IRP)', cat: 'Incident & Continuita', stato: 'Approvata', data: '09/12/2025', versione: '1.0', acronimo: 'IRP',
+    mis: ['MIS-03'], desc: 'Procedure di rilevazione, analisi, contenimento e ripristino incidenti di sicurezza.',
+    docPath: 'POLICY/Fondamentali/INCIDENT RESPONSE POLICY (IRP - POLICY)' },
+  { codice: 'POL-13', nome: 'Business Continuity & Disaster Recovery (BCDR)', cat: 'Incident & Continuita', stato: 'Bozza', data: '—', versione: '0.3', acronimo: 'BCPDRP',
+    mis: ['MIS-04'], desc: 'Piano di continuità operativa e recupero in caso di disastro.',
+    docPath: 'POLICY/Fondamentali/BUSINESS CONTINUITY & DISASTER RECOVERY POLICY (BCPDRP)' },
+  { codice: 'POL-14', nome: 'Crisis Communication Policy (CCP)', cat: 'Incident & Continuita', stato: 'Bozza', data: '—', versione: '0.2', acronimo: 'CCP',
+    mis: ['MIS-03','MIS-04'], desc: 'Protocollo di comunicazione interna ed esterna durante crisi e incidenti.',
+    docPath: '' },
+  { codice: 'POL-15', nome: 'Information Security Policy (ISP)', cat: 'Governance', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'ISP',
+    mis: ['MIS-01'], desc: 'Policy quadro per la sicurezza delle informazioni. Documento apex del framework NIS2.',
+    docPath: 'POLICY/Fondamentali/INFORMATION SECURITY POLICY (ISP)' },
+  { codice: 'POL-16', nome: 'Change Management Policy (CMP)', cat: 'Governance', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'CMP',
+    mis: ['MIS-06','MIS-02'], desc: 'Gestione strutturata delle modifiche a sistemi, configurazioni e processi.',
+    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/CHANGE MANAGEMENT POLICY (CMP)' },
+  { codice: 'POL-17', nome: 'Secure Software Development (SSDP)', cat: 'Governance', stato: 'Bozza', data: '—', versione: '0.1', acronimo: 'SSDP',
+    mis: ['MIS-06'], desc: 'Linee guida per sviluppo sicuro del software e gestione vulnerabilità.',
+    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/SECURE SOFTWARE DEVELOPMENT & CHANGE MANAGEMENT POLICY (SSDP)' },
+  { codice: 'POL-18', nome: 'Email, Communication & Phishing Protection (ECP)', cat: 'Governance', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'ECP',
+    mis: ['MIS-01','MIS-03'], desc: 'Protezione da phishing, regole email e comunicazioni sicure.',
+    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/EMAIL, COMMUNICATION & PHISHING PROTECTION POLICY (ECP)' }
+];
+
+function openPolicyModal(codice) {
+  var p = POLICY_DETAIL_DATA.find(function(d) { return d.codice === codice; });
+  if (!p) return;
+
+  var overlay = document.getElementById('policy-modal-overlay');
+  var modal = document.getElementById('policy-modal');
+
+  var statusColor = { 'Approvata': 'var(--green)', 'In revisione': 'var(--yellow)', 'Bozza': 'var(--orange)', 'Da creare': 'var(--red)' };
+  var color = statusColor[p.stato] || 'var(--muted)';
+
+  var misChips = '';
+  (p.mis || []).forEach(function(m) {
+    var label = DATA.mis_definizioni ? (DATA.mis_definizioni[m] || m) : m;
+    misChips += '<span class="policy-modal-mis-chip">' + m + ' — ' + label + '</span>';
+  });
+
+  var docBtn = '';
+  if (p.docPath) {
+    var searchUrl = 'https://drive.google.com/drive/search?q=' + encodeURIComponent(p.acronimo + ' ' + p.nome.split('(')[0].trim());
+    docBtn = '<a class="policy-modal-doc-btn" href="' + searchUrl + '" target="_blank" rel="noopener">'
+      + '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M14 4.5V14a2 2 0 01-2 2H4a2 2 0 01-2-2V2a2 2 0 012-2h5.5L14 4.5zm-3 0A1.5 1.5 0 019.5 3V1H4a1 1 0 00-1 1v12a1 1 0 001 1h8a1 1 0 001-1V4.5h-2z"/></svg>'
+      + 'Apri Documento su Drive</a>'
+      + '<div class="policy-modal-path">📁 ' + p.docPath + '</div>';
+  } else {
+    docBtn = '<div class="policy-modal-path" style="color:var(--orange)">Documento non ancora disponibile (stato: ' + p.stato + ')</div>';
+  }
+
+  modal.innerHTML = '<div class="policy-modal-head">'
+    + '<div><div class="policy-modal-code">' + p.codice + ' — ' + p.cat.toUpperCase() + '</div>'
+    + '<div class="policy-modal-title">' + p.nome + '</div></div>'
+    + '<button class="policy-modal-close" onclick="closePolicyModal()">&times;</button></div>'
+    + '<div class="policy-modal-body">'
+    + '<p style="font-size:0.78rem;color:var(--muted);margin:0 0 16px;line-height:1.6;">' + (p.desc || '') + '</p>'
+    + '<div class="policy-modal-grid">'
+    + '<div class="policy-modal-field"><div class="policy-modal-field-label">STATO</div><div class="policy-modal-field-value" style="color:' + color + ';font-weight:700">' + p.stato + '</div></div>'
+    + '<div class="policy-modal-field"><div class="policy-modal-field-label">VERSIONE</div><div class="policy-modal-field-value">' + p.versione + '</div></div>'
+    + '<div class="policy-modal-field"><div class="policy-modal-field-label">DATA APPROVAZIONE</div><div class="policy-modal-field-value">' + p.data + '</div></div>'
+    + '<div class="policy-modal-field"><div class="policy-modal-field-label">ACRONIMO</div><div class="policy-modal-field-value" style="font-family:var(--font-mono)">' + p.acronimo + '</div></div>'
+    + '</div>'
+    + (misChips ? '<div class="policy-modal-mis"><div class="policy-modal-mis-title">MISURE MIS COLLEGATE</div><div class="policy-modal-mis-chips">' + misChips + '</div></div>' : '')
+    + docBtn
+    + '</div>';
+
+  overlay.classList.add('pol-modal-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePolicyModal() {
+  document.getElementById('policy-modal-overlay').classList.remove('pol-modal-open');
+  document.body.style.overflow = '';
+}
+
+// ============================================================
+// POLICY STATUS FILTER
+// ============================================================
+function filterPolicyOverview(stato, el) {
+  // Toggle active class
+  var allBtns = document.querySelectorAll('.policy-ov-stat-clickable');
+  allBtns.forEach(function(b) { b.classList.remove('pol-filter-active'); });
+  if (el) el.classList.add('pol-filter-active');
+
+  var items = document.querySelectorAll('#policy-overview-section .policy-ov-item');
+  items.forEach(function(item) {
+    if (stato === 'all') {
+      item.classList.remove('pol-hidden');
+    } else {
+      var itemStato = item.getAttribute('data-stato');
+      if (itemStato === stato) {
+        item.classList.remove('pol-hidden');
+      } else {
+        item.classList.add('pol-hidden');
+      }
+    }
+  });
+}
+
+// ============================================================
+// GLOBAL SEARCH (Ctrl+K)
+// ============================================================
+var gsearchActiveIdx = -1;
+
+function openGlobalSearch() {
+  var overlay = document.getElementById('gsearch-overlay');
+  overlay.classList.add('gsearch-open');
+  var input = document.getElementById('gsearch-input');
+  input.value = '';
+  input.focus();
+  document.getElementById('gsearch-results').innerHTML = '<div class="gsearch-empty">Inizia a digitare per cercare...</div>';
+  gsearchActiveIdx = -1;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGlobalSearch() {
+  document.getElementById('gsearch-overlay').classList.remove('gsearch-open');
+  document.body.style.overflow = '';
+}
+
+function onGlobalSearch(query) {
+  var results = [];
+  var q = query.toLowerCase().trim();
+  if (q.length < 2) {
+    document.getElementById('gsearch-results').innerHTML = '<div class="gsearch-empty">Inizia a digitare per cercare...</div>';
+    return;
+  }
+
+  // Search assets
+  DATA.assets.forEach(function(a) {
+    var searchStr = (a.nome + ' ' + a.sede + ' ' + a.os + ' ' + (a.modello || '') + ' ' + (a.ruolo || '')).toLowerCase();
+    if (searchStr.indexOf(q) >= 0) {
+      results.push({ icon: '💻', title: a.nome, meta: a.sede + ' — ' + a.ruolo, action: function() { switchTab('asset'); closeGlobalSearch(); } });
+    }
+  });
+
+  // Search policies
+  POLICY_DETAIL_DATA.forEach(function(p) {
+    var searchStr = (p.codice + ' ' + p.nome + ' ' + p.cat + ' ' + p.acronimo).toLowerCase();
+    if (searchStr.indexOf(q) >= 0) {
+      results.push({ icon: '📋', title: p.codice + ' — ' + p.nome, meta: p.cat + ' — ' + p.stato, action: function() { openPolicyModal(p.codice); closeGlobalSearch(); } });
+    }
+  });
+
+  // Search risks
+  (DATA.risk_matrix || []).forEach(function(r) {
+    var searchStr = (r.scenario + ' ' + (r.categoria || '') + ' ' + (r.descrizione || '')).toLowerCase();
+    if (searchStr.indexOf(q) >= 0) {
+      results.push({ icon: '⚠', title: r.scenario, meta: 'Rischio ' + (r.livello_residuo || r.livello_inerente || ''), action: function() { switchTab('risk'); closeGlobalSearch(); } });
+    }
+  });
+
+  // Search MIS
+  if (DATA.mis_definizioni) {
+    Object.keys(DATA.mis_definizioni).forEach(function(m) {
+      var searchStr = (m + ' ' + DATA.mis_definizioni[m]).toLowerCase();
+      if (searchStr.indexOf(q) >= 0) {
+        results.push({ icon: '📊', title: m, meta: DATA.mis_definizioni[m], action: function() { switchTab('mis'); closeGlobalSearch(); } });
+      }
+    });
+  }
+
+  // Search sedi
+  Object.keys(DATA.sedi || {}).forEach(function(s) {
+    if (s.toLowerCase().indexOf(q) >= 0) {
+      results.push({ icon: '🏥', title: s, meta: 'Compliance: ' + DATA.sedi[s].compliance_pct + '%', action: function() { drillDownSede(s); closeGlobalSearch(); } });
+    }
+  });
+
+  // Search scadenze
+  (DATA.scadenze || []).forEach(function(s) {
+    if (s.milestone.toLowerCase().indexOf(q) >= 0) {
+      results.push({ icon: '📅', title: s.milestone, meta: s.scadenza + ' — ' + s.stato, action: function() { switchTab('scadenze'); closeGlobalSearch(); } });
+    }
+  });
+
+  // Limit and render
+  results = results.slice(0, 12);
+  var container = document.getElementById('gsearch-results');
+  if (results.length === 0) {
+    container.innerHTML = '<div class="gsearch-empty">Nessun risultato per "' + q + '"</div>';
+    return;
+  }
+
+  container.innerHTML = results.map(function(r, i) {
+    return '<div class="gsearch-result" data-idx="' + i + '" onmouseenter="gsearchActiveIdx=' + i + ';highlightGsResult()" onclick="gsearchResults[' + i + '].action()">'
+      + '<div class="gsearch-result-icon">' + r.icon + '</div>'
+      + '<div class="gsearch-result-text"><div class="gsearch-result-title">' + r.title + '</div>'
+      + '<div class="gsearch-result-meta">' + r.meta + '</div></div></div>';
+  }).join('');
+
+  window.gsearchResults = results;
+  gsearchActiveIdx = 0;
+  highlightGsResult();
+}
+
+function highlightGsResult() {
+  var items = document.querySelectorAll('.gsearch-result');
+  items.forEach(function(el, i) {
+    el.classList.toggle('gsearch-active', i === gsearchActiveIdx);
+  });
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+  // Ctrl+K / Cmd+K → open global search
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    var overlay = document.getElementById('gsearch-overlay');
+    if (overlay.classList.contains('gsearch-open')) {
+      closeGlobalSearch();
+    } else {
+      openGlobalSearch();
+    }
+    return;
+  }
+  // ESC → close modals
+  if (e.key === 'Escape') {
+    var gs = document.getElementById('gsearch-overlay');
+    if (gs && gs.classList.contains('gsearch-open')) { closeGlobalSearch(); return; }
+    var pm = document.getElementById('policy-modal-overlay');
+    if (pm && pm.classList.contains('pol-modal-open')) { closePolicyModal(); return; }
+  }
+  // Arrow keys in global search
+  var gs = document.getElementById('gsearch-overlay');
+  if (gs && gs.classList.contains('gsearch-open')) {
+    var items = document.querySelectorAll('.gsearch-result');
+    if (e.key === 'ArrowDown') { e.preventDefault(); gsearchActiveIdx = Math.min(gsearchActiveIdx + 1, items.length - 1); highlightGsResult(); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); gsearchActiveIdx = Math.max(gsearchActiveIdx - 1, 0); highlightGsResult(); }
+    if (e.key === 'Enter' && window.gsearchResults && window.gsearchResults[gsearchActiveIdx]) {
+      e.preventDefault();
+      window.gsearchResults[gsearchActiveIdx].action();
+    }
+  }
+});
 
 // ============================================================
 // DRILL-DOWN: click sede card → Asset tab filtered
@@ -5522,36 +5977,48 @@ function handleModalOverlayClick(e) {
       var d = scadMap[s.scadenza];
       var days = d ? Math.abs(Math.round((TODAY_REF - d) / 86400000)) : 0;
       notifs.push({ icon: '\u26A0\uFE0F', sev: 'critical',
-        title: 'Milestone in ritardo: ' + s.milestone + (days > 0 ? ' \u2014 ' + days + ' giorni' : ''), ts: 'Oggi' });
+        title: 'Milestone in ritardo: ' + s.milestone + (days > 0 ? ' \u2014 ' + days + ' giorni' : ''), ts: 'Oggi',
+        action: "switchTab('scadenze')" });
     }
   });
   Object.keys(sedi).forEach(function(name) {
     if (sedi[name].compliance_pct < 30) {
       notifs.push({ icon: '\uD83D\uDD34', sev: 'critical',
-        title: 'Sede ' + name + ' sotto il 30% (' + sedi[name].compliance_pct + '%)', ts: 'Oggi' });
+        title: 'Sede ' + name + ' sotto il 30% (' + sedi[name].compliance_pct + '%)', ts: 'Oggi',
+        action: "drillDownSede('" + name + "')" });
     }
   });
   var critici = assets.reduce(function(s, a) { return s + (a.rischi_critici || 0); }, 0);
   if (critici > 0) {
-    notifs.push({ icon: '\uD83D\uDD34', sev: 'critical', title: critici + ' rischi critici aperti', ts: 'Oggi' });
+    notifs.push({ icon: '\uD83D\uDD34', sev: 'critical', title: critici + ' rischi critici aperti', ts: 'Oggi',
+      action: "openKpiDrilldown('rischi_critici')" });
   }
   var noEdr = assets.filter(function(a) { return a.edr === false; }).length;
   if (noEdr > 0) {
-    notifs.push({ icon: '\u26A0\uFE0F', sev: 'high', title: noEdr + ' asset senza protezione EDR', ts: 'Oggi' });
+    notifs.push({ icon: '\u26A0\uFE0F', sev: 'high', title: noEdr + ' asset senza protezione EDR', ts: 'Oggi',
+      action: "switchTab('asset')" });
   }
   var noMfa = assets.filter(function(a) { return a.mfa === false; }).length;
   if (noMfa > 0) {
-    notifs.push({ icon: '\u26A0\uFE0F', sev: 'warn', title: noMfa + ' asset senza MFA attiva', ts: 'Oggi' });
+    notifs.push({ icon: '\u26A0\uFE0F', sev: 'warn', title: noMfa + ' asset senza MFA attiva', ts: 'Oggi',
+      action: "switchTab('asset')" });
+  }
+  // Policy non approvate
+  var polNonApp = POLICY_DETAIL_DATA.filter(function(p) { return p.stato !== 'Approvata'; }).length;
+  if (polNonApp > 0) {
+    notifs.push({ icon: '\uD83D\uDCCB', sev: 'warn', title: polNonApp + ' policy non ancora approvate', ts: 'Oggi',
+      action: "switchTab('policy')" });
   }
   var badge = document.getElementById('notif-badge');
   if (badge) { badge.textContent = notifs.length; }
   var list = document.getElementById('notif-list');
   if (list) {
     list.innerHTML = notifs.map(function(n) {
-      return '<div class="notif-item notif-severity-' + n.sev + '">'
+      var clickAttr = n.action ? ' onclick="' + n.action + ';toggleNotifDropdown(event)"' : '';
+      return '<div class="notif-item notif-item-clickable notif-severity-' + n.sev + '"' + clickAttr + '>'
         + '<div class="notif-icon">' + n.icon + '</div>'
         + '<div class="notif-content"><div class="notif-title">' + n.title + '</div>'
-        + '<div class="notif-meta">' + n.ts + '</div></div></div>';
+        + '<div class="notif-meta">' + n.ts + (n.action ? ' — clicca per dettagli' : '') + '</div></div></div>';
     }).join('') || '<div style="padding:14px;color:var(--muted);font-size:0.75rem;">Nessuna notifica attiva</div>';
   }
 })();
