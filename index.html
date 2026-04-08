@@ -1620,6 +1620,66 @@ body.board-mode #footer { visibility: hidden; }
 .gsearch-result-meta { font-size: 0.6rem; color: var(--muted); font-family: var(--font-mono); }
 .gsearch-empty { padding: 24px 16px; text-align: center; color: var(--muted); font-size: 0.78rem; }
 .gsearch-footer { padding: 8px 16px; border-top: 1px solid var(--border); font-size: 0.6rem; color: var(--muted); font-family: var(--font-mono); display: flex; gap: 12px; }
+
+/* Risk detail modal */
+.risk-detail-overlay { position: fixed; inset: 0; z-index: 10001; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.risk-detail-overlay.risk-modal-open { opacity: 1; pointer-events: all; }
+.risk-detail-modal { background: var(--card); border: 1px solid var(--border); border-radius: 10px; width: 520px; max-width: 92vw; max-height: 85vh; overflow-y: auto; box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+.risk-detail-head { display: flex; align-items: flex-start; justify-content: space-between; padding: 18px 22px 12px; border-bottom: 1px solid var(--border); }
+.risk-detail-id { font-family: var(--font-mono); font-size: 0.65rem; color: var(--cyan); letter-spacing: 0.1em; margin-bottom: 3px; }
+.risk-detail-title { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+.risk-detail-body { padding: 16px 22px 22px; }
+.risk-detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 16px; }
+.risk-detail-metric { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; text-align: center; }
+.risk-detail-metric-label { font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
+.risk-detail-metric-value { font-size: 1.2rem; font-weight: 700; font-family: var(--font-mono); }
+.risk-detail-bar { height: 8px; border-radius: 4px; overflow: hidden; background: var(--border); margin: 12px 0 6px; }
+.risk-detail-bar-fill { height: 100%; border-radius: 4px; transition: width 0.4s; }
+.risk-detail-acn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 5px; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600; margin-top: 10px; }
+
+/* MIS detail modal */
+.mis-detail-overlay { position: fixed; inset: 0; z-index: 10001; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.mis-detail-overlay.mis-modal-open { opacity: 1; pointer-events: all; }
+.mis-detail-modal { background: var(--card); border: 1px solid var(--border); border-radius: 10px; width: 560px; max-width: 92vw; max-height: 85vh; overflow-y: auto; box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+.mis-detail-head { padding: 18px 22px 12px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; }
+.mis-detail-body { padding: 16px 22px 22px; }
+.mis-sede-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 5px; margin-bottom: 6px; border-left: 3px solid transparent; }
+.mis-sede-row-ok { border-left-color: var(--green); background: rgba(63,185,80,0.06); }
+.mis-sede-row-partial { border-left-color: var(--yellow); background: rgba(210,153,34,0.06); }
+.mis-sede-row-ko { border-left-color: var(--red); background: rgba(248,81,73,0.06); }
+.mis-sede-name { flex: 1; font-size: 0.78rem; font-weight: 600; color: var(--text); }
+.mis-sede-status { font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700; padding: 2px 8px; border-radius: 3px; }
+
+/* Storico filters */
+.storico-filters { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.storico-filter-btn { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 4px 12px; font-size: 0.65rem; font-family: var(--font-mono); color: var(--muted); cursor: pointer; transition: all 0.15s; }
+.storico-filter-btn:hover { border-color: var(--cyan); color: var(--text); }
+.storico-filter-btn.storico-active { border-color: var(--cyan); background: rgba(88,166,255,0.08); color: var(--cyan); }
+.log-entry.storico-hidden { display: none; }
+
+/* Keyboard shortcuts panel */
+.shortcuts-overlay { position: fixed; inset: 0; z-index: 10003; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.shortcuts-overlay.shortcuts-open { opacity: 1; pointer-events: all; }
+.shortcuts-modal { background: var(--card); border: 1px solid var(--border); border-radius: 10px; width: 440px; max-width: 92vw; max-height: 80vh; overflow-y: auto; box-shadow: 0 12px 40px rgba(0,0,0,0.4); padding: 22px 26px; }
+.shortcuts-title { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.14em; color: var(--cyan); margin-bottom: 16px; text-transform: uppercase; }
+.shortcut-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.shortcut-row:last-child { border-bottom: none; }
+.shortcut-desc { font-size: 0.78rem; color: var(--text); }
+.shortcut-keys { display: flex; gap: 4px; }
+.shortcut-key { font-family: var(--font-mono); font-size: 0.6rem; padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border); color: var(--muted); background: var(--bg); min-width: 24px; text-align: center; }
+
+/* Executive PDF export */
+.exec-export-overlay { position: fixed; inset: 0; z-index: 10001; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.exec-export-overlay.exec-export-open { opacity: 1; pointer-events: all; }
+.exec-export-modal { background: var(--card); border: 1px solid var(--border); border-radius: 10px; width: 600px; max-width: 92vw; max-height: 90vh; overflow-y: auto; box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+.exec-export-head { padding: 18px 22px 12px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; }
+.exec-export-body { padding: 16px 22px 22px; }
+.exec-export-preview { background: #fff; color: #111; padding: 28px; border-radius: 6px; border: 1px solid #ddd; font-family: 'Segoe UI', Arial, sans-serif; font-size: 0.78rem; line-height: 1.6; }
+.exec-export-preview h2 { font-size: 1rem; margin: 0 0 8px; color: #0d1117; border-bottom: 2px solid #0d1117; padding-bottom: 4px; }
+.exec-export-preview h3 { font-size: 0.82rem; margin: 14px 0 6px; color: #333; }
+.exec-export-preview table { width: 100%; border-collapse: collapse; font-size: 0.7rem; margin: 8px 0; }
+.exec-export-preview table th { background: #f0f0f0; padding: 6px 8px; text-align: left; border: 1px solid #ddd; font-weight: 600; }
+.exec-export-preview table td { padding: 5px 8px; border: 1px solid #ddd; }
 .freshness-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
 
 @media (max-width: 640px) {
@@ -2439,6 +2499,10 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
         <div id="notif-list"></div>
       </div>
     </div>
+    <button class="export-btn" onclick="openExecExport()" data-tooltip="Genera Executive Summary per CDA/Direzione">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.715 6.542L3.343 7.914a3 3 0 104.243 4.243l1.828-1.829A3 3 0 008.586 5.5L8 6.086a1.002 1.002 0 00-.154.199 2 2 0 01.861 3.337L6.88 11.45a2 2 0 11-2.83-2.83l.793-.792a4.018 4.018 0 01-.128-1.287z"/><path d="M6.586 4.672A3 3 0 007.414 9.5l.775-.776a2 2 0 01-.896-3.346L9.12 3.55a2 2 0 112.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 10-4.243-4.243L6.586 4.672z"/></svg>
+      Executive Summary
+    </button>
     <button class="export-btn" onclick="exportPdf()" data-tooltip="Stampa o esporta questo report in formato PDF">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 13h12v1H2v-1zm0-2h1V7h2v4h1V6H3V2h7l2 2v2h1V3.5L10.5 1H2v10zm8-10v2h2l-2-2zm-3 5h1v4H7V6zm2 1h1v1H9V7zm0 2h1v1H9V9z"/></svg>
       Report PDF
@@ -2883,6 +2947,7 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
     <div class="section-header">// STORICO ATTIVITÀ</div>
     <div class="card scroll-animate">
       <div class="card-title">LOG CRONOLOGICO INVERSO</div>
+      <div class="storico-filters" id="storico-filters"></div>
       <div id="storico-log"></div>
     </div>
     <div class="info-box">
@@ -2918,6 +2983,26 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
       <span>esc chiudi</span>
     </div>
   </div>
+</div>
+
+<!-- RISK DETAIL MODAL -->
+<div class="risk-detail-overlay" id="risk-detail-overlay" onclick="if(event.target===this)closeRiskDetail()">
+  <div class="risk-detail-modal" id="risk-detail-modal"></div>
+</div>
+
+<!-- MIS DETAIL MODAL -->
+<div class="mis-detail-overlay" id="mis-detail-overlay" onclick="if(event.target===this)closeMisDetail()">
+  <div class="mis-detail-modal" id="mis-detail-modal"></div>
+</div>
+
+<!-- KEYBOARD SHORTCUTS PANEL -->
+<div class="shortcuts-overlay" id="shortcuts-overlay" onclick="if(event.target===this)closeShortcuts()">
+  <div class="shortcuts-modal" id="shortcuts-modal"></div>
+</div>
+
+<!-- EXEC EXPORT MODAL -->
+<div class="exec-export-overlay" id="exec-export-overlay" onclick="if(event.target===this)closeExecExport()">
+  <div class="exec-export-modal" id="exec-export-modal"></div>
 </div>
 
 <!-- SEDE COMPARISON MODAL -->
@@ -4030,12 +4115,37 @@ document.addEventListener('keydown', function(e) {
     }
     return;
   }
-  // ESC → close modals
+  // Skip if typing in an input
+  var isInput = document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA';
+
+  // Number keys 1-7 → switch tabs (only when no input focused and no modals open)
+  if (!isInput && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    var tabMap = { '1': 'overview', '2': 'mis', '3': 'risk', '4': 'asset', '5': 'scadenze', '6': 'policy', '7': 'storico' };
+    if (tabMap[e.key]) { switchTab(tabMap[e.key]); return; }
+    if (e.key === 't' || e.key === 'T') { if (typeof toggleTheme === 'function') toggleTheme(); return; }
+    if (e.key === 'p' || e.key === 'P') { if (typeof enterBoardMode === 'function') enterBoardMode(); return; }
+    if (e.key === 'e' || e.key === 'E') { openExecExport(); return; }
+  }
+  // ? → keyboard shortcuts
+  if (e.key === '?' && !e.ctrlKey && !e.metaKey && !isInput) {
+    e.preventDefault();
+    openShortcuts();
+    return;
+  }
+  // ESC → close modals (order: topmost first)
   if (e.key === 'Escape') {
+    var sc = document.getElementById('shortcuts-overlay');
+    if (sc && sc.classList.contains('shortcuts-open')) { closeShortcuts(); return; }
     var gs = document.getElementById('gsearch-overlay');
     if (gs && gs.classList.contains('gsearch-open')) { closeGlobalSearch(); return; }
     var pm = document.getElementById('policy-modal-overlay');
     if (pm && pm.classList.contains('pol-modal-open')) { closePolicyModal(); return; }
+    var rd = document.getElementById('risk-detail-overlay');
+    if (rd && rd.classList.contains('risk-modal-open')) { closeRiskDetail(); return; }
+    var md = document.getElementById('mis-detail-overlay');
+    if (md && md.classList.contains('mis-modal-open')) { closeMisDetail(); return; }
+    var ee = document.getElementById('exec-export-overlay');
+    if (ee && ee.classList.contains('exec-export-open')) { closeExecExport(); return; }
   }
   // Arrow keys in global search
   var gs = document.getElementById('gsearch-overlay');
@@ -4049,6 +4159,316 @@ document.addEventListener('keydown', function(e) {
     }
   }
 });
+
+// ============================================================
+// RISK DETAIL MODAL
+// ============================================================
+function openRiskDetail(riskId) {
+  var r = DATA.risk_matrix.find(function(x) { return x.id === riskId; });
+  if (!r) return;
+  var overlay = document.getElementById('risk-detail-overlay');
+  var modal = document.getElementById('risk-detail-modal');
+
+  var levelColor = { 'Critico': 'var(--red)', 'Alto': 'var(--orange)', 'Medio': 'var(--yellow)', 'Basso': 'var(--green)' };
+  var prioColor = { 'Critica': 'var(--red)', 'Alta': 'var(--orange)', 'Media': 'var(--yellow)', 'Bassa': 'var(--green)' };
+  var lc = levelColor[r.livello] || 'var(--muted)';
+  var pc = prioColor[r.priorita] || 'var(--muted)';
+  var rc = r.residuo >= 12 ? 'var(--red)' : r.residuo >= 8 ? 'var(--orange)' : r.residuo >= 4 ? 'var(--yellow)' : 'var(--green)';
+
+  var acnHtml = r.notifica_acn
+    ? '<div class="risk-detail-acn" style="background:rgba(248,81,73,0.12);color:var(--red)">&#x1F514; Rischio NOTIFICABILE ad ACN (Art. 23 NIS2)</div>'
+    : '<div class="risk-detail-acn" style="background:rgba(63,185,80,0.08);color:var(--green)">&#x2705; Non soggetto a notifica ACN</div>';
+
+  modal.innerHTML = '<div class="risk-detail-head">'
+    + '<div><div class="risk-detail-id">' + r.id + ' — RISK ASSESSMENT</div>'
+    + '<div class="risk-detail-title">' + r.scenario + '</div></div>'
+    + '<button class="policy-modal-close" onclick="closeRiskDetail()">&times;</button></div>'
+    + '<div class="risk-detail-body">'
+    + '<div class="risk-detail-grid">'
+    + '<div class="risk-detail-metric"><div class="risk-detail-metric-label">RISCHIO LORDO</div><div class="risk-detail-metric-value" style="color:' + lc + '">' + r.lordo + '<span style="font-size:0.6rem;color:var(--muted)"> /25</span></div></div>'
+    + '<div class="risk-detail-metric"><div class="risk-detail-metric-label">RISCHIO RESIDUO</div><div class="risk-detail-metric-value" style="color:' + rc + '">' + r.residuo + '<span style="font-size:0.6rem;color:var(--muted)"> /25</span></div></div>'
+    + '<div class="risk-detail-metric"><div class="risk-detail-metric-label">LIVELLO</div><div class="risk-detail-metric-value" style="color:' + lc + ';font-size:0.85rem">' + r.livello + '</div></div>'
+    + '<div class="risk-detail-metric"><div class="risk-detail-metric-label">PRIORITÀ</div><div class="risk-detail-metric-value" style="color:' + pc + ';font-size:0.85rem">' + r.priorita + '</div></div>'
+    + '</div>'
+    + '<div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--muted);letter-spacing:0.06em;margin-bottom:4px;">RIDUZIONE RISCHIO</div>'
+    + '<div class="risk-detail-bar"><div class="risk-detail-bar-fill" style="width:' + r.riduzione_pct + '%;background:var(--green)"></div></div>'
+    + '<div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--green);font-weight:700">' + r.riduzione_pct + '% di riduzione ottenuta</div>'
+    + acnHtml
+    + '</div>';
+
+  overlay.classList.add('risk-modal-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeRiskDetail() {
+  document.getElementById('risk-detail-overlay').classList.remove('risk-modal-open');
+  document.body.style.overflow = '';
+}
+
+// ============================================================
+// MIS DETAIL MODAL
+// ============================================================
+function openMisDetail(misCode) {
+  var overlay = document.getElementById('mis-detail-overlay');
+  var modal = document.getElementById('mis-detail-modal');
+  var sedi = DATA.sedi;
+  var sedOrder = ['Amministrazione', 'Ateneo', 'Corso Francia', 'Fracassini', 'Nuovo Salario', 'Pannini'];
+  var misLabel = DATA.mis_definizioni[misCode] || misCode;
+
+  var ok = 0, partial = 0, ko = 0;
+  var sedeRows = '';
+  sedOrder.forEach(function(name) {
+    var s = sedi[name];
+    if (!s) return;
+    var st = s.mis_status[misCode] || 'ko';
+    if (st === 'ok') ok++;
+    else if (st === 'partial') partial++;
+    else ko++;
+
+    var rowCls = st === 'ok' ? 'mis-sede-row-ok' : st === 'partial' ? 'mis-sede-row-partial' : 'mis-sede-row-ko';
+    var statusLabel = st === 'ok' ? 'CONFORME' : st === 'partial' ? 'PARZIALE' : 'NON CONFORME';
+    var statusColor = st === 'ok' ? 'var(--green)' : st === 'partial' ? 'var(--yellow)' : 'var(--red)';
+    var statusBg = st === 'ok' ? 'rgba(63,185,80,0.15)' : st === 'partial' ? 'rgba(210,153,34,0.15)' : 'rgba(248,81,73,0.15)';
+
+    sedeRows += '<div class="mis-sede-row ' + rowCls + '">'
+      + '<span class="mis-sede-name">' + name + '</span>'
+      + '<span class="mis-sede-status" style="background:' + statusBg + ';color:' + statusColor + '">' + statusLabel + '</span>'
+      + '</div>';
+  });
+
+  var total = sedOrder.length;
+  var pctOk = Math.round(ok / total * 100);
+
+  // Find related policies
+  var relatedPolicies = POLICY_DETAIL_DATA.filter(function(p) {
+    return p.mis && p.mis.indexOf(misCode) >= 0;
+  });
+  var polHtml = '';
+  if (relatedPolicies.length > 0) {
+    polHtml = '<div style="margin-top:16px;padding:12px;background:var(--bg);border-radius:6px;border:1px solid var(--border);">'
+      + '<div style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.1em;color:var(--cyan);margin-bottom:8px;">POLICY COLLEGATE</div>';
+    relatedPolicies.forEach(function(p) {
+      var sc = p.stato === 'Approvata' ? 'var(--green)' : p.stato === 'In revisione' ? 'var(--yellow)' : 'var(--orange)';
+      polHtml += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;cursor:pointer;" onclick="closeMisDetail();openPolicyModal(\'' + p.codice + '\')">'
+        + '<span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--muted);min-width:42px;">' + p.codice + '</span>'
+        + '<span style="font-size:0.72rem;color:var(--text);flex:1;">' + p.nome + '</span>'
+        + '<span style="font-size:0.55rem;color:' + sc + ';font-family:var(--font-mono);font-weight:600;">' + p.stato + '</span>'
+        + '</div>';
+    });
+    polHtml += '</div>';
+  }
+
+  modal.innerHTML = '<div class="mis-detail-head">'
+    + '<div><div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--cyan);letter-spacing:0.1em;margin-bottom:3px;">' + misCode + '</div>'
+    + '<div style="font-size:0.95rem;font-weight:700;color:var(--text);">' + misLabel + '</div></div>'
+    + '<button class="policy-modal-close" onclick="closeMisDetail()">&times;</button></div>'
+    + '<div class="mis-detail-body">'
+    + '<div style="display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap;">'
+    + '<div style="font-family:var(--font-mono);font-size:0.72rem;"><span style="color:var(--green);font-weight:700;">' + ok + '</span> <span style="color:var(--muted);">conformi</span></div>'
+    + '<div style="font-family:var(--font-mono);font-size:0.72rem;"><span style="color:var(--yellow);font-weight:700;">' + partial + '</span> <span style="color:var(--muted);">parziali</span></div>'
+    + '<div style="font-family:var(--font-mono);font-size:0.72rem;"><span style="color:var(--red);font-weight:700;">' + ko + '</span> <span style="color:var(--muted);">non conformi</span></div>'
+    + '<div style="font-family:var(--font-mono);font-size:0.72rem;"><span style="color:var(--cyan);font-weight:700;">' + pctOk + '%</span> <span style="color:var(--muted);">compliance</span></div>'
+    + '</div>'
+    + sedeRows
+    + polHtml
+    + '</div>';
+
+  overlay.classList.add('mis-modal-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMisDetail() {
+  document.getElementById('mis-detail-overlay').classList.remove('mis-modal-open');
+  document.body.style.overflow = '';
+}
+
+// ============================================================
+// EXECUTIVE SUMMARY EXPORT
+// ============================================================
+function openExecExport() {
+  var overlay = document.getElementById('exec-export-overlay');
+  var modal = document.getElementById('exec-export-modal');
+
+  var assets = DATA.assets;
+  var sedi = DATA.sedi;
+  var sedList = Object.keys(sedi);
+  var totalAssets = assets.length;
+  var pcts = sedList.map(function(n) { return sedi[n].compliance_pct; });
+  var avg = Math.round(pcts.reduce(function(a, b) { return a + b; }, 0) / pcts.length);
+  var rischiCritici = assets.reduce(function(s, a) { return s + (a.rischi_critici || 0); }, 0);
+  var notifAcn = DATA.risk_matrix.filter(function(r) { return r.notifica_acn; }).length;
+  var overdueCount = DATA.scadenze.filter(function(s) { return s.stato === 'IN RITARDO'; }).length;
+  var polApp = POLICY_DETAIL_DATA.filter(function(p) { return p.stato === 'Approvata'; }).length;
+  var polTotal = POLICY_DETAIL_DATA.length;
+  var today = new Date().toLocaleDateString('it-IT', { day: '2-digit', month: 'long', year: 'numeric' });
+
+  // Sedi table
+  var sediTableRows = '';
+  sedList.sort(function(a, b) { return sedi[a].compliance_pct - sedi[b].compliance_pct; }).forEach(function(name) {
+    var s = sedi[name];
+    sediTableRows += '<tr><td>' + name + '</td><td style="text-align:center;">' + s.asset_count + '</td><td style="text-align:center;font-weight:700;color:' + (s.compliance_pct >= 60 ? '#3fb950' : s.compliance_pct >= 40 ? '#d29922' : '#f85149') + '">' + s.compliance_pct + '%</td><td style="text-align:center;">' + s.total_ok + '/' + (s.total_ok + s.total_ko) + '</td></tr>';
+  });
+
+  // Scadenze table
+  var scadTableRows = '';
+  DATA.scadenze.forEach(function(s) {
+    var color = s.stato === 'COMPLETATO' ? '#3fb950' : s.stato === 'IN RITARDO' ? '#f85149' : s.stato === 'IN CORSO' ? '#d29922' : '#888';
+    scadTableRows += '<tr><td>' + s.milestone + '</td><td>' + s.scadenza + '</td><td style="color:' + color + ';font-weight:600">' + s.stato + '</td></tr>';
+  });
+
+  var preview = '<div class="exec-export-preview">'
+    + '<div style="text-align:center;margin-bottom:18px;">'
+    + '<div style="font-size:0.6rem;color:#888;letter-spacing:0.12em;text-transform:uppercase;">EXECUTIVE SUMMARY</div>'
+    + '<div style="font-size:1.2rem;font-weight:800;color:#0d1117;">NIS2 Compliance — Farmacie Gallotta S.r.l.</div>'
+    + '<div style="font-size:0.7rem;color:#888;">Report generato il ' + today + ' | Responsabile NIS2: Massimo Vitale</div>'
+    + '</div>'
+    + '<h2>Indicatori Chiave</h2>'
+    + '<table><tr><th>Indicatore</th><th>Valore</th><th>Target</th><th>Stato</th></tr>'
+    + '<tr><td>Compliance Media</td><td style="font-weight:700;">' + avg + '%</td><td>70%</td><td style="color:' + (avg >= 70 ? '#3fb950' : '#f85149') + '">&#9679;</td></tr>'
+    + '<tr><td>Asset Censiti</td><td style="font-weight:700;">' + totalAssets + '</td><td>—</td><td style="color:#3fb950">&#9679;</td></tr>'
+    + '<tr><td>Rischi Critici Aperti</td><td style="font-weight:700;">' + rischiCritici + '</td><td>0</td><td style="color:' + (rischiCritici === 0 ? '#3fb950' : '#f85149') + '">&#9679;</td></tr>'
+    + '<tr><td>Rischi Notificabili ACN</td><td style="font-weight:700;">' + notifAcn + '</td><td>0</td><td style="color:' + (notifAcn === 0 ? '#3fb950' : '#d29922') + '">&#9679;</td></tr>'
+    + '<tr><td>Policy Approvate</td><td style="font-weight:700;">' + polApp + '/' + polTotal + '</td><td>' + polTotal + '/' + polTotal + '</td><td style="color:' + (polApp === polTotal ? '#3fb950' : '#d29922') + '">&#9679;</td></tr>'
+    + '<tr><td>Milestone in Ritardo</td><td style="font-weight:700;">' + overdueCount + '</td><td>0</td><td style="color:' + (overdueCount === 0 ? '#3fb950' : '#f85149') + '">&#9679;</td></tr>'
+    + '</table>'
+    + '<h2>Compliance per Sede</h2>'
+    + '<table><tr><th>Sede</th><th>Asset</th><th>Compliance</th><th>Controlli OK</th></tr>' + sediTableRows + '</table>'
+    + '<h2>Piano Scadenze</h2>'
+    + '<table><tr><th>Milestone</th><th>Scadenza</th><th>Stato</th></tr>' + scadTableRows + '</table>'
+    + '<h3 style="margin-top:18px;">Azioni Prioritarie</h3>'
+    + '<ol style="font-size:0.72rem;line-height:1.8;color:#333;">'
+    + '<li>Implementare MFA su tutti gli asset critici</li>'
+    + '<li>Configurare logging centralizzato (MIS-07)</li>'
+    + '<li>Completare e approvare BCP & Disaster Recovery Plan</li>'
+    + '<li>Finalizzare le policy in stato Bozza (BCDR, CCP, SSDP)</li>'
+    + '<li>Pianificare audit interno entro 30 Giu 2026</li>'
+    + '</ol>'
+    + '<div style="margin-top:20px;padding-top:10px;border-top:1px solid #ddd;font-size:0.6rem;color:#888;text-align:center;">Documento riservato — Farmacie Gallotta S.r.l. — Generato da NIS2 Command Center</div>'
+    + '</div>';
+
+  modal.innerHTML = '<div class="exec-export-head">'
+    + '<div><div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--cyan);letter-spacing:0.1em;margin-bottom:3px;">EXECUTIVE SUMMARY</div>'
+    + '<div style="font-size:0.95rem;font-weight:700;color:var(--text);">Report per CDA / Direzione</div></div>'
+    + '<button class="policy-modal-close" onclick="closeExecExport()">&times;</button></div>'
+    + '<div class="exec-export-body">'
+    + '<div style="display:flex;gap:10px;margin-bottom:16px;">'
+    + '<button class="policy-modal-doc-btn" onclick="printExecSummary()" style="flex:1;justify-content:center;">&#x1F5A8; Stampa / Salva PDF</button>'
+    + '<button class="policy-modal-doc-btn" onclick="copyExecSummary()" style="flex:1;justify-content:center;background:var(--purple);">&#x1F4CB; Copia testo</button>'
+    + '</div>'
+    + preview
+    + '</div>';
+
+  overlay.classList.add('exec-export-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeExecExport() {
+  document.getElementById('exec-export-overlay').classList.remove('exec-export-open');
+  document.body.style.overflow = '';
+}
+
+function printExecSummary() {
+  var preview = document.querySelector('.exec-export-preview');
+  if (!preview) return;
+  var w = window.open('', '_blank', 'width=800,height=1100');
+  w.document.write('<html><head><title>Executive Summary NIS2 — Farmacie Gallotta</title><style>body{font-family:"Segoe UI",Arial,sans-serif;padding:30px;font-size:12px;line-height:1.6;color:#111}h2{font-size:14px;border-bottom:2px solid #111;padding-bottom:4px;margin:18px 0 8px}h3{font-size:12px;margin:14px 0 6px}table{width:100%;border-collapse:collapse;font-size:11px;margin:8px 0}th{background:#f0f0f0;padding:6px 8px;text-align:left;border:1px solid #ddd;font-weight:600}td{padding:5px 8px;border:1px solid #ddd}ol{line-height:2}</style></head><body>');
+  w.document.write(preview.innerHTML);
+  w.document.write('</body></html>');
+  w.document.close();
+  w.print();
+}
+
+function copyExecSummary() {
+  var preview = document.querySelector('.exec-export-preview');
+  if (!preview) return;
+  var text = preview.innerText;
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = document.querySelector('.exec-export-body .policy-modal-doc-btn:nth-child(2)');
+    if (btn) { var old = btn.innerHTML; btn.innerHTML = '&#x2705; Copiato!'; setTimeout(function() { btn.innerHTML = old; }, 2000); }
+  });
+}
+
+// ============================================================
+// STORICO FILTERS
+// ============================================================
+(function initStoricoFilters() {
+  var container = document.getElementById('storico-filters');
+  if (!container) return;
+
+  // Collect unique authors
+  var authors = {};
+  DATA.storico.forEach(function(e) { authors[e.autore] = true; });
+  var authorList = Object.keys(authors).sort();
+
+  var html = '<button class="storico-filter-btn storico-active" onclick="filterStorico(\'all\', this)">Tutti</button>';
+  authorList.forEach(function(a) {
+    html += '<button class="storico-filter-btn" onclick="filterStorico(\'' + a.replace(/'/g, "\\'") + '\', this)">' + a + '</button>';
+  });
+  container.innerHTML = html;
+})();
+
+function filterStorico(author, el) {
+  var btns = document.querySelectorAll('.storico-filter-btn');
+  btns.forEach(function(b) { b.classList.remove('storico-active'); });
+  if (el) el.classList.add('storico-active');
+
+  var entries = document.querySelectorAll('#storico-log .log-entry');
+  entries.forEach(function(entry) {
+    if (author === 'all') {
+      entry.classList.remove('storico-hidden');
+    } else {
+      var meta = entry.querySelector('.log-meta');
+      if (meta && meta.textContent.indexOf(author) >= 0) {
+        entry.classList.remove('storico-hidden');
+      } else {
+        entry.classList.add('storico-hidden');
+      }
+    }
+  });
+}
+
+// ============================================================
+// KEYBOARD SHORTCUTS PANEL
+// ============================================================
+function openShortcuts() {
+  var overlay = document.getElementById('shortcuts-overlay');
+  var modal = document.getElementById('shortcuts-modal');
+
+  var shortcuts = [
+    { keys: ['Ctrl', 'K'], desc: 'Ricerca globale' },
+    { keys: ['?'], desc: 'Mostra questa guida' },
+    { keys: ['Esc'], desc: 'Chiudi modal / pannello aperto' },
+    { keys: ['1'], desc: 'Tab Overview' },
+    { keys: ['2'], desc: 'Tab MIS x Sedi' },
+    { keys: ['3'], desc: 'Tab Risk Matrix' },
+    { keys: ['4'], desc: 'Tab Asset Inventory' },
+    { keys: ['5'], desc: 'Tab Scadenze' },
+    { keys: ['6'], desc: 'Tab Policy' },
+    { keys: ['7'], desc: 'Tab Storico' },
+    { keys: ['T'], desc: 'Cambia tema chiaro/scuro' },
+    { keys: ['P'], desc: 'Modalità presentazione' },
+    { keys: ['E'], desc: 'Executive Summary' }
+  ];
+
+  var html = '<div class="shortcuts-title">Scorciatoie da tastiera</div>';
+  shortcuts.forEach(function(s) {
+    html += '<div class="shortcut-row"><span class="shortcut-desc">' + s.desc + '</span><span class="shortcut-keys">';
+    s.keys.forEach(function(k) {
+      html += '<span class="shortcut-key">' + k + '</span>';
+    });
+    html += '</span></div>';
+  });
+  html += '<div style="margin-top:14px;text-align:center;font-size:0.62rem;color:var(--muted);">Premi <span class="shortcut-key">?</span> per aprire/chiudere</div>';
+
+  modal.innerHTML = html;
+  overlay.classList.add('shortcuts-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeShortcuts() {
+  document.getElementById('shortcuts-overlay').classList.remove('shortcuts-open');
+  document.body.style.overflow = '';
+}
 
 // ============================================================
 // DRILL-DOWN: click sede card → Asset tab filtered
@@ -4287,7 +4707,7 @@ function drillDownSede(sedeName) {
         const r = DATA.risk_matrix.find(x => x.id === id);
         const label = r ? r.id.replace('R-', '') : id;
         const title = r ? r.scenario : id;
-        return `<div class="heatmap-risk-dot" data-tooltip="${title}">${label}</div>`;
+        return `<div class="heatmap-risk-dot" data-tooltip="${title}" onclick="openRiskDetail('${id}')" style="cursor:pointer">${label}</div>`;
       }).join('');
       cellParts.push(`<div class="heatmap-cell" style="background:${bg}">${dotHtml}</div>`);
     }
@@ -4474,13 +4894,13 @@ function drillDownSede(sedeName) {
       const st = sedi[s] ? sedi[s].mis_status[mis] : 'ko';
       const stLabel = st === 'ok' ? 'Conforme' : st === 'partial' ? 'Parzialmente conforme' : 'Non conforme';
       const tooltip = `${s}: ${stLabel}`;
-      statusCells += `<td style="text-align:center; font-family:var(--font-mono); font-size:0.85rem"><span class="${misStatusClass(st)}" data-tooltip="${tooltip}"></span></td>`;
+      statusCells += `<td style="text-align:center; font-family:var(--font-mono); font-size:0.85rem; cursor:pointer;" onclick="openMisDetail('${mis}')"><span class="${misStatusClass(st)}" data-tooltip="${tooltip}"></span></td>`;
     });
 
     html += `
       <tr>
-        <td class="td-code">${mis}</td>
-        <td style="color:var(--text); max-width:180px;">${DATA.mis_definizioni[mis]}</td>
+        <td class="td-code" style="cursor:pointer" onclick="openMisDetail('${mis}')">${mis}</td>
+        <td style="color:var(--text); max-width:180px; cursor:pointer" onclick="openMisDetail('${mis}')">${DATA.mis_definizioni[mis]}</td>
         ${statusCells}
         <td>
           <div class="stacked-mini">
@@ -4985,7 +5405,7 @@ function sortAssetTable(col, thEl) {
   cats.forEach(function(cat) {
     rows += '<tr class="policy-cat-row"><td colspan="6">' + cat.toUpperCase() + '</td></tr>';
     POLICIES.filter(function(p) { return p.cat === cat; }).forEach(function(p) {
-      rows += '<tr>'
+      rows += '<tr style="cursor:pointer" onclick="openPolicyModal(\'' + p.codice + '\')">'
         + '<td class="td-code">' + p.codice + '</td>'
         + '<td style="color:var(--text); min-width:220px;">' + p.nome + '</td>'
         + '<td style="font-size:0.72rem; color:var(--muted);">' + p.cat + '</td>'
