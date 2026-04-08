@@ -1410,6 +1410,127 @@ body.board-mode #footer { visibility: hidden; }
 
 .modal-risk-badges { display: flex; flex-wrap: wrap; gap: 8px; }
 
+/* ========== KPI DRILL-DOWN MODAL ========== */
+.kpi-drilldown-overlay {
+  position: fixed; inset: 0; z-index: 7000;
+  background: rgba(0,0,0,0.75);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s ease;
+  padding: 16px;
+}
+.kpi-drilldown-overlay.kpi-dd-open { opacity: 1; pointer-events: all; }
+.kpi-drilldown {
+  width: 720px; max-width: 100%;
+  max-height: 85vh; overflow-y: auto;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px;
+  transform: scale(0.93); opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.kpi-drilldown-overlay.kpi-dd-open .kpi-drilldown {
+  transform: scale(1); opacity: 1;
+}
+.kpi-dd-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 22px 14px; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: var(--card); z-index: 1;
+}
+.kpi-dd-title {
+  font-family: var(--font-mono); font-size: 0.85rem;
+  font-weight: 700; color: var(--cyan); letter-spacing: 0.08em;
+}
+.kpi-dd-subtitle {
+  font-family: var(--font-mono); font-size: 0.6rem;
+  color: var(--muted); margin-top: 2px; letter-spacing: 0.04em;
+}
+.kpi-dd-close {
+  width: 30px; height: 30px; border-radius: 6px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer; font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; flex-shrink: 0;
+}
+.kpi-dd-close:hover { border-color: var(--red); color: var(--red); }
+.kpi-dd-body { padding: 18px 22px 22px; }
+
+/* KPI drill-down: horizontal bar chart */
+.kpi-dd-bar-row {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 8px; font-family: var(--font-mono); font-size: 0.7rem;
+}
+.kpi-dd-bar-label { width: 120px; color: var(--muted); flex-shrink: 0; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kpi-dd-bar-track { flex: 1; height: 22px; background: var(--border); border-radius: 4px; overflow: hidden; position: relative; }
+.kpi-dd-bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 0.6rem; font-weight: 600; color: #fff; transition: width 0.5s ease; min-width: 0; }
+.kpi-dd-bar-val { width: 40px; text-align: right; color: var(--text); font-weight: 600; flex-shrink: 0; }
+
+/* KPI drill-down: risk table */
+.kpi-dd-table { width: 100%; border-collapse: collapse; font-size: 0.72rem; }
+.kpi-dd-table th {
+  font-family: var(--font-mono); font-size: 0.58rem;
+  letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase;
+  padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left;
+}
+.kpi-dd-table td { padding: 8px 10px; border-bottom: 1px solid rgba(48,54,61,0.4); color: var(--text); }
+.kpi-dd-table tr:hover td { background: rgba(88,166,255,0.04); }
+
+/* KPI drill-down: stat cards grid */
+.kpi-dd-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
+.kpi-dd-stat {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+  padding: 12px; text-align: center;
+}
+.kpi-dd-stat-label { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
+.kpi-dd-stat-val { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 700; }
+
+/* KPI drill-down: section divider */
+.kpi-dd-section { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; color: var(--cyan); text-transform: uppercase; margin: 18px 0 10px; padding-bottom: 5px; border-bottom: 1px solid var(--border); }
+
+/* KPI drill-down: policy list */
+.kpi-dd-policy-group { margin-bottom: 14px; }
+.kpi-dd-policy-group-title { font-family: var(--font-mono); font-size: 0.62rem; color: var(--cyan); letter-spacing: 0.08em; margin-bottom: 6px; }
+.kpi-dd-policy-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px; font-size: 0.7rem; color: var(--text);
+  border-left: 2px solid var(--border); margin-bottom: 3px;
+  background: var(--bg); border-radius: 0 4px 4px 0;
+}
+.kpi-dd-policy-item .policy-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* KPI drill-down: zero-incidents banner */
+.kpi-dd-zero-banner {
+  display: flex; align-items: center; gap: 14px;
+  padding: 20px; background: rgba(63,185,80,0.06);
+  border: 1px solid rgba(63,185,80,0.25); border-radius: 8px;
+  margin-bottom: 16px;
+}
+.kpi-dd-zero-icon { font-size: 2.5rem; flex-shrink: 0; }
+.kpi-dd-zero-text { font-size: 0.85rem; color: var(--green); font-weight: 600; }
+.kpi-dd-zero-sub { font-size: 0.7rem; color: var(--muted); margin-top: 4px; }
+
+/* Clickable KPI card */
+.kpi-card-interactive { cursor: pointer; transition: border-color 0.2s, transform 0.15s; }
+.kpi-card-interactive:hover { border-color: var(--cyan); transform: translateY(-2px); }
+.kpi-card-interactive::after {
+  content: "clicca per dettaglio →";
+  display: block; font-family: var(--font-mono);
+  font-size: 0.5rem; color: var(--muted); letter-spacing: 0.06em;
+  margin-top: 4px; opacity: 0; transition: opacity 0.2s;
+}
+.kpi-card-interactive:hover::after { opacity: 1; }
+
+@media (max-width: 640px) {
+  .kpi-drilldown { border-radius: 0; max-height: 100vh; }
+  .kpi-dd-stats { grid-template-columns: 1fr 1fr; }
+  .kpi-dd-bar-label { width: 80px; font-size: 0.6rem; }
+  .kpi-dd-table { font-size: 0.62rem; }
+  .kpi-dd-table th, .kpi-dd-table td { padding: 6px 8px; }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .kpi-drilldown { max-height: 90vh; width: 80vw; }
+  .kpi-dd-stats { grid-template-columns: repeat(3, 1fr); }
+}
+
 /* ========== NOTIFICATION BELL ========== */
 .notif-bell-wrap {
   position: relative;
@@ -2753,6 +2874,20 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
   </div>
 </div>
 
+<!-- KPI DRILL-DOWN MODAL -->
+<div class="kpi-drilldown-overlay" id="kpi-dd-overlay" onclick="closeKpiDrilldown(event)">
+  <div class="kpi-drilldown" id="kpi-dd-modal">
+    <div class="kpi-dd-header">
+      <div>
+        <div class="kpi-dd-title" id="kpi-dd-title">—</div>
+        <div class="kpi-dd-subtitle" id="kpi-dd-subtitle"></div>
+      </div>
+      <button class="kpi-dd-close" onclick="closeKpiDrilldown()" aria-label="Chiudi">&times;</button>
+    </div>
+    <div class="kpi-dd-body" id="kpi-dd-body"></div>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer id="footer">
   <span>NIS2 COMMAND CENTER v2.1 &middot; FARMACIE GALLOTTA S.R.L. &middot; RESP: MASSIMO VITALE</span>
@@ -3654,19 +3789,19 @@ function sortRiskTable(col, thEl) {
   const incidentiAperti = (DATA.incidenti_aperti !== undefined) ? DATA.incidenti_aperti : 0;
 
   const kpiData = [
-    { label: 'COMPLIANCE MEDIA', val: mediaPct + '%', color: complianceColor(mediaPct) },
-    { label: 'RISCHI CRITICI', val: rischiCritici, color: 'var(--red)' },
-    { label: 'RISCHI NOTIFICABILI ACN', val: notifAcn, color: 'var(--orange)' },
-    { label: 'ASSET CENSITI', val: totalAssets, color: 'var(--cyan)' },
-    { label: 'POLICY ADOTTATE', val: policyCount, color: 'var(--purple)' },
-    { label: 'INCIDENTI APERTI', val: incidentiAperti, color: 'var(--yellow)' },
+    { label: 'COMPLIANCE MEDIA', val: mediaPct + '%', color: complianceColor(mediaPct), dd: 'compliance' },
+    { label: 'RISCHI CRITICI', val: rischiCritici, color: 'var(--red)', dd: 'rischi_critici' },
+    { label: 'RISCHI NOTIFICABILI ACN', val: notifAcn, color: 'var(--orange)', dd: 'notif_acn' },
+    { label: 'ASSET CENSITI', val: totalAssets, color: 'var(--cyan)', dd: 'asset_censiti' },
+    { label: 'POLICY ADOTTATE', val: policyCount, color: 'var(--purple)', dd: 'policy' },
+    { label: 'INCIDENTI APERTI', val: incidentiAperti, color: 'var(--yellow)', dd: 'incidenti' },
   ];
 
   const container = document.getElementById('kpi-global');
   let html = '';
   kpiData.forEach(k => {
     html += `
-      <div class="kpi-card">
+      <div class="kpi-card kpi-card-interactive" onclick="openKpiDrilldown('${k.dd}')">
         <div class="kpi-sede">${k.label}</div>
         <div class="kpi-number" style="color:${k.color}">${k.val}</div>
         <div class="kpi-bar" style="background:${k.color}33; width:100%"></div>
@@ -5163,10 +5298,253 @@ document.addEventListener('click', function(e) {
 })();
 
 // ============================================================
-// ESC KEY (drawer + modal + mobile menu)
+// KPI DRILL-DOWN MODAL
+// ============================================================
+function openKpiDrilldown(type) {
+  var overlay = document.getElementById('kpi-dd-overlay');
+  var title = document.getElementById('kpi-dd-title');
+  var subtitle = document.getElementById('kpi-dd-subtitle');
+  var body = document.getElementById('kpi-dd-body');
+  if (!overlay || !body) return;
+
+  var html = '';
+  var sedi = DATA.sedi;
+  var assets = DATA.assets;
+  var sedeNames = Object.keys(sedi).sort(function(a, b) { return sedi[b].compliance_pct - sedi[a].compliance_pct; });
+
+  switch (type) {
+
+  case 'compliance':
+    title.textContent = 'COMPLIANCE MEDIA';
+    subtitle.textContent = 'Dettaglio conformità per sede — target ACN: 60%';
+    var allPcts = assets.map(function(a) { return a.compliance_pct; });
+    var avg = Math.round(allPcts.reduce(function(a, b) { return a + b; }, 0) / allPcts.length);
+    var maxPct = Math.max.apply(null, sedeNames.map(function(n) { return sedi[n].compliance_pct; }));
+    var minPct = Math.min.apply(null, sedeNames.map(function(n) { return sedi[n].compliance_pct; }));
+    html += '<div class="kpi-dd-stats">';
+    html += '<div class="kpi-dd-stat"><div class="kpi-dd-stat-label">Media globale</div><div class="kpi-dd-stat-val" style="color:' + complianceColor(avg) + '">' + avg + '%</div></div>';
+    html += '<div class="kpi-dd-stat"><div class="kpi-dd-stat-label">Sede migliore</div><div class="kpi-dd-stat-val" style="color:' + complianceColor(maxPct) + '">' + maxPct + '%</div></div>';
+    html += '<div class="kpi-dd-stat"><div class="kpi-dd-stat-label">Sede peggiore</div><div class="kpi-dd-stat-val" style="color:' + complianceColor(minPct) + '">' + minPct + '%</div></div>';
+    html += '</div>';
+    html += '<div class="kpi-dd-section">Score per farmacia</div>';
+    sedeNames.forEach(function(name) {
+      var s = sedi[name];
+      var pct = s.compliance_pct;
+      var color = complianceColor(pct);
+      html += '<div class="kpi-dd-bar-row">'
+        + '<div class="kpi-dd-bar-label">' + name + '</div>'
+        + '<div class="kpi-dd-bar-track"><div class="kpi-dd-bar-fill" style="width:' + pct + '%;background:' + color + '">' + (pct > 15 ? pct + '%' : '') + '</div>'
+        + '<div style="position:absolute;left:60%;top:0;bottom:0;width:2px;background:var(--cyan);opacity:0.4;" title="Target ACN 60%"></div></div>'
+        + '<div class="kpi-dd-bar-val" style="color:' + color + '">' + pct + '%</div>'
+        + '</div>';
+    });
+    html += '<div class="kpi-dd-section" style="margin-top:20px;">Controlli OK / KO per sede</div>';
+    html += '<table class="kpi-dd-table"><thead><tr><th>Sede</th><th>Asset</th><th>OK</th><th>KO</th><th>NA</th><th>%</th></tr></thead><tbody>';
+    sedeNames.forEach(function(name) {
+      var s = sedi[name];
+      html += '<tr><td style="font-weight:600;">' + name + '</td><td>' + s.asset_count + '</td>'
+        + '<td style="color:var(--green)">' + s.total_ok + '</td>'
+        + '<td style="color:var(--red)">' + s.total_ko + '</td>'
+        + '<td style="color:var(--muted)">' + s.total_na + '</td>'
+        + '<td style="color:' + complianceColor(s.compliance_pct) + ';font-weight:700">' + s.compliance_pct + '%</td></tr>';
+    });
+    html += '</tbody></table>';
+    break;
+
+  case 'rischi_critici':
+    title.textContent = 'RISCHI CRITICI';
+    subtitle.textContent = 'Asset con rischi a livello critico';
+    var criticiAssets = assets.filter(function(a) { return (a.rischi_critici || 0) > 0; });
+    var totalCritici = assets.reduce(function(s, a) { return s + (a.rischi_critici || 0); }, 0);
+    html += '<div class="kpi-dd-stats">';
+    html += '<div class="kpi-dd-stat"><div class="kpi-dd-stat-label">Rischi critici totali</div><div class="kpi-dd-stat-val" style="color:var(--red)">' + totalCritici + '</div></div>';
+    html += '<div class="kpi-dd-stat"><div class="kpi-dd-stat-label">Asset coinvolti</div><div class="kpi-dd-stat-val" style="color:var(--orange)">' + criticiAssets.length + '</div></div>';
+    html += '<div class="kpi-dd-stat"><div class="kpi-dd-stat-label">Sedi coinvolte</div><div class="kpi-dd-stat-val" style="color:var(--yellow)">' + (new Set(criticiAssets.map(function(a) { return a.sede; }))).size + '</div></div>';
+    html += '</div>';
+    if (criticiAssets.length === 0) {
+      html += '<div class="kpi-dd-zero-banner"><div class="kpi-dd-zero-icon">✅</div><div><div class="kpi-dd-zero-text">Nessun rischio critico rilevato sugli asset</div><div class="kpi-dd-zero-sub">I rischi critici sono definiti nella Risk Matrix (ISO/IEC 27005)</div></div></div>';
+    }
+    html += '<div class="kpi-dd-section">Dettaglio per asset</div>';
+    html += '<table class="kpi-dd-table"><thead><tr><th>Asset</th><th>Sede</th><th>Ruolo</th><th>Critici</th><th>Alti</th><th>Compliance</th></tr></thead><tbody>';
+    var sortedAssets = assets.slice().sort(function(a, b) { return (b.rischi_critici || 0) - (a.rischi_critici || 0) || (b.rischi_alti || 0) - (a.rischi_alti || 0); });
+    sortedAssets.slice(0, 20).forEach(function(a) {
+      var cColor = (a.rischi_critici || 0) > 0 ? 'var(--red)' : 'var(--muted)';
+      html += '<tr><td style="font-weight:600">' + (a.nome || a.id) + '</td><td>' + a.sede + '</td><td>' + a.ruolo + '</td>'
+        + '<td style="color:' + cColor + ';font-weight:700">' + (a.rischi_critici || 0) + '</td>'
+        + '<td style="color:var(--orange)">' + (a.rischi_alti || 0) + '</td>'
+        + '<td style="color:' + complianceColor(a.compliance_pct) + '">' + a.compliance_pct + '%</td></tr>';
+    });
+    html += '</tbody></table>';
+    break;
+
+  case 'notif_acn':
+    title.textContent = 'RISCHI NOTIFICABILI ACN';
+    subtitle.textContent = 'Scenari che richiedono notifica obbligatoria al CSIRT/ACN (Art. 23 NIS2)';
+    var notifRischi = DATA.risk_matrix.filter(function(r) { return r.notifica_acn; });
+    var nonNotifRischi = DATA.risk_matrix.filter(function(r) { return !r.notifica_acn; });
+    html += '<div class="kpi-dd-stats">';
+    html += '<div class="kpi-dd-stat"><div class="kpi-dd-stat-label">Notificabili</div><div class="kpi-dd-stat-val" style="color:var(--orange)">' + notifRischi.length + '</div></div>';
+    html += '<div class="kpi-dd-stat"><div class="kpi-dd-stat-label">Non notificabili</div><div class="kpi-dd-stat-val" style="color:var(--green)">' + nonNotifRischi.length + '</div></div>';
+    html += '<div class="kpi-dd-stat"><div class="kpi-dd-stat-label">Scenari totali</div><div class="kpi-dd-stat-val" style="color:var(--cyan)">' + DATA.risk_matrix.length + '</div></div>';
+    html += '</div>';
+    html += '<div class="kpi-dd-section">Scenari con obbligo di notifica ACN</div>';
+    html += '<table class="kpi-dd-table"><thead><tr><th>ID</th><th>Scenario</th><th>Rischio lordo</th><th>Residuo</th><th>Riduzione</th><th>Priorità</th></tr></thead><tbody>';
+    notifRischi.forEach(function(r) {
+      var pColor = r.priorita === 'Critica' ? 'var(--red)' : 'var(--orange)';
+      html += '<tr><td style="font-weight:700;color:var(--cyan)">' + r.id + '</td><td>' + r.scenario + '</td>'
+        + '<td style="color:var(--red);font-weight:600">' + r.lordo + '</td>'
+        + '<td style="color:var(--yellow)">' + r.residuo + '</td>'
+        + '<td style="color:var(--green)">' + r.riduzione_pct + '%</td>'
+        + '<td style="color:' + pColor + ';font-weight:600">' + r.priorita + '</td></tr>';
+    });
+    html += '</tbody></table>';
+    html += '<div class="kpi-dd-section" style="margin-top:18px">Tempistiche di notifica (Art. 23 Dir. 2022/2555)</div>';
+    html += '<div style="font-size:0.72rem;color:var(--text);line-height:1.6">'
+      + '<strong style="color:var(--red)">Entro 24 ore:</strong> Pre-notifica al CSIRT con descrizione dell\'incidente<br>'
+      + '<strong style="color:var(--orange)">Entro 72 ore:</strong> Notifica completa con valutazione impatto e indicatori di compromissione<br>'
+      + '<strong style="color:var(--yellow)">Entro 30 giorni:</strong> Relazione finale con analisi causa, misure di mitigazione adottate</div>';
+    break;
+
+  case 'asset_censiti':
+    title.textContent = 'ASSET CENSITI';
+    subtitle.textContent = 'Inventario completo degli asset IT per sede e tipologia';
+    // Stats
+    var perSede = {};
+    var perTipo = {};
+    var perOS = {};
+    assets.forEach(function(a) {
+      perSede[a.sede] = (perSede[a.sede] || 0) + 1;
+      perTipo[a.tipo] = (perTipo[a.tipo] || 0) + 1;
+      var os = (a.os || '').split(' ').slice(0, 2).join(' ');
+      perOS[os] = (perOS[os] || 0) + 1;
+    });
+    html += '<div class="kpi-dd-stats">';
+    html += '<div class="kpi-dd-stat"><div class="kpi-dd-stat-label">Asset totali</div><div class="kpi-dd-stat-val" style="color:var(--cyan)">' + assets.length + '</div></div>';
+    html += '<div class="kpi-dd-stat"><div class="kpi-dd-stat-label">Sedi</div><div class="kpi-dd-stat-val" style="color:var(--purple)">' + Object.keys(sedi).length + '</div></div>';
+    html += '<div class="kpi-dd-stat"><div class="kpi-dd-stat-label">Tipologie</div><div class="kpi-dd-stat-val" style="color:var(--green)">' + Object.keys(perTipo).length + '</div></div>';
+    html += '</div>';
+    // Per sede bar chart
+    html += '<div class="kpi-dd-section">Distribuzione per sede</div>';
+    var maxAssets = Math.max.apply(null, Object.values(perSede));
+    Object.keys(perSede).sort(function(a, b) { return perSede[b] - perSede[a]; }).forEach(function(s) {
+      var pct = Math.round(perSede[s] / maxAssets * 100);
+      html += '<div class="kpi-dd-bar-row">'
+        + '<div class="kpi-dd-bar-label">' + s + '</div>'
+        + '<div class="kpi-dd-bar-track"><div class="kpi-dd-bar-fill" style="width:' + pct + '%;background:var(--cyan)">' + (pct > 20 ? perSede[s] : '') + '</div></div>'
+        + '<div class="kpi-dd-bar-val" style="color:var(--cyan)">' + perSede[s] + '</div></div>';
+    });
+    // Per tipo
+    html += '<div class="kpi-dd-section">Distribuzione per tipologia</div>';
+    Object.keys(perTipo).sort(function(a, b) { return perTipo[b] - perTipo[a]; }).forEach(function(t) {
+      var pct = Math.round(perTipo[t] / assets.length * 100);
+      html += '<div class="kpi-dd-bar-row">'
+        + '<div class="kpi-dd-bar-label">' + t + '</div>'
+        + '<div class="kpi-dd-bar-track"><div class="kpi-dd-bar-fill" style="width:' + pct + '%;background:var(--purple)">' + (pct > 20 ? perTipo[t] : '') + '</div></div>'
+        + '<div class="kpi-dd-bar-val" style="color:var(--purple)">' + perTipo[t] + '</div></div>';
+    });
+    // Per OS
+    html += '<div class="kpi-dd-section">Distribuzione per sistema operativo</div>';
+    Object.keys(perOS).sort(function(a, b) { return perOS[b] - perOS[a]; }).forEach(function(o) {
+      var pct = Math.round(perOS[o] / assets.length * 100);
+      html += '<div class="kpi-dd-bar-row">'
+        + '<div class="kpi-dd-bar-label">' + o + '</div>'
+        + '<div class="kpi-dd-bar-track"><div class="kpi-dd-bar-fill" style="width:' + pct + '%;background:var(--green)">' + (pct > 20 ? perOS[o] : '') + '</div></div>'
+        + '<div class="kpi-dd-bar-val" style="color:var(--green)">' + perOS[o] + '</div></div>';
+    });
+    break;
+
+  case 'policy':
+    title.textContent = 'POLICY ADOTTATE';
+    subtitle.textContent = '30 policy di sicurezza per le 10 misure MIS/NIS2';
+    var policies = {
+      'Fondamentali (12)': [
+        'Acceptable Use Policy (AUP)', 'Access Control Policy (ACP)',
+        'Asset Management & Data Classification (AMDP)', 'Backup & Restore Policy (BRP)',
+        'Business Continuity & Disaster Recovery (BCPDRP)', 'Data Breach Notification & Reporting (DBNRP)',
+        'Endpoint Security Policy (ESP)', 'Incident Response Policy (IRP)',
+        'Information Security Policy (ISP)', 'Network Security Policy (NSP)',
+        'Password & Authentication Policy (PAP)', 'Patch & Vulnerability Management (PVMP)'
+      ],
+      'Necessarie Light (9)': [
+        'Cloud Usage Security Policy (CUSP)', 'Data Retention & Secure Disposal (DRSD)',
+        'Logging & Monitoring Policy (LMP)', 'Logging Retention & Evidence Preservation (LREP)',
+        'Mobile Device & BYOD Security (MDP)', 'Physical Security Policy (PSP)',
+        'Remote Access Security Policy (RASP)', 'Supplier & Third-Party Security (STP)',
+        'Training & Awareness Policy (TAP)'
+      ],
+      'Proporzionali (9)': [
+        'Backup, Restore & Data Recovery (BRP)', 'Change Management Policy (CMP)',
+        'Cryptography & Key Management (CKMP)', 'Email, Communication & Phishing Protection (ECP)',
+        'Privileged Access Management (PAM)', 'Remote Working & Mobile Operations Security (RWMP)',
+        'Secure Configuration & Hardening (SCHP)', 'Secure Printing & Document Handling (SPDP)',
+        'Secure Software Development & Change Mgmt (SSDP)'
+      ]
+    };
+    var colors = { 'Fondamentali (12)': 'var(--cyan)', 'Necessarie Light (9)': 'var(--green)', 'Proporzionali (9)': 'var(--purple)' };
+    html += '<div class="kpi-dd-stats">';
+    html += '<div class="kpi-dd-stat"><div class="kpi-dd-stat-label">Fondamentali</div><div class="kpi-dd-stat-val" style="color:var(--cyan)">12</div></div>';
+    html += '<div class="kpi-dd-stat"><div class="kpi-dd-stat-label">Necessarie Light</div><div class="kpi-dd-stat-val" style="color:var(--green)">9</div></div>';
+    html += '<div class="kpi-dd-stat"><div class="kpi-dd-stat-label">Proporzionali</div><div class="kpi-dd-stat-val" style="color:var(--purple)">9</div></div>';
+    html += '</div>';
+    Object.keys(policies).forEach(function(group) {
+      var groupColor = colors[group] || 'var(--muted)';
+      html += '<div class="kpi-dd-policy-group">';
+      html += '<div class="kpi-dd-policy-group-title" style="color:' + groupColor + '">' + group + '</div>';
+      policies[group].forEach(function(p) {
+        html += '<div class="kpi-dd-policy-item"><span class="policy-dot" style="background:' + groupColor + '"></span>' + p + '</div>';
+      });
+      html += '</div>';
+    });
+    break;
+
+  case 'incidenti':
+    title.textContent = 'INCIDENTI APERTI';
+    subtitle.textContent = 'Stato incidenti di sicurezza — Art. 23 Dir. (UE) 2022/2555';
+    html += '<div class="kpi-dd-zero-banner">';
+    html += '<div class="kpi-dd-zero-icon">🛡️</div>';
+    html += '<div><div class="kpi-dd-zero-text">Zero incidenti di sicurezza registrati</div>';
+    html += '<div class="kpi-dd-zero-sub">Nessun incidente di sicurezza si è verificato dalla data di inizio mandato NIS2 (Dicembre 2025)</div></div>';
+    html += '</div>';
+    html += '<div class="kpi-dd-section">Procedura in caso di incidente</div>';
+    html += '<div style="font-size:0.72rem;color:var(--text);line-height:1.8">'
+      + '<strong style="color:var(--red)">1. Rilevazione:</strong> Identificazione e classificazione dell\'incidente (CSIRT interno)<br>'
+      + '<strong style="color:var(--orange)">2. Pre-notifica (24h):</strong> Comunicazione iniziale al CSIRT Italia / ACN<br>'
+      + '<strong style="color:var(--yellow)">3. Notifica completa (72h):</strong> Analisi impatto, IoC, misure di contenimento<br>'
+      + '<strong style="color:var(--cyan)">4. Relazione finale (30gg):</strong> Root cause analysis, remediation, lessons learned<br>'
+      + '<strong style="color:var(--green)">5. Follow-up:</strong> Aggiornamento policy, formazione, miglioramento continuo</div>';
+    html += '<div class="kpi-dd-section" style="margin-top:18px">Riferimenti</div>';
+    html += '<div style="font-size:0.68rem;color:var(--muted);line-height:1.6">'
+      + '• Responsabile NIS2: <strong style="color:var(--text)">Massimo Vitale</strong><br>'
+      + '• Incident Response Plan: <strong style="color:var(--green)">v1.0 firmato 09/12/2025</strong><br>'
+      + '• Referente CSIRT: <strong style="color:var(--text)">Nominato 31/12/2025</strong><br>'
+      + '• Contatto ACN: <strong style="color:var(--cyan)">csirt@acn.gov.it</strong></div>';
+    break;
+
+  default:
+    title.textContent = 'Dettaglio';
+    subtitle.textContent = '';
+    html = '<p style="color:var(--muted)">Contenuto non disponibile.</p>';
+  }
+
+  body.innerHTML = html;
+  overlay.classList.add('kpi-dd-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeKpiDrilldown(e) {
+  if (e && e.target !== e.currentTarget) return; // click inside modal
+  var overlay = document.getElementById('kpi-dd-overlay');
+  if (overlay) overlay.classList.remove('kpi-dd-open');
+  document.body.style.overflow = '';
+}
+
+// ============================================================
+// ESC KEY (drawer + modal + mobile menu + kpi drilldown)
 // ============================================================
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
+    var kpiDD = document.getElementById('kpi-dd-overlay');
+    if (kpiDD && kpiDD.classList.contains('kpi-dd-open')) { closeKpiDrilldown(); return; }
     var mo = document.getElementById('modal-overlay');
     if (mo && mo.classList.contains('modal-open')) { closeAssetModal(); return; }
     if (_drawerOpen) { closeDrawer(); return; }
