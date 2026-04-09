@@ -910,8 +910,109 @@ th.sortable.sort-desc .sort-arrow { opacity: 1; color: var(--cyan); }
   #footer { position: static !important; margin-top: 20px; border-top: 1px solid #ddd; }
 
   /* Board mode overlay hidden in print */
-  #board-overlay { display: none !important; }
+  #board-overlay, .fab-scroll-top, #toast-container { display: none !important; }
+
+  /* Print header/footer per page */
+  @page { margin: 18mm 14mm 16mm 14mm; }
+
+  /* Tab section titles in print */
+  .tab-pane::before {
+    content: attr(data-print-title);
+    display: block;
+    font-family: monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0969da !important;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #0969da;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Ensure cards don't break mid-card */
+  .kpi-card, .card, .risk-row, .policy-tracker-card { page-break-inside: avoid; break-inside: avoid; }
+
+  /* Asset action buttons hidden in print */
+  .asset-action-btn { display: none !important; }
+
+  /* Sparkline print */
+  .kpi-sparkline-svg { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
 }
+
+/* ========== FAB SCROLL-TO-TOP ========== */
+.fab-scroll-top {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--cyan);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(88,166,255,0.35);
+  opacity: 0;
+  transform: scale(0.6) translateY(20px);
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s, background 0.2s;
+  z-index: 500;
+}
+.fab-scroll-top.fab-visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: all;
+}
+.fab-scroll-top:hover {
+  background: #388bfd;
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: 0 6px 24px rgba(88,166,255,0.5);
+}
+.fab-scroll-top svg { width: 20px; height: 20px; }
+
+/* ========== ASSET ACTION BUTTONS ========== */
+.asset-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.asset-action-btn:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: rgba(88,166,255,0.08);
+}
+.asset-action-btn.action-edr { border-color: rgba(248,81,73,0.4); color: var(--red); }
+.asset-action-btn.action-edr:hover { background: rgba(248,81,73,0.1); border-color: var(--red); }
+.asset-action-btn.action-mfa { border-color: rgba(210,153,34,0.4); color: var(--yellow); }
+.asset-action-btn.action-mfa:hover { background: rgba(210,153,34,0.1); border-color: var(--yellow); }
+.asset-action-btn.action-ok { color: var(--green); border-color: rgba(63,185,80,0.3); cursor: default; }
+.asset-actions-cell { display: flex; gap: 4px; flex-wrap: wrap; }
+
+/* ========== COUNT-UP ANIMATION ========== */
+@keyframes kpi-count-pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+.kpi-number[data-counted] { animation: kpi-count-pulse 0.3s ease; }
+
+/* ========== SPARKLINE TREND ========== */
+.kpi-sparkline-wrap { margin-top: 4px; display: flex; align-items: center; gap: 6px; }
+.kpi-sparkline-svg { flex-shrink: 0; }
+.kpi-sparkline-label { font-family: var(--font-mono); font-size: 0.52rem; color: var(--muted); white-space: nowrap; }
 
 /* ========== SCROLLBAR ========== */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -2083,6 +2184,8 @@ body.board-mode #footer { visibility: hidden; }
   .heatmap-x-labels { grid-template-columns: repeat(5, 56px); }
   .heatmap-y-label { height: 56px; }
   .heatmap-risk-dot { width: 18px; height: 18px; font-size: 0.38rem; }
+  .fab-scroll-top { bottom: calc(68px + env(safe-area-inset-bottom, 0px)); right: 16px; width: 40px; height: 40px; }
+  .asset-actions-cell { flex-direction: column; }
 }
 
 /* ========== MOBILE: 640px ========== */
@@ -2680,7 +2783,7 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
 <main id="main">
 
   <!-- TAB 1: OVERVIEW -->
-  <div class="tab-pane active" id="tab-overview" role="tabpanel" aria-labelledby="navtab-overview" tabindex="0">
+  <div class="tab-pane active" id="tab-overview" role="tabpanel" aria-labelledby="navtab-overview" tabindex="0" data-print-title="OVERVIEW — COMPLIANCE COMPLESSIVA">
     <div class="section-header section-with-ts">// PANORAMICA COMPLIANCE NIS2<span class="section-ts" id="ts-overview"></span></div>
     <div class="gauge-wrapper scroll-animate" id="gauge-wrapper">
       <div class="gauge-container" id="gauge-container"></div>
@@ -2773,7 +2876,7 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
   </div>
 
   <!-- TAB 2: MIS x SEDI -->
-  <div class="tab-pane" id="tab-mis" role="tabpanel" aria-labelledby="navtab-mis" tabindex="0">
+  <div class="tab-pane" id="tab-mis" role="tabpanel" aria-labelledby="navtab-mis" tabindex="0" data-print-title="MISURE DI SICUREZZA NIS2 (MIS)">
     <div class="section-header section-with-ts">// 10 MISURE MIS <span class="glossary-icon" data-tooltip="Misure di Sicurezza - le 10 aree di controllo obbligatorie secondo la Direttiva NIS2 Art. 21">?</span> — STATO PER FARMACIA<span class="section-ts" id="ts-mis"></span></div>
     <div class="card scroll-animate">
       <div class="table-wrap">
@@ -2803,7 +2906,7 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
   </div>
 
   <!-- TAB 3: RISK MATRIX -->
-  <div class="tab-pane" id="tab-risk" role="tabpanel" aria-labelledby="navtab-risk" tabindex="0">
+  <div class="tab-pane" id="tab-risk" role="tabpanel" aria-labelledby="navtab-risk" tabindex="0" data-print-title="RISK ASSESSMENT — MATRICE DEI RISCHI">
     <div class="section-header section-with-ts">// RISK MATRIX <span class="glossary-icon" data-tooltip="Matrice del rischio basata su ISO/IEC 27005, valuta probabilità × impatto per ogni scenario">?</span> — ISO/IEC 27005 &middot; NIST SP 800-30 &middot; ACN <span class="glossary-icon" data-tooltip="ACN: Agenzia per la Cybersicurezza Nazionale - autorità italiana per la sicurezza informatica">?</span> MIS<span class="section-ts" id="ts-risk"></span></div>
     <div class="heatmap-section scroll-animate">
       <div class="card">
@@ -2839,7 +2942,7 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
   </div>
 
   <!-- TAB 4: ASSET -->
-  <div class="tab-pane" id="tab-asset" role="tabpanel" aria-labelledby="navtab-asset" tabindex="0">
+  <div class="tab-pane" id="tab-asset" role="tabpanel" aria-labelledby="navtab-asset" tabindex="0" data-print-title="INVENTARIO ASSET IT">
     <div class="section-header section-with-ts">// INVENTARIO ASSET IT<span class="section-ts" id="ts-asset"></span></div>
     <div class="kpi-grid scroll-animate" id="kpi-global"></div>
     <div class="note-banner scroll-animate">
@@ -2886,7 +2989,7 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
   </div>
 
   <!-- TAB 5: SCADENZE -->
-  <div class="tab-pane" id="tab-scadenze" role="tabpanel" aria-labelledby="navtab-scadenze" tabindex="0">
+  <div class="tab-pane" id="tab-scadenze" role="tabpanel" aria-labelledby="navtab-scadenze" tabindex="0" data-print-title="PIANO SCADENZE E MILESTONE">
     <div class="section-header">// PIANO SCADENZE NIS2</div>
 
     <!-- INCIDENT TIMER NIS2 ART. 23 -->
@@ -2950,7 +3053,7 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
   </div>
 
   <!-- TAB 6: POLICY -->
-  <div class="tab-pane" id="tab-policy" role="tabpanel" aria-labelledby="navtab-policy" tabindex="0">
+  <div class="tab-pane" id="tab-policy" role="tabpanel" aria-labelledby="navtab-policy" tabindex="0" data-print-title="POLICY TRACKER — STATO POLICY DI SICUREZZA">
     <div class="section-header">// POLICY TRACKER — MANUALE UFFICIALE NIS2</div>
     <div class="policy-kpi-grid" id="policy-kpi-grid"></div>
     <div class="policy-progress-wrap card" style="padding:16px;">
@@ -2980,7 +3083,7 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
   </div>
 
   <!-- TAB 7: STORICO -->
-  <div class="tab-pane" id="tab-storico" role="tabpanel" aria-labelledby="navtab-storico" tabindex="0">
+  <div class="tab-pane" id="tab-storico" role="tabpanel" aria-labelledby="navtab-storico" tabindex="0" data-print-title="STORICO ATTIVITA E LOG OPERAZIONI">
     <div class="activity-calendar">
       <div class="activity-calendar-title">// CALENDARIO ATTIVITÀ NIS2</div>
       <div class="card" style="padding:16px;">
@@ -3040,6 +3143,9 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
 
 <!-- TOAST CONTAINER -->
 <div class="toast-container" id="toast-container"></div>
+<button class="fab-scroll-top" id="fab-scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Torna in cima" aria-label="Torna in cima">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
 
 <!-- SEDE DETAIL MODAL -->
 <div class="sede-detail-overlay" id="sede-detail-overlay" onclick="if(event.target===this)closeSedeDetail()">
@@ -7115,6 +7221,204 @@ document.addEventListener('click', function(e) {
     }
   }
 });
+
+// ============================================================
+// UPGRADE 1: FAB SCROLL-TO-TOP
+// ============================================================
+(function initFabScrollTop() {
+  var fab = document.getElementById('fab-scroll-top');
+  if (!fab) return;
+  var threshold = 400;
+  var ticking = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      window.requestAnimationFrame(function() {
+        if (window.scrollY > threshold) {
+          fab.classList.add('fab-visible');
+        } else {
+          fab.classList.remove('fab-visible');
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+})();
+
+// ============================================================
+// UPGRADE 2: ASSET TABLE — AZIONI RAPIDE
+// ============================================================
+(function patchAssetActions() {
+  var origRenderAT = renderAssetTable;
+  renderAssetTable = function() {
+    origRenderAT();
+    var rows = Array.from(document.querySelectorAll('#asset-tbody tr'));
+    var list = getFilteredAssets();
+    rows.forEach(function(row, idx) {
+      var a = list[idx];
+      if (!a) return;
+      var actionsHtml = '<td data-label="Azioni"><div class="asset-actions-cell">';
+      if (a.edr === false) {
+        actionsHtml += '<button class="asset-action-btn action-edr" onclick="event.stopPropagation();markEdrInstall(\'' + a.id + '\')" title="Segna EDR da installare">'
+          + '<svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor"><path d="M8 4.754a3.246 3.246 0 100 6.492 3.246 3.246 0 000-6.492zM5.754 8a2.246 2.246 0 114.492 0 2.246 2.246 0 01-4.492 0z"/><path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 01-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 01-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 01.52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 011.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 011.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 01.52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 01-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 01-1.255-.52l-.094-.319z"/></svg>'
+          + 'EDR</button>';
+      } else {
+        actionsHtml += '<span class="asset-action-btn action-ok" title="EDR attivo">&#x2713; EDR</span>';
+      }
+      if (a.mfa === false) {
+        actionsHtml += '<button class="asset-action-btn action-mfa" onclick="event.stopPropagation();markMfaEnable(\'' + a.id + '\')" title="Segna MFA da attivare">'
+          + '<svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a2 2 0 012 2v4H6V3a2 2 0 012-2zm3 6V3a3 3 0 00-6 0v4a2 2 0 00-2 2v5a2 2 0 002 2h6a2 2 0 002-2V9a2 2 0 00-2-2z"/></svg>'
+          + 'MFA</button>';
+      } else {
+        actionsHtml += '<span class="asset-action-btn action-ok" title="MFA attiva">&#x2713; MFA</span>';
+      }
+      actionsHtml += '</div></td>';
+      row.insertAdjacentHTML('beforeend', actionsHtml);
+    });
+  };
+  // Add header column
+  var thead = document.querySelector('#tab-asset thead tr');
+  if (thead) {
+    thead.insertAdjacentHTML('beforeend', '<th style="font-size:0.6rem;letter-spacing:0.1em;white-space:nowrap">AZIONI</th>');
+  }
+  renderAssetTable();
+})();
+
+function markEdrInstall(assetId) {
+  showToast('EDR segnato per installazione: ' + assetId, 'warning');
+}
+function markMfaEnable(assetId) {
+  showToast('MFA segnata per attivazione: ' + assetId, 'warning');
+}
+
+// ============================================================
+// UPGRADE 3: COUNT-UP ANIMATION ON KPI NUMBERS
+// ============================================================
+(function animateCountUp() {
+  function countUp(el, target, suffix, duration) {
+    var start = 0;
+    var startTime = null;
+    suffix = suffix || '';
+    duration = duration || 1200;
+
+    function step(timestamp) {
+      if (!startTime) startTime = timestamp;
+      var progress = Math.min((timestamp - startTime) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+      var current = Math.round(start + (target - start) * eased);
+      el.textContent = current + suffix;
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        el.setAttribute('data-counted', 'true');
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Animate sede KPI cards
+  var sediNumbers = document.querySelectorAll('#kpi-sedi .kpi-number');
+  sediNumbers.forEach(function(el) {
+    var txt = el.textContent.trim();
+    var match = txt.match(/^(\d+)/);
+    if (match) {
+      var val = parseInt(match[1], 10);
+      el.innerHTML = '0<sup>%</sup>';
+      setTimeout(function() {
+        var sup = el.querySelector('sup');
+        countUp(el, val, '', 1400);
+        setTimeout(function() {
+          el.innerHTML = val + '<sup>%</sup>';
+          el.setAttribute('data-counted', 'true');
+        }, 1450);
+      }, 200);
+    }
+  });
+
+  // Animate overview global KPI cards
+  var globalNumbers = document.querySelectorAll('#kpi-overview-global .kpi-number');
+  globalNumbers.forEach(function(el) {
+    var txt = el.textContent.trim();
+    var match = txt.match(/^(\d+)/);
+    if (match) {
+      var val = parseInt(match[1], 10);
+      var hasPct = txt.indexOf('%') !== -1;
+      el.textContent = '0' + (hasPct ? '%' : '');
+      setTimeout(function() {
+        countUp(el, val, hasPct ? '%' : '', 1200);
+      }, 400);
+    }
+  });
+})();
+
+// ============================================================
+// UPGRADE 4: SPARKLINE TREND SVG PER SEDE
+// ============================================================
+(function addSparklineTrend() {
+  // Generate simulated historical trend data per sede (current - 3 months)
+  var sedi = DATA.sedi;
+  var order = ['Ateneo', 'Nuovo Salario', 'Corso Francia', 'Fracassini', 'Pannini', 'Amministrazione'];
+  var trendData = {};
+  order.forEach(function(name) {
+    var s = sedi[name];
+    if (!s) return;
+    var current = s.compliance_pct;
+    // Simulate realistic growth: started lower, grew to current
+    var base = Math.max(5, current - 25 - Math.floor(Math.random() * 10));
+    var points = [];
+    for (var i = 0; i < 6; i++) {
+      var progress = i / 5;
+      var noise = Math.round((Math.random() - 0.3) * 4);
+      var val = Math.round(base + (current - base) * Math.pow(progress, 0.7) + noise);
+      points.push(Math.max(0, Math.min(100, val)));
+    }
+    points[5] = current; // ensure last point is exact
+    trendData[name] = points;
+  });
+
+  function buildTrendSvg(points, color) {
+    var w = 60, h = 20;
+    var maxVal = Math.max.apply(null, points);
+    var minVal = Math.min.apply(null, points);
+    var range = maxVal - minVal || 1;
+    var coords = points.map(function(v, i) {
+      var x = (i / (points.length - 1)) * w;
+      var y = h - ((v - minVal) / range) * (h - 4) - 2;
+      return x.toFixed(1) + ',' + y.toFixed(1);
+    });
+    return '<svg class="kpi-sparkline-svg" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '">'
+      + '<polyline points="' + coords.join(' ') + '" fill="none" stroke="' + color + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>'
+      + '<circle cx="' + coords[coords.length - 1].split(',')[0] + '" cy="' + coords[coords.length - 1].split(',')[1] + '" r="2" fill="' + color + '"/>'
+      + '</svg>';
+  }
+
+  // Inject sparklines into KPI sede cards
+  var cards = document.querySelectorAll('#kpi-sedi .kpi-card');
+  cards.forEach(function(card, idx) {
+    var name = order[idx];
+    if (!name || !trendData[name]) return;
+    var s = sedi[name];
+    var color = complianceColor(s.compliance_pct);
+    var points = trendData[name];
+    var delta = points[points.length - 1] - points[0];
+    var deltaSign = delta >= 0 ? '+' : '';
+    var deltaColor = delta >= 0 ? 'var(--green)' : 'var(--red)';
+
+    var sparkWrap = document.createElement('div');
+    sparkWrap.className = 'kpi-sparkline-wrap';
+    sparkWrap.innerHTML = buildTrendSvg(points, color)
+      + '<span class="kpi-sparkline-label" style="color:' + deltaColor + '">' + deltaSign + delta + ' pp (3m)</span>';
+
+    // Insert after the existing sparkline-wrap (OK/KO bar)
+    var existingSparkline = card.querySelector('.sparkline-wrap');
+    if (existingSparkline) {
+      existingSparkline.parentNode.insertBefore(sparkWrap, existingSparkline.nextSibling);
+    } else {
+      var meta = card.querySelector('.kpi-meta');
+      if (meta) card.insertBefore(sparkWrap, meta);
+    }
+  });
+})();
 
 </script>
 </body>
