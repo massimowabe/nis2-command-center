@@ -1680,6 +1680,49 @@ body.board-mode #footer { visibility: hidden; }
 .exec-export-preview table { width: 100%; border-collapse: collapse; font-size: 0.7rem; margin: 8px 0; }
 .exec-export-preview table th { background: #f0f0f0; padding: 6px 8px; text-align: left; border: 1px solid #ddd; font-weight: 600; }
 .exec-export-preview table td { padding: 5px 8px; border: 1px solid #ddd; }
+
+/* Toast notifications */
+.toast-container { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 10010; display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
+.toast { display: flex; align-items: center; gap: 10px; padding: 10px 18px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); font-size: 0.78rem; color: var(--text); pointer-events: all; opacity: 0; transform: translateY(20px); animation: toast-in 0.3s ease forwards; }
+.toast.toast-out { animation: toast-out 0.3s ease forwards; }
+.toast-icon { font-size: 1rem; flex-shrink: 0; }
+.toast-success { border-left: 3px solid var(--green); }
+.toast-info { border-left: 3px solid var(--cyan); }
+.toast-warning { border-left: 3px solid var(--yellow); }
+@keyframes toast-in { to { opacity: 1; transform: translateY(0); } }
+@keyframes toast-out { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(20px); } }
+
+/* Sede detail modal */
+.sede-detail-overlay { position: fixed; inset: 0; z-index: 10001; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.sede-detail-overlay.sede-modal-open { opacity: 1; pointer-events: all; }
+.sede-detail-modal { background: var(--card); border: 1px solid var(--border); border-radius: 10px; width: 640px; max-width: 94vw; max-height: 88vh; overflow-y: auto; box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+.sede-detail-head { padding: 18px 22px 12px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; }
+.sede-detail-body { padding: 16px 22px 22px; }
+.sede-kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+.sede-kpi-item { text-align: center; padding: 10px; background: var(--bg); border-radius: 6px; border: 1px solid var(--border); }
+.sede-kpi-val { font-family: var(--font-mono); font-size: 1.3rem; font-weight: 700; }
+.sede-kpi-lbl { font-family: var(--font-mono); font-size: 0.52rem; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-top: 2px; }
+.sede-mis-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 16px; }
+.sede-mis-cell { text-align: center; padding: 8px 4px; border-radius: 5px; border: 1px solid var(--border); cursor: pointer; transition: border-color 0.15s; }
+.sede-mis-cell:hover { border-color: var(--cyan); }
+.sede-mis-code { font-family: var(--font-mono); font-size: 0.55rem; color: var(--muted); margin-bottom: 2px; }
+.sede-mis-dot { width: 10px; height: 10px; border-radius: 50%; margin: 0 auto; }
+
+/* Gap analysis */
+.gap-section { margin-top: 14px; }
+.gap-bar-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.gap-bar-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text); min-width: 110px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gap-bar-track { flex: 1; height: 14px; background: var(--border); border-radius: 7px; overflow: hidden; position: relative; }
+.gap-bar-fill { height: 100%; border-radius: 7px; transition: width 0.5s; }
+.gap-bar-target { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--text); }
+.gap-bar-target::after { content: attr(data-label); position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-family: var(--font-mono); font-size: 0.45rem; color: var(--muted); white-space: nowrap; }
+.gap-bar-value { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; min-width: 36px; text-align: right; }
+.gap-delta { font-family: var(--font-mono); font-size: 0.55rem; min-width: 48px; text-align: center; }
+
+/* Progress ring on KPI */
+.kpi-ring-wrap { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+.kpi-ring-svg { transform: rotate(-90deg); }
+.kpi-ring-text { position: absolute; font-family: var(--font-mono); font-weight: 700; }
 .freshness-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
 
 @media (max-width: 640px) {
@@ -2116,6 +2159,12 @@ body.board-mode #footer { visibility: hidden; }
   .priority-table { font-size: 0.65rem; }
   .priority-table td { padding: 6px 6px; }
   #kpi-overview-global { grid-template-columns: repeat(2, 1fr) !important; }
+  .sede-detail-modal { width: 100% !important; max-width: 100% !important; max-height: 100vh !important; border-radius: 0 !important; }
+  .sede-kpi-row { grid-template-columns: repeat(2, 1fr) !important; }
+  .sede-mis-grid { grid-template-columns: repeat(5, 1fr) !important; }
+  .gap-bar-label { min-width: 70px !important; font-size: 0.58rem !important; }
+  .gap-delta { display: none; }
+  .toast-container { bottom: calc(60px + env(safe-area-inset-bottom, 0px)); }
 
   /* Touch targets: minimum 44px */
   .nav-tab, .filter-tab, .export-btn, .board-mode-btn,
@@ -2647,6 +2696,10 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
       </button>
     </div>
     <div class="kpi-grid scroll-animate" id="kpi-sedi"></div>
+    <div class="scroll-animate" style="margin-top:20px;">
+      <div class="section-header">// GAP ANALYSIS — DISTANZA DAL TARGET ACN</div>
+      <div class="card" id="gap-analysis-section" style="padding:18px;"></div>
+    </div>
     <div class="radar-section scroll-animate">
       <div class="section-header">// PROFILO MIS PER FARMACIA</div>
       <div class="card">
@@ -2983,6 +3036,14 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
       <span>esc chiudi</span>
     </div>
   </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- SEDE DETAIL MODAL -->
+<div class="sede-detail-overlay" id="sede-detail-overlay" onclick="if(event.target===this)closeSedeDetail()">
+  <div class="sede-detail-modal" id="sede-detail-modal"></div>
 </div>
 
 <!-- RISK DETAIL MODAL -->
@@ -3484,7 +3545,7 @@ function buildSparkline(pct, color, ok, ko) {
     const color = complianceColor(pct);
     const sparkline = buildSparkline(pct, color, s.total_ok, s.total_ko);
     parts.push(`
-      <div class="kpi-card kpi-card-clickable" onclick="drillDownSede('${name}')">
+      <div class="kpi-card kpi-card-clickable" onclick="openSedeDetail('${name}')">
         <div class="kpi-sede">${name.toUpperCase()}</div>
         <div class="kpi-number" style="color:${color}">${pct}<sup>%</sup></div>
         <div class="kpi-bar-wrap">
@@ -3525,13 +3586,35 @@ function buildSparkline(pct, color, ok, ko) {
     { label: 'INCIDENTI APERTI', val: incidentiAperti, color: 'var(--yellow)', dd: 'incidenti', icon: '⊘' }
   ];
 
+  // Policy approval percentage
+  var polApp = POLICY_DETAIL_DATA ? POLICY_DETAIL_DATA.filter(function(p) { return p.stato === 'Approvata'; }).length : 0;
+  var polPct = Math.round(polApp / policyCount * 100);
+
+  function buildRing(pct, color, size, stroke) {
+    var r = (size - stroke) / 2;
+    var circ = 2 * Math.PI * r;
+    var dash = (pct / 100) * circ;
+    return '<div class="kpi-ring-wrap">'
+      + '<svg class="kpi-ring-svg" width="' + size + '" height="' + size + '">'
+      + '<circle cx="' + size/2 + '" cy="' + size/2 + '" r="' + r + '" fill="none" stroke="var(--border)" stroke-width="' + stroke + '"/>'
+      + '<circle cx="' + size/2 + '" cy="' + size/2 + '" r="' + r + '" fill="none" stroke="' + color + '" stroke-width="' + stroke + '" stroke-dasharray="' + dash + ' ' + circ + '" stroke-linecap="round"/>'
+      + '</svg></div>';
+  }
+
   var container = document.getElementById('kpi-overview-global');
   if (!container) return;
   var html = '';
   kpiData.forEach(function(k) {
+    var ringHtml = '';
+    if (k.dd === 'compliance') ringHtml = buildRing(mediaPct, k.color, 44, 4);
+    else if (k.dd === 'policy') ringHtml = buildRing(polPct, k.color, 44, 4);
+
     html += '<div class="kpi-card kpi-card-interactive" onclick="openKpiDrilldown(\'' + k.dd + '\')">'
       + '<div class="kpi-sede">' + k.label + '</div>'
+      + '<div style="display:flex;align-items:center;justify-content:center;gap:10px;">'
+      + (ringHtml ? ringHtml : '')
       + '<div class="kpi-number" style="color:' + k.color + '">' + k.val + '</div>'
+      + '</div>'
       + '<div class="kpi-bar" style="background:' + k.color + '33; width:100%"></div>'
       + '<div class="kpi-meta" style="height:14px"></div>'
       + '</div>';
@@ -4140,6 +4223,8 @@ document.addEventListener('keydown', function(e) {
     if (gs && gs.classList.contains('gsearch-open')) { closeGlobalSearch(); return; }
     var pm = document.getElementById('policy-modal-overlay');
     if (pm && pm.classList.contains('pol-modal-open')) { closePolicyModal(); return; }
+    var sd = document.getElementById('sede-detail-overlay');
+    if (sd && sd.classList.contains('sede-modal-open')) { closeSedeDetail(); return; }
     var rd = document.getElementById('risk-detail-overlay');
     if (rd && rd.classList.contains('risk-modal-open')) { closeRiskDetail(); return; }
     var md = document.getElementById('mis-detail-overlay');
@@ -4383,8 +4468,7 @@ function copyExecSummary() {
   if (!preview) return;
   var text = preview.innerText;
   navigator.clipboard.writeText(text).then(function() {
-    var btn = document.querySelector('.exec-export-body .policy-modal-doc-btn:nth-child(2)');
-    if (btn) { var old = btn.innerHTML; btn.innerHTML = '&#x2705; Copiato!'; setTimeout(function() { btn.innerHTML = old; }, 2000); }
+    showToast('Executive Summary copiato negli appunti', 'success');
   });
 }
 
@@ -4467,6 +4551,160 @@ function openShortcuts() {
 
 function closeShortcuts() {
   document.getElementById('shortcuts-overlay').classList.remove('shortcuts-open');
+  document.body.style.overflow = '';
+}
+
+// ============================================================
+// TOAST NOTIFICATION SYSTEM
+// ============================================================
+function showToast(message, type) {
+  type = type || 'info';
+  var container = document.getElementById('toast-container');
+  if (!container) return;
+  var icons = { success: '✅', info: 'ℹ️', warning: '⚠️' };
+  var toast = document.createElement('div');
+  toast.className = 'toast toast-' + type;
+  toast.innerHTML = '<span class="toast-icon">' + (icons[type] || 'ℹ️') + '</span><span>' + message + '</span>';
+  container.appendChild(toast);
+  setTimeout(function() {
+    toast.classList.add('toast-out');
+    setTimeout(function() { toast.remove(); }, 300);
+  }, 3000);
+}
+
+// ============================================================
+// GAP ANALYSIS — VISUAL
+// ============================================================
+(function renderGapAnalysis() {
+  var container = document.getElementById('gap-analysis-section');
+  if (!container) return;
+  var sedi = DATA.sedi;
+  var order = ['Ateneo', 'Nuovo Salario', 'Corso Francia', 'Fracassini', 'Pannini', 'Amministrazione'];
+  var target60 = 60;
+  var target70 = 70;
+
+  var html = '<div style="display:flex;gap:16px;margin-bottom:14px;flex-wrap:wrap;">'
+    + '<div style="font-family:var(--font-mono);font-size:0.62rem;display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:2px;height:12px;background:var(--orange)"></span> Target ACN minimo (60%)</div>'
+    + '<div style="font-family:var(--font-mono);font-size:0.62rem;display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:2px;height:12px;background:var(--green)"></span> Obiettivo (70%)</div>'
+    + '</div>';
+
+  order.forEach(function(name) {
+    var s = sedi[name];
+    if (!s) return;
+    var pct = s.compliance_pct;
+    var color = complianceColor(pct);
+    var delta60 = pct - target60;
+    var delta70 = pct - target70;
+    var deltaColor = delta60 >= 0 ? 'var(--green)' : 'var(--red)';
+    var deltaText = delta60 >= 0 ? '+' + delta60 : '' + delta60;
+    var needed = delta70 < 0 ? Math.abs(delta70) : 0;
+    var neededText = needed > 0 ? 'mancano ' + needed + ' pp' : 'raggiunto';
+    var neededColor = needed > 0 ? 'var(--orange)' : 'var(--green)';
+
+    html += '<div class="gap-bar-wrap">'
+      + '<div class="gap-bar-label" style="cursor:pointer" onclick="openSedeDetail(\'' + name + '\')">' + name + '</div>'
+      + '<div class="gap-bar-track">'
+      + '<div class="gap-bar-fill" style="width:' + Math.min(pct, 100) + '%;background:' + color + '"></div>'
+      + '<div class="gap-bar-target" style="left:' + target60 + '%" data-label="60%"></div>'
+      + '<div class="gap-bar-target" style="left:' + target70 + '%;background:var(--green)" data-label="70%"></div>'
+      + '</div>'
+      + '<div class="gap-bar-value" style="color:' + color + '">' + pct + '%</div>'
+      + '<div class="gap-delta" style="color:' + neededColor + '">' + neededText + '</div>'
+      + '</div>';
+  });
+
+  container.innerHTML = html;
+})();
+
+// ============================================================
+// SEDE DETAIL MODAL
+// ============================================================
+function openSedeDetail(sedeName) {
+  var overlay = document.getElementById('sede-detail-overlay');
+  var modal = document.getElementById('sede-detail-modal');
+  var sedi = DATA.sedi;
+  var s = sedi[sedeName];
+  if (!s) return;
+
+  var pct = s.compliance_pct;
+  var color = complianceColor(pct);
+  var assets = DATA.assets.filter(function(a) { return a.sede === sedeName; });
+  var misKeys = Object.keys(DATA.mis_definizioni);
+
+  // Ring SVG
+  var ringSize = 56; var ringStroke = 5;
+  var ringR = (ringSize - ringStroke) / 2;
+  var ringCirc = 2 * Math.PI * ringR;
+  var ringDash = (pct / 100) * ringCirc;
+  var ringSvg = '<svg class="kpi-ring-svg" width="' + ringSize + '" height="' + ringSize + '">'
+    + '<circle cx="' + ringSize/2 + '" cy="' + ringSize/2 + '" r="' + ringR + '" fill="none" stroke="var(--border)" stroke-width="' + ringStroke + '"/>'
+    + '<circle cx="' + ringSize/2 + '" cy="' + ringSize/2 + '" r="' + ringR + '" fill="none" stroke="' + color + '" stroke-width="' + ringStroke + '" stroke-dasharray="' + ringDash + ' ' + ringCirc + '" stroke-linecap="round"/>'
+    + '</svg>';
+
+  // MIS grid
+  var misHtml = '';
+  misKeys.forEach(function(m) {
+    var st = s.mis_status[m] || 'ko';
+    var dotColor = st === 'ok' ? 'var(--green)' : st === 'partial' ? 'var(--yellow)' : 'var(--red)';
+    misHtml += '<div class="sede-mis-cell" onclick="closeSedeDetail();openMisDetail(\'' + m + '\')">'
+      + '<div class="sede-mis-code">' + m + '</div>'
+      + '<div class="sede-mis-dot" style="background:' + dotColor + '"></div>'
+      + '</div>';
+  });
+
+  // Asset list
+  var assetHtml = '';
+  assets.forEach(function(a) {
+    var ac = complianceColor(a.compliance_pct);
+    assetHtml += '<div style="display:flex;align-items:center;gap:10px;padding:6px 10px;border-bottom:1px solid var(--border);font-size:0.72rem;cursor:pointer" onclick="closeSedeDetail();switchTab(\'asset\')">'
+      + '<span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--muted);min-width:60px;">' + (a.ruolo || '—') + '</span>'
+      + '<span style="flex:1;color:var(--text);font-weight:600">' + a.nome + '</span>'
+      + '<span style="font-family:var(--font-mono);font-weight:700;color:' + ac + '">' + a.compliance_pct + '%</span>'
+      + '</div>';
+  });
+
+  // Gap to targets
+  var gap60 = Math.max(0, 60 - pct);
+  var gap70 = Math.max(0, 70 - pct);
+  var gapHtml = '<div style="margin-top:14px;padding:12px;background:var(--bg);border-radius:6px;border:1px solid var(--border);">'
+    + '<div style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.1em;color:var(--cyan);margin-bottom:8px;">GAP ANALYSIS</div>'
+    + '<div style="display:flex;gap:20px;">'
+    + '<div style="text-align:center;"><div style="font-family:var(--font-mono);font-size:1.1rem;font-weight:700;color:' + (gap60 > 0 ? 'var(--red)' : 'var(--green)') + '">' + (gap60 > 0 ? '-' + gap60 + 'pp' : '✓') + '</div><div style="font-size:0.55rem;color:var(--muted);">Target ACN 60%</div></div>'
+    + '<div style="text-align:center;"><div style="font-family:var(--font-mono);font-size:1.1rem;font-weight:700;color:' + (gap70 > 0 ? 'var(--orange)' : 'var(--green)') + '">' + (gap70 > 0 ? '-' + gap70 + 'pp' : '✓') + '</div><div style="font-size:0.55rem;color:var(--muted);">Obiettivo 70%</div></div>'
+    + '<div style="text-align:center;"><div style="font-family:var(--font-mono);font-size:1.1rem;font-weight:700;color:var(--cyan)">' + s.total_ok + '/' + (s.total_ok + s.total_ko) + '</div><div style="font-size:0.55rem;color:var(--muted);">Controlli OK</div></div>'
+    + '<div style="text-align:center;"><div style="font-family:var(--font-mono);font-size:1.1rem;font-weight:700;color:var(--red)">' + (s.rischi_critici || 0) + '</div><div style="font-size:0.55rem;color:var(--muted);">Rischi critici</div></div>'
+    + '</div></div>';
+
+  modal.innerHTML = '<div class="sede-detail-head">'
+    + '<div style="display:flex;align-items:center;gap:14px;">'
+    + '<div class="kpi-ring-wrap">' + ringSvg + '<span class="kpi-ring-text" style="font-size:0.7rem;color:' + color + '">' + pct + '%</span></div>'
+    + '<div><div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--cyan);letter-spacing:0.1em;margin-bottom:2px;">FARMACIA</div>'
+    + '<div style="font-size:1.05rem;font-weight:700;color:var(--text)">' + sedeName + '</div></div></div>'
+    + '<button class="policy-modal-close" onclick="closeSedeDetail()">&times;</button></div>'
+    + '<div class="sede-detail-body">'
+    + '<div class="sede-kpi-row">'
+    + '<div class="sede-kpi-item"><div class="sede-kpi-val" style="color:var(--cyan)">' + s.asset_count + '</div><div class="sede-kpi-lbl">Asset</div></div>'
+    + '<div class="sede-kpi-item"><div class="sede-kpi-val" style="color:var(--green)">' + s.total_ok + '</div><div class="sede-kpi-lbl">OK</div></div>'
+    + '<div class="sede-kpi-item"><div class="sede-kpi-val" style="color:var(--red)">' + s.total_ko + '</div><div class="sede-kpi-lbl">KO</div></div>'
+    + '<div class="sede-kpi-item"><div class="sede-kpi-val" style="color:' + (s.alti > 0 ? 'var(--orange)' : 'var(--green)') + '">' + (s.alti || 0) + '</div><div class="sede-kpi-lbl">Rischi alti</div></div>'
+    + '</div>'
+    + '<div style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.1em;color:var(--cyan);margin-bottom:8px;">STATO MIS</div>'
+    + '<div class="sede-mis-grid">' + misHtml + '</div>'
+    + gapHtml
+    + '<div style="margin-top:14px;font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.1em;color:var(--cyan);margin-bottom:8px;">ASSET (' + assets.length + ')</div>'
+    + assetHtml
+    + '<div style="margin-top:14px;text-align:center;">'
+    + '<button class="policy-modal-doc-btn" onclick="closeSedeDetail();drillDownSede(\'' + sedeName + '\')">Vedi tutti gli asset nel dettaglio</button>'
+    + '</div>'
+    + '</div>';
+
+  overlay.classList.add('sede-modal-open');
+  document.body.style.overflow = 'hidden';
+  showToast('Dettaglio sede ' + sedeName + ' aperto', 'info');
+}
+
+function closeSedeDetail() {
+  document.getElementById('sede-detail-overlay').classList.remove('sede-modal-open');
   document.body.style.overflow = '';
 }
 
@@ -4931,7 +5169,7 @@ function renderRiskTableData(data) {
       ? '<span class="badge badge-green">SI</span>'
       : '<span class="badge badge-gray">No</span>';
     parts.push(
-      '<tr>'
+      '<tr style="cursor:pointer" onclick="openRiskDetail(\'' + r.id + '\')">'
       + '<td class="td-code">' + r.id + '</td>'
       + '<td style="color:var(--text); min-width:200px;">' + r.scenario + '</td>'
       + '<td style="font-family:var(--font-mono); font-size:0.75rem; color:var(--muted); white-space:nowrap;">' + r.lordo + ' <span style="color:var(--border)">/25</span></td>'
@@ -5918,6 +6156,7 @@ function exportCsv() {
   link.click();
   document.body.removeChild(link);
   setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+  showToast('Report CSV scaricato: ' + filename, 'success');
 }
 
 // ============================================================
