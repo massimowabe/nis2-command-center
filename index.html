@@ -1014,6 +1014,63 @@ th.sortable.sort-desc .sort-arrow { opacity: 1; color: var(--cyan); }
 .kpi-sparkline-svg { flex-shrink: 0; }
 .kpi-sparkline-label { font-family: var(--font-mono); font-size: 0.52rem; color: var(--muted); white-space: nowrap; }
 
+/* ========== KPI STAGGER ANIMATION ========== */
+.kpi-card { opacity: 0; transform: translateY(16px) scale(0.97); transition: opacity 0.4s ease, transform 0.4s ease; }
+.scroll-animate.visible .kpi-card, .kpi-card.kpi-stagger-done { opacity: 1; transform: translateY(0) scale(1); }
+
+/* ========== RISK FILTER TABS ========== */
+.risk-filter-bar { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+.risk-filter-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px; border-radius: 4px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); font-family: var(--font-mono);
+  font-size: 0.62rem; font-weight: 600; letter-spacing: 0.04em;
+  cursor: pointer; transition: all 0.15s; white-space: nowrap;
+}
+.risk-filter-btn:hover { border-color: var(--cyan); color: var(--text); }
+.risk-filter-btn.rf-active { background: rgba(88,166,255,0.12); border-color: var(--cyan); color: var(--cyan); }
+.risk-filter-btn .rf-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 16px; height: 16px; border-radius: 8px;
+  background: var(--border); font-size: 0.55rem; color: var(--text);
+  padding: 0 4px;
+}
+.risk-filter-btn.rf-active .rf-count { background: rgba(88,166,255,0.25); color: var(--cyan); }
+
+/* ========== PRINT BUTTON ========== */
+.print-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 4px;
+  border: 1px solid rgba(63,185,80,0.4); background: transparent;
+  color: var(--green); font-family: var(--font-mono);
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.06em;
+  cursor: pointer; transition: all 0.15s; white-space: nowrap;
+}
+.print-btn:hover { background: rgba(63,185,80,0.1); border-color: var(--green); }
+.print-btn svg { width: 11px; height: 11px; flex-shrink: 0; }
+@media print { .print-btn { display: none !important; } }
+
+/* ========== POLICY DONUT ========== */
+.policy-donut-wrap { display: flex; align-items: center; gap: 24px; margin-bottom: 18px; }
+.policy-donut-svg { flex-shrink: 0; }
+.policy-donut-legend { display: flex; flex-direction: column; gap: 6px; }
+.policy-donut-legend-item { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.68rem; }
+.policy-donut-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+@media (max-width: 640px) { .policy-donut-wrap { flex-direction: column; align-items: flex-start; } }
+
+/* ========== TAB COUNTER BADGE ========== */
+.nav-tab-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; border-radius: 9px;
+  background: var(--border); color: var(--muted);
+  font-family: var(--font-mono); font-size: 0.52rem; font-weight: 700;
+  padding: 0 5px; margin-left: 4px;
+  transition: background 0.2s, color 0.2s;
+}
+.nav-tab.active .nav-tab-count { background: rgba(88,166,255,0.2); color: var(--cyan); }
+@media print { .nav-tab-count { display: none !important; } }
+
 /* ========== SCROLLBAR ========== */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
@@ -2636,6 +2693,10 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
     </div>
   </div>
   <div class="header-right">
+    <button class="print-btn" onclick="window.print()" title="Stampa report PDF">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2.5 8a.5.5 0 100-1 .5.5 0 000 1z"/><path d="M5 1a1 1 0 00-1 1v1H3.5A1.5 1.5 0 002 4.5v4A1.5 1.5 0 003.5 10H4v2a1 1 0 001 1h6a1 1 0 001-1v-2h.5A1.5 1.5 0 0014 8.5v-4A1.5 1.5 0 0012.5 3H12V2a1 1 0 00-1-1H5zm6 2H5V2h6v1zM4 10V8h8v2h.5a.5.5 0 00.5-.5v-4a.5.5 0 00-.5-.5h-9a.5.5 0 00-.5.5v4a.5.5 0 00.5.5H4zm1 2v-3h6v3H5z"/></svg>
+      PDF
+    </button>
     <!-- NOTIFICATION BELL -->
     <button class="export-btn" onclick="openGlobalSearch()" data-tooltip="Ricerca globale (Ctrl+K)" style="gap:4px;">
       <svg viewBox="0 0 16 16" fill="currentColor" width="13" height="13"><path d="M11.742 10.344a6.5 6.5 0 10-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 001.415-1.414l-3.85-3.85a1.007 1.007 0 00-.115-.099zm-5.242 1.156a5.5 5.5 0 110-11 5.5 5.5 0 010 11z"/></svg>
@@ -2915,6 +2976,7 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
       </div>
     </div>
     <div class="card scroll-animate">
+      <div class="risk-filter-bar" id="risk-filter-bar"></div>
       <div class="table-wrap">
         <table id="risk-table">
           <thead>
@@ -3056,6 +3118,10 @@ if(sessionStorage.getItem('nis2_auth')==='1'){
   <div class="tab-pane" id="tab-policy" role="tabpanel" aria-labelledby="navtab-policy" tabindex="0" data-print-title="POLICY TRACKER — STATO POLICY DI SICUREZZA">
     <div class="section-header">// POLICY TRACKER — MANUALE UFFICIALE NIS2</div>
     <div class="policy-kpi-grid" id="policy-kpi-grid"></div>
+    <div class="card" style="padding:16px;margin-bottom:16px;">
+      <div class="card-title">DISTRIBUZIONE STATO POLICY</div>
+      <div id="policy-donut-container" class="policy-donut-wrap"></div>
+    </div>
     <div class="policy-progress-wrap card" style="padding:16px;">
       <div class="card-title">AVANZAMENTO APPROVAZIONE POLICY</div>
       <div id="policy-progress-label" style="font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);margin-top:4px;"></div>
@@ -7416,6 +7482,150 @@ function markMfaEnable(assetId) {
     } else {
       var meta = card.querySelector('.kpi-meta');
       if (meta) card.insertBefore(sparkWrap, meta);
+    }
+  });
+})();
+
+// ============================================================
+// UPGRADE B6-1: KPI CARD STAGGER ANIMATION
+// ============================================================
+(function initKpiStagger() {
+  var grids = document.querySelectorAll('.kpi-grid');
+  grids.forEach(function(grid) {
+    var cards = grid.querySelectorAll('.kpi-card');
+    cards.forEach(function(card, idx) {
+      card.style.transitionDelay = (idx * 0.07) + 's';
+    });
+  });
+  // Mark cards in non-scroll-animate grids as visible immediately
+  setTimeout(function() {
+    document.querySelectorAll('.kpi-card').forEach(function(c) {
+      if (!c.closest('.scroll-animate') || c.closest('.scroll-animate.visible')) {
+        c.classList.add('kpi-stagger-done');
+      }
+    });
+  }, 100);
+})();
+
+// ============================================================
+// UPGRADE B6-2: RISK FILTER BY LEVEL
+// ============================================================
+(function initRiskFilters() {
+  var bar = document.getElementById('risk-filter-bar');
+  if (!bar) return;
+  var risks = DATA.risk_matrix;
+  var levels = ['Critico', 'Alto', 'Medio', 'Basso'];
+  var colors = { Critico: 'var(--red)', Alto: 'var(--orange)', Medio: 'var(--yellow)', Basso: 'var(--green)' };
+  var counts = {};
+  levels.forEach(function(l) { counts[l] = 0; });
+  risks.forEach(function(r) { if (counts[r.livello] !== undefined) counts[r.livello]++; });
+
+  var html = '<span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--muted);letter-spacing:0.08em;">FILTRA:</span>';
+  html += '<button class="risk-filter-btn rf-active" data-level="all" onclick="filterRiskLevel(\'all\',this)">Tutti <span class="rf-count">' + risks.length + '</span></button>';
+  levels.forEach(function(l) {
+    html += '<button class="risk-filter-btn" data-level="' + l + '" onclick="filterRiskLevel(\'' + l + '\',this)">' + l + ' <span class="rf-count">' + counts[l] + '</span></button>';
+  });
+  bar.innerHTML = html;
+})();
+
+var _riskFilterLevel = 'all';
+function filterRiskLevel(level, btn) {
+  _riskFilterLevel = level;
+  document.querySelectorAll('.risk-filter-btn').forEach(function(b) { b.classList.remove('rf-active'); });
+  btn.classList.add('rf-active');
+  var filtered = level === 'all' ? DATA.risk_matrix : DATA.risk_matrix.filter(function(r) { return r.livello === level; });
+  renderRiskTableData(filtered);
+  // Re-apply click handlers from patchAssetClick pattern
+  var rows = document.querySelectorAll('#risk-tbody tr');
+  rows.forEach(function(row) {
+    row.style.cursor = 'pointer';
+  });
+  showToast(filtered.length + ' rischi ' + (level === 'all' ? 'totali' : 'livello ' + level), 'info');
+}
+
+// ============================================================
+// UPGRADE B6-4: POLICY DONUT CHART
+// ============================================================
+(function renderPolicyDonut() {
+  var container = document.getElementById('policy-donut-container');
+  if (!container) return;
+  var policies = POLICY_DETAIL_DATA;
+  var counts = { Approvata: 0, 'In revisione': 0, Bozza: 0, 'Da creare': 0 };
+  policies.forEach(function(p) {
+    if (p.stato === 'Approvata') counts.Approvata++;
+    else if (p.stato === 'In revisione') counts['In revisione']++;
+    else if (p.stato === 'Bozza') counts.Bozza++;
+    else counts['Da creare']++;
+  });
+  var total = policies.length;
+  var segments = [
+    { label: 'Approvate', count: counts.Approvata, color: '#3fb950' },
+    { label: 'In revisione', count: counts['In revisione'], color: '#d29922' },
+    { label: 'Bozze', count: counts.Bozza, color: '#db6d28' },
+    { label: 'Da creare', count: counts['Da creare'], color: '#f85149' }
+  ].filter(function(s) { return s.count > 0; });
+
+  var size = 120;
+  var cx = size / 2, cy = size / 2, r = 44, stroke = 12;
+  var circ = 2 * Math.PI * r;
+  var offset = 0;
+  var arcs = '';
+  segments.forEach(function(seg) {
+    var pct = seg.count / total;
+    var dash = pct * circ;
+    var gap = circ - dash;
+    arcs += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="' + seg.color + '" stroke-width="' + stroke + '" stroke-dasharray="' + dash.toFixed(2) + ' ' + gap.toFixed(2) + '" stroke-dashoffset="' + (-offset).toFixed(2) + '" style="transform:rotate(-90deg);transform-origin:center"/>';
+    offset += dash;
+  });
+
+  var pctApp = Math.round(counts.Approvata / total * 100);
+  var svg = '<svg class="policy-donut-svg" width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size + '">'
+    + '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="var(--border)" stroke-width="' + stroke + '"/>'
+    + arcs
+    + '<text x="' + cx + '" y="' + (cy - 4) + '" text-anchor="middle" font-family="var(--font-mono)" font-size="22" font-weight="700" fill="var(--text)">' + pctApp + '%</text>'
+    + '<text x="' + cx + '" y="' + (cy + 12) + '" text-anchor="middle" font-family="var(--font-mono)" font-size="7" letter-spacing="1" fill="var(--muted)">APPROVATE</text>'
+    + '</svg>';
+
+  var legend = '<div class="policy-donut-legend">';
+  segments.forEach(function(seg) {
+    var pct = Math.round(seg.count / total * 100);
+    legend += '<div class="policy-donut-legend-item">'
+      + '<div class="policy-donut-dot" style="background:' + seg.color + '"></div>'
+      + '<span>' + seg.label + ': <strong style="color:var(--text)">' + seg.count + '</strong> (' + pct + '%)</span>'
+      + '</div>';
+  });
+  legend += '</div>';
+
+  container.innerHTML = svg + legend;
+})();
+
+// ============================================================
+// UPGRADE B6-5: TAB COUNTER BADGES
+// ============================================================
+(function addTabCountBadges() {
+  var tabCounts = {
+    overview: null, // no count for overview
+    mis: 10, // 10 MIS measures
+    risk: DATA.risk_matrix.length,
+    asset: DATA.assets.length,
+    scadenze: DATA.scadenze.length,
+    policy: POLICY_DETAIL_DATA.length,
+    storico: DATA.storico.length
+  };
+
+  Object.keys(tabCounts).forEach(function(tabId) {
+    var count = tabCounts[tabId];
+    if (count === null) return;
+    // Desktop nav
+    var navTab = document.getElementById('navtab-' + tabId);
+    if (navTab) {
+      navTab.insertAdjacentHTML('beforeend', '<span class="nav-tab-count">' + count + '</span>');
+    }
+    // Mobile nav
+    var mobileTab = document.querySelector('.mobile-tab-item[data-tab="' + tabId + '"]');
+    if (mobileTab) {
+      mobileTab.insertAdjacentHTML('beforeend', '<span class="nav-tab-count" style="position:absolute;top:-4px;right:-4px;font-size:0.45rem;min-width:14px;height:14px;border-radius:7px;">' + count + '</span>');
+      mobileTab.style.position = 'relative';
     }
   });
 })();
