@@ -818,17 +818,40 @@ th.sortable.sort-desc .sort-arrow { opacity: 1; color: var(--cyan); }
   #login-gate, #nav, .theme-toggle, .export-btn, .realtime-clock,
   .updated-badge, .filter-tabs, .search-bar-wrap, .board-mode-btn,
   .sort-arrow, #incident-btn-simula, #incident-btn-reset,
-  .kpi-card-hint, .quarter-badge, #print-prep-overlay { display: none !important; }
+  .kpi-card-hint, .quarter-badge, #print-prep-overlay,
+  .print-btn, .quick-nav-select, .section-collapse-btn,
+  .notif-bell-wrap, .risk-filter-bar, .asset-actions-cell,
+  .gsearch-kbd { display: none !important; }
+
+  /* Hide ALL overlays, modals, drawers, mobile elements */
+  .policy-modal-overlay, .gsearch-overlay,
+  .sede-detail-overlay, .risk-detail-overlay, .mis-detail-overlay,
+  .shortcuts-overlay, .exec-export-overlay,
+  .drawer-overlay, .detail-drawer,
+  .modal-overlay, .kpi-drilldown-overlay,
+  .mobile-menu-overlay, .mobile-menu, .mobile-tab-bar,
+  #compare-modal, #board-overlay,
+  .fab-scroll-top, #toast-container { display: none !important; }
 
   /* Show all tab panes for full report — each tab becomes a chapter */
   .tab-pane { display: block !important; opacity: 1 !important; }
 
-  /* Page breaks between sections */
+  /* Page breaks between tab sections only */
   .tab-pane { page-break-before: always; break-before: page; }
   .tab-pane:first-child { page-break-before: avoid; break-before: avoid; }
 
-  /* Ensure tables don't break mid-row */
-  tr { page-break-inside: avoid; break-inside: avoid; }
+  /* Prevent breaks inside cards, rows, KPI cards */
+  tr, .kpi-card, .card, .risk-row, .policy-tracker-card { page-break-inside: avoid; break-inside: avoid; }
+
+  /* Avoid page breaks after section headers */
+  .section-header { page-break-after: avoid; break-after: avoid; }
+
+  /* Collapsed sections must be visible in print */
+  .section-collapsible, .section-collapsible.collapsed {
+    max-height: none !important; opacity: 1 !important;
+    overflow: visible !important; margin: initial !important;
+    padding: initial !important;
+  }
 
   /* Header on every page */
   #header { position: static !important; border-bottom: 2px solid #0969da !important; }
@@ -839,10 +862,12 @@ th.sortable.sort-desc .sort-arrow { opacity: 1; color: var(--cyan); }
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 90vh;
+    min-height: 80vh;
     text-align: center;
     page-break-after: always;
     break-after: page;
+    page-break-inside: avoid;
+    break-inside: avoid;
     padding: 60px 40px;
   }
   .print-cover-logo { margin-bottom: 32px; }
@@ -909,9 +934,6 @@ th.sortable.sort-desc .sort-arrow { opacity: 1; color: var(--cyan); }
   /* Footer on print */
   #footer { position: static !important; margin-top: 20px; border-top: 1px solid #ddd; }
 
-  /* Board mode overlay hidden in print */
-  #board-overlay, .fab-scroll-top, #toast-container { display: none !important; }
-
   /* Print header/footer per page */
   @page { margin: 18mm 14mm 16mm 14mm; }
 
@@ -930,15 +952,32 @@ th.sortable.sort-desc .sort-arrow { opacity: 1; color: var(--cyan); }
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
-
-  /* Ensure cards don't break mid-card */
-  .kpi-card, .card, .risk-row, .policy-tracker-card { page-break-inside: avoid; break-inside: avoid; }
-
-  /* Asset action buttons hidden in print */
-  .asset-action-btn { display: none !important; }
+  /* Only show ::before if data-print-title has content */
+  .tab-pane:not([data-print-title])::before { display: none; }
 
   /* Sparkline print */
   .kpi-sparkline-svg { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+
+  /* scroll-animate must be visible in print */
+  .scroll-animate, .scroll-animate.visible { opacity: 1 !important; transform: none !important; }
+  .kpi-card { opacity: 1 !important; transform: none !important; }
+
+  /* Incident timer: remove fixed positioning artifacts */
+  .incident-timer-card { position: static !important; }
+
+  /* Hide interactive-only elements */
+  .storico-filters, .info-box, .cal-outer,
+  .policy-pdf-preview, .comp-heatmap-cell { cursor: default !important; }
+
+  /* Radar chart sizing for print */
+  .radar-wrapper { max-width: 500px; margin: 0 auto; }
+
+  /* Heatmap grid print fix */
+  .heatmap-section { page-break-inside: avoid; break-inside: avoid; }
+
+  /* Prevent empty margin/padding from causing blank pages */
+  .scroll-animate { margin-top: 12px !important; }
+  .gauge-wrapper { page-break-inside: avoid; break-inside: avoid; }
 }
 
 /* ========== FAB SCROLL-TO-TOP ========== */
