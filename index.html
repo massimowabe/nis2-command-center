@@ -1059,6 +1059,46 @@ th.sortable.sort-desc .sort-arrow { opacity: 1; color: var(--cyan); }
 .policy-donut-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 @media (max-width: 640px) { .policy-donut-wrap { flex-direction: column; align-items: flex-start; } }
 
+/* ========== SECTION COLLAPSE ========== */
+.section-collapse-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 4px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer; transition: all 0.2s;
+  margin-right: 8px; flex-shrink: 0;
+}
+.section-collapse-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+.section-collapse-btn svg { width: 12px; height: 12px; transition: transform 0.3s; }
+.section-collapse-btn.collapsed svg { transform: rotate(-90deg); }
+.section-collapsible { overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease; }
+.section-collapsible.collapsed { max-height: 0 !important; opacity: 0; margin: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; }
+
+/* ========== COMPLIANCE HEATMAP COMPACT ========== */
+.comp-heatmap-grid { display: grid; grid-template-columns: 100px repeat(10, 1fr); gap: 2px; font-family: var(--font-mono); font-size: 0.55rem; }
+.comp-heatmap-header { text-align: center; color: var(--muted); font-weight: 600; padding: 4px 0; }
+.comp-heatmap-sede { display: flex; align-items: center; color: var(--text); font-weight: 500; padding: 4px 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.comp-heatmap-cell {
+  display: flex; align-items: center; justify-content: center;
+  padding: 6px 2px; border-radius: 3px; font-weight: 600; font-size: 0.5rem;
+  cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+}
+.comp-heatmap-cell:hover { transform: scale(1.15); box-shadow: 0 2px 8px rgba(0,0,0,0.3); z-index: 2; position: relative; }
+@media (max-width: 768px) {
+  .comp-heatmap-grid { grid-template-columns: 70px repeat(10, 1fr); font-size: 0.45rem; }
+  .comp-heatmap-cell { padding: 4px 1px; }
+}
+
+/* ========== ANIMATED PROGRESS BAR ========== */
+@keyframes progress-fill-animate { from { width: 0; } }
+.policy-progress-fill.animated { animation: progress-fill-animate 1.2s ease-out; }
+
+/* ========== PDF INLINE VIEWER ========== */
+.policy-pdf-preview {
+  width: 100%; height: 400px; border: 1px solid var(--border);
+  border-radius: 6px; margin-top: 12px; background: var(--bg);
+}
+@media (max-width: 768px) { .policy-pdf-preview { height: 300px; } }
+
 /* ========== TAB COUNTER BADGE ========== */
 .nav-tab-count {
   display: inline-flex; align-items: center; justify-content: center;
@@ -4123,58 +4163,58 @@ function buildSparkline(pct, color, ok, ko) {
 var POLICY_DETAIL_DATA = [
   { codice: 'POL-01', nome: 'Access Control Policy (ACP)', cat: 'Gestione Accessi', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'ACP',
     mis: ['MIS-09'], desc: 'Definisce le regole per il controllo degli accessi logici a sistemi, applicazioni e dati aziendali.',
-    docPath: 'POLICY/Fondamentali/ACCESS CONTROL POLICY (ACP)' },
+    docPath: 'POLICY/Fondamentali/ACCESS CONTROL POLICY (ACP)', pdfFile: 'policies/POL-01_ACP.pdf' },
   { codice: 'POL-02', nome: 'Privileged Access Management (PAM) Policy', cat: 'Gestione Accessi', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'PAM',
     mis: ['MIS-09'], desc: 'Disciplina la gestione degli account con privilegi elevati e accesso amministrativo.',
-    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/PRIVILEGED ACCESS MANAGEMENT POLICY (PAM POLICY)' },
+    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/PRIVILEGED ACCESS MANAGEMENT POLICY (PAM POLICY)', pdfFile: 'policies/POL-02_PAM.pdf' },
   { codice: 'POL-03', nome: 'Password Management Policy (PWM)', cat: 'Gestione Accessi', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'PAP',
     mis: ['MIS-09','MIS-08'], desc: 'Stabilisce requisiti di complessità, rotazione e gestione delle credenziali di autenticazione.',
-    docPath: 'POLICY/Fondamentali/PASSWORD & AUTHENTICATION POLICY (PAP)' },
+    docPath: 'POLICY/Fondamentali/PASSWORD & AUTHENTICATION POLICY (PAP)', pdfFile: 'policies/POL-03_PAP.pdf' },
   { codice: 'POL-04', nome: 'Remote Working & Mobile Operations (RWMP)', cat: 'Gestione Accessi', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'RWMP',
     mis: ['MIS-09','MIS-05'], desc: 'Regola le condizioni di sicurezza per lavoro remoto e dispositivi mobili.',
-    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/REMOTE WORKING & MOBILE OPERATIONS SECURITY POLICY (RWMP)' },
+    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/REMOTE WORKING & MOBILE OPERATIONS SECURITY POLICY (RWMP)', pdfFile: 'policies/POL-04_RWMP.pdf' },
   { codice: 'POL-05', nome: 'Secure Configuration & Hardening Policy (SCHP)', cat: 'Protezione Sistemi', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'SCHP',
     mis: ['MIS-06','MIS-10'], desc: 'Definisce le baseline di configurazione sicura per tutti i sistemi informatici.',
-    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/SECURE CONFIGURATION & HARDENING POLICY (SCHP)' },
+    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/SECURE CONFIGURATION & HARDENING POLICY (SCHP)', pdfFile: 'policies/POL-05_SCHP.pdf' },
   { codice: 'POL-06', nome: 'Endpoint Detection & Response Policy (EDRP)', cat: 'Protezione Sistemi', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'ESP',
     mis: ['MIS-07','MIS-03'], desc: 'Disciplina protezione endpoint: antivirus, EDR, threat detection.',
-    docPath: 'POLICY/Fondamentali/ENDPOINT SECURITY POLICY (ESP)' },
+    docPath: 'POLICY/Fondamentali/ENDPOINT SECURITY POLICY (ESP)', pdfFile: 'policies/POL-06_ESP.pdf' },
   { codice: 'POL-07', nome: 'Cryptography & Key Management Policy (CKMP)', cat: 'Protezione Sistemi', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'CKMP',
     mis: ['MIS-08'], desc: 'Regola uso della crittografia e gestione del ciclo di vita delle chiavi.',
-    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/CRYPTOGRAPHY & KEY MANAGEMENT POLICY (CKMP)' },
+    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/CRYPTOGRAPHY & KEY MANAGEMENT POLICY (CKMP)', pdfFile: 'policies/POL-07_CKMP.pdf' },
   { codice: 'POL-08', nome: 'Secure Printing & Document Handling (SPDP)', cat: 'Protezione Sistemi', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'SPDP',
     mis: ['MIS-10'], desc: 'Procedure per stampa sicura e gestione documentale cartacea/digitale.',
-    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/SECURE PRINTING & DOCUMENT HANDLING POLICY (SPDP)' },
+    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/SECURE PRINTING & DOCUMENT HANDLING POLICY (SPDP)', pdfFile: 'policies/POL-08_SPDP.pdf' },
   { codice: 'POL-09', nome: 'Backup, Restore & Data Recovery Policy (BRP)', cat: 'Gestione Dati', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'BRP',
     mis: ['MIS-04','MIS-10'], desc: 'Definisce strategie e frequenze di backup, procedure di restore e test di recovery.',
-    docPath: 'POLICY/Fondamentali/BACKUP & RESTORE POLICY (BRP)' },
+    docPath: 'POLICY/Fondamentali/BACKUP & RESTORE POLICY (BRP)', pdfFile: 'policies/POL-09_BRP.pdf' },
   { codice: 'POL-10', nome: 'Data Classification & Handling Policy (DCHP)', cat: 'Gestione Dati', stato: 'In revisione', data: '—', versione: '0.9', acronimo: 'AMDP',
     mis: ['MIS-10','MIS-02'], desc: 'Classificazione dei dati per livello di sensibilità e regole di trattamento.',
-    docPath: 'POLICY/Fondamentali/ASSET MANAGEMENT & DATA CLASSIFICATION POLICY (AMDP)' },
+    docPath: 'POLICY/Fondamentali/ASSET MANAGEMENT & DATA CLASSIFICATION POLICY (AMDP)', pdfFile: 'policies/POL-10_AMDP.pdf' },
   { codice: 'POL-11', nome: 'Acceptable Use Policy (AUP)', cat: 'Gestione Dati', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'AUP',
     mis: ['MIS-01','MIS-09'], desc: 'Regole di utilizzo accettabile di risorse informatiche aziendali.',
-    docPath: 'POLICY/Fondamentali/ACCEPTABLE USE POLICY (AUP)' },
+    docPath: 'POLICY/Fondamentali/ACCEPTABLE USE POLICY (AUP)', pdfFile: 'policies/POL-11_AUP.pdf' },
   { codice: 'POL-12', nome: 'Incident Response Policy (IRP)', cat: 'Incident & Continuita', stato: 'Approvata', data: '09/12/2025', versione: '1.0', acronimo: 'IRP',
     mis: ['MIS-03'], desc: 'Procedure di rilevazione, analisi, contenimento e ripristino incidenti di sicurezza.',
-    docPath: 'POLICY/Fondamentali/INCIDENT RESPONSE POLICY (IRP - POLICY)' },
+    docPath: 'POLICY/Fondamentali/INCIDENT RESPONSE POLICY (IRP - POLICY)', pdfFile: 'policies/POL-12_IRP.pdf' },
   { codice: 'POL-13', nome: 'Business Continuity & Disaster Recovery (BCDR)', cat: 'Incident & Continuita', stato: 'Bozza', data: '—', versione: '0.3', acronimo: 'BCPDRP',
     mis: ['MIS-04'], desc: 'Piano di continuità operativa e recupero in caso di disastro.',
-    docPath: 'POLICY/Fondamentali/BUSINESS CONTINUITY & DISASTER RECOVERY POLICY (BCPDRP)' },
+    docPath: 'POLICY/Fondamentali/BUSINESS CONTINUITY & DISASTER RECOVERY POLICY (BCPDRP)', pdfFile: 'policies/POL-13_BCPDRP.pdf' },
   { codice: 'POL-14', nome: 'Crisis Communication Policy (CCP)', cat: 'Incident & Continuita', stato: 'Bozza', data: '—', versione: '0.2', acronimo: 'CCP',
     mis: ['MIS-03','MIS-04'], desc: 'Protocollo di comunicazione interna ed esterna durante crisi e incidenti.',
-    docPath: '' },
+    docPath: '', pdfFile: '' },
   { codice: 'POL-15', nome: 'Information Security Policy (ISP)', cat: 'Governance', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'ISP',
     mis: ['MIS-01'], desc: 'Policy quadro per la sicurezza delle informazioni. Documento apex del framework NIS2.',
-    docPath: 'POLICY/Fondamentali/INFORMATION SECURITY POLICY (ISP)' },
+    docPath: 'POLICY/Fondamentali/INFORMATION SECURITY POLICY (ISP)', pdfFile: 'policies/POL-15_ISP.pdf' },
   { codice: 'POL-16', nome: 'Change Management Policy (CMP)', cat: 'Governance', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'CMP',
     mis: ['MIS-06','MIS-02'], desc: 'Gestione strutturata delle modifiche a sistemi, configurazioni e processi.',
-    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/CHANGE MANAGEMENT POLICY (CMP)' },
+    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/CHANGE MANAGEMENT POLICY (CMP)', pdfFile: 'policies/POL-16_CMP.pdf' },
   { codice: 'POL-17', nome: 'Secure Software Development (SSDP)', cat: 'Governance', stato: 'Bozza', data: '—', versione: '0.1', acronimo: 'SSDP',
     mis: ['MIS-06'], desc: 'Linee guida per sviluppo sicuro del software e gestione vulnerabilità.',
-    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/SECURE SOFTWARE DEVELOPMENT & CHANGE MANAGEMENT POLICY (SSDP)' },
+    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/SECURE SOFTWARE DEVELOPMENT & CHANGE MANAGEMENT POLICY (SSDP)', pdfFile: 'policies/POL-17_SSDP.pdf' },
   { codice: 'POL-18', nome: 'Email, Communication & Phishing Protection (ECP)', cat: 'Governance', stato: 'Approvata', data: '10/12/2025', versione: '1.0', acronimo: 'ECP',
     mis: ['MIS-01','MIS-03'], desc: 'Protezione da phishing, regole email e comunicazioni sicure.',
-    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/EMAIL, COMMUNICATION & PHISHING PROTECTION POLICY (ECP)' }
+    docPath: 'POLICY/Da applicare in modo proporzionato alla dimensione aziendale/EMAIL, COMMUNICATION & PHISHING PROTECTION POLICY (ECP)', pdfFile: 'policies/POL-18_ECP.pdf' }
 ];
 
 function openPolicyModal(codice) {
@@ -4194,12 +4234,11 @@ function openPolicyModal(codice) {
   });
 
   var docBtn = '';
-  if (p.docPath) {
-    var searchUrl = 'https://drive.google.com/drive/search?q=' + encodeURIComponent(p.acronimo + ' ' + p.nome.split('(')[0].trim());
-    docBtn = '<a class="policy-modal-doc-btn" href="' + searchUrl + '" target="_blank" rel="noopener">'
+  if (p.pdfFile) {
+    docBtn = '<a class="policy-modal-doc-btn" href="' + p.pdfFile + '" target="_blank" rel="noopener">'
       + '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M14 4.5V14a2 2 0 01-2 2H4a2 2 0 01-2-2V2a2 2 0 012-2h5.5L14 4.5zm-3 0A1.5 1.5 0 019.5 3V1H4a1 1 0 00-1 1v12a1 1 0 001 1h8a1 1 0 001-1V4.5h-2z"/></svg>'
-      + 'Apri Documento su Drive</a>'
-      + '<div class="policy-modal-path">📁 ' + p.docPath + '</div>';
+      + 'Visualizza PDF Policy</a>'
+      + '<div class="policy-modal-path" style="font-size:0.62rem;color:var(--muted);margin-top:4px;font-family:var(--font-mono);">📄 ' + p.pdfFile + '</div>';
   } else {
     docBtn = '<div class="policy-modal-path" style="color:var(--orange)">Documento non ancora disponibile (stato: ' + p.stato + ')</div>';
   }
@@ -7628,6 +7667,147 @@ function filterRiskLevel(level, btn) {
       mobileTab.style.position = 'relative';
     }
   });
+})();
+
+// ============================================================
+// UPGRADE B7-1: SECTION COLLAPSE/EXPAND IN OVERVIEW
+// ============================================================
+(function initSectionCollapse() {
+  var headers = document.querySelectorAll('#tab-overview .section-header');
+  headers.forEach(function(header) {
+    // Skip headers that are just text wrappers (no sibling content)
+    var nextEl = header.nextElementSibling;
+    if (!nextEl || nextEl.classList.contains('section-header')) return;
+    // Skip gauge wrapper (first section)
+    if (nextEl.id === 'gauge-wrapper' || nextEl.id === 'kpi-overview-global') return;
+
+    var btn = document.createElement('button');
+    btn.className = 'section-collapse-btn';
+    btn.innerHTML = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 5.56L2.413 5h11.194l.393.54L8.373 11h-.827L2 5.56z"/></svg>';
+    btn.title = 'Comprimi/espandi sezione';
+    btn.onclick = function(e) {
+      e.stopPropagation();
+      btn.classList.toggle('collapsed');
+      nextEl.classList.toggle('collapsed');
+      if (nextEl.classList.contains('collapsed')) {
+        nextEl.style.maxHeight = '0';
+      } else {
+        nextEl.style.maxHeight = nextEl.scrollHeight + 'px';
+        setTimeout(function() { nextEl.style.maxHeight = 'none'; }, 400);
+      }
+    };
+    header.insertBefore(btn, header.firstChild);
+    nextEl.classList.add('section-collapsible');
+    nextEl.style.maxHeight = 'none';
+  });
+})();
+
+// ============================================================
+// UPGRADE B7-2: COMPLIANCE HEATMAP (MIS x SEDE) IN OVERVIEW
+// ============================================================
+(function renderComplianceHeatmap() {
+  var gapSection = document.getElementById('gap-analysis-section');
+  if (!gapSection) return;
+
+  var sedi = DATA.sedi;
+  var order = ['Ateneo', 'Nuovo Salario', 'Corso Francia', 'Fracassini', 'Pannini', 'Amministrazione'];
+  var misCodes = ['MIS-01','MIS-02','MIS-03','MIS-04','MIS-05','MIS-06','MIS-07','MIS-08','MIS-09','MIS-10'];
+
+  var heatmapDiv = document.createElement('div');
+  heatmapDiv.style.marginTop = '20px';
+  heatmapDiv.innerHTML = '<div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--cyan);letter-spacing:0.1em;margin-bottom:10px;">HEATMAP CONFORMITA MIS x SEDE</div>';
+
+  var html = '<div class="comp-heatmap-grid">';
+  // Header row
+  html += '<div class="comp-heatmap-header"></div>';
+  misCodes.forEach(function(m) {
+    html += '<div class="comp-heatmap-header">' + m.replace('MIS-','') + '</div>';
+  });
+
+  // Data rows
+  order.forEach(function(name) {
+    var s = sedi[name];
+    if (!s || !s.mis_status) return;
+    html += '<div class="comp-heatmap-sede">' + name + '</div>';
+    misCodes.forEach(function(mis) {
+      var st = s.mis_status[mis] || 'KO';
+      var bgColor, textColor, label;
+      if (st === 'OK') {
+        bgColor = 'rgba(63,185,80,0.25)'; textColor = 'var(--green)'; label = 'OK';
+      } else if (st === 'Parziale') {
+        bgColor = 'rgba(210,153,34,0.25)'; textColor = 'var(--yellow)'; label = '~';
+      } else {
+        bgColor = 'rgba(248,81,73,0.2)'; textColor = 'var(--red)'; label = 'KO';
+      }
+      html += '<div class="comp-heatmap-cell" style="background:' + bgColor + ';color:' + textColor + '" '
+        + 'onclick="openMisDetail(\'' + mis + '\')" title="' + name + ' — ' + mis + ': ' + st + '">' + label + '</div>';
+    });
+  });
+  html += '</div>';
+  heatmapDiv.innerHTML += html;
+  gapSection.parentNode.insertBefore(heatmapDiv, gapSection.nextSibling);
+})();
+
+// ============================================================
+// UPGRADE B7-3: ANIMATED POLICY PROGRESS BAR
+// ============================================================
+(function animatePolicyProgress() {
+  var fill = document.getElementById('policy-progress-fill');
+  if (!fill) return;
+  fill.classList.add('animated');
+})();
+
+// ============================================================
+// UPGRADE B7-4: PDF INLINE PREVIEW IN POLICY MODAL
+// ============================================================
+var _origOpenPolicyModal = openPolicyModal;
+openPolicyModal = function(codice) {
+  _origOpenPolicyModal(codice);
+  // Add inline PDF viewer if pdfFile exists
+  var p = POLICY_DETAIL_DATA.find(function(d) { return d.codice === codice; });
+  if (!p || !p.pdfFile) return;
+  var modal = document.getElementById('policy-modal');
+  if (!modal) return;
+  var existingPreview = modal.querySelector('.policy-pdf-preview');
+  if (existingPreview) return;
+  var iframe = document.createElement('iframe');
+  iframe.className = 'policy-pdf-preview';
+  iframe.src = p.pdfFile;
+  iframe.title = 'Anteprima ' + p.nome;
+  iframe.setAttribute('loading', 'lazy');
+  modal.appendChild(iframe);
+};
+
+// ============================================================
+// UPGRADE B7-5: QUICK NAV DROPDOWN IN HEADER
+// ============================================================
+(function addQuickNavDropdown() {
+  var headerRight = document.querySelector('.header-right');
+  if (!headerRight) return;
+  var tabLabels = {
+    overview: 'Overview', mis: 'MIS x Sedi', risk: 'Risk Matrix',
+    asset: 'Asset', scadenze: 'Scadenze', policy: 'Policy', storico: 'Storico'
+  };
+  var select = document.createElement('select');
+  select.className = 'quick-nav-select';
+  select.setAttribute('aria-label', 'Navigazione rapida tab');
+  select.style.cssText = 'background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:4px 8px;font-family:var(--font-mono);font-size:0.65rem;cursor:pointer;outline:none;';
+  VALID_TABS.forEach(function(tab) {
+    var opt = document.createElement('option');
+    opt.value = tab;
+    opt.textContent = tabLabels[tab] || tab;
+    select.appendChild(opt);
+  });
+  select.addEventListener('change', function() {
+    switchTab(select.value);
+  });
+  // Keep in sync when tab changes
+  var origSwitch = switchTab;
+  switchTab = function(id) {
+    origSwitch(id);
+    select.value = id;
+  };
+  headerRight.insertBefore(select, headerRight.firstChild);
 })();
 
 </script>
